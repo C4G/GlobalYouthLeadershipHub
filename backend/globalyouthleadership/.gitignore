@@ -1,0 +1,73 @@
+# =============== #
+# Gradle Related  #
+# =============== #
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Ignore Gradle log files
+gradle.log
+
+# Avoid tracking wrapper executable binaries
+gradlew
+gradlew.bat
+
+# =============== #
+# IntelliJ Related #
+# =============== #
+.idea/
+*.iml
+*.iws
+
+# Ignore workspace-specific settings
+workspace.xml
+tasks.xml
+
+# Ignore compiled class files
+*.class
+
+# =============== #
+# Java Related    #
+# =============== #
+*.jar
+*.war
+*.ear
+
+# Avoid tracking logs
+logs/
+*.log
+
+# Maven target directory (in case you switch build tools)
+target/
+
+# Ignore temporary files
+hs_err_pid*
+
+# Ignore test reports
+test-output/
+
+# Ignore dependency caches
+out/
+bin/
+
+# =============== #
+# OS Specific     #
+# =============== #
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =============== #
+# Security        #
+# =============== #
+# Never commit secrets or credentials
+*.env
+application.properties
+application.yml
+.env
+
+# =============== #
+# Docker Ignore (if using Docker) #
+# =============== #
+docker-compose.override.yml
+.dockerignore
