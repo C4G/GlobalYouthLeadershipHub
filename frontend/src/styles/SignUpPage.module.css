@@ -1,0 +1,197 @@
+.signupContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+}
+
+
+/* Logo Section */
+.logoSection {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.organizationLogo {
+  /* Make it larger than the button */
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 50px;
+}
+
+.description {
+  font-size: 14px;
+  color: #555;
+  max-width: 300px;
+  /* Move closer to organizationLogo */
+  margin-top: -30px;
+  margin-bottom: 30px;
+}
+
+.mobileLogo {
+  width: 180px;
+  display: none;
+}
+
+/* Form Section */
+.formSection {
+  background-color: #fff;
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 14px;
+  color: #666;
+}
+
+.nameGroup {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Input Groups */
+.inputGroup {
+  width: 47%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.emailGroup,
+.passwordGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.inputGroup,
+.emailGroup,
+.passwordGroup label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.inputGroup input,
+.emailGroup input,
+.passwordGroup input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Date of Birth */
+.dobGroup {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.dobGlabel {
+  display: block;
+  margin: 5px 0;
+}
+
+.dobFields {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dobFields select {
+  width: 32%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.genderLabel {
+  display: block;
+}
+
+/* Gender */
+.genderGroup {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  border : none;
+  padding: 0px;
+}
+
+.genderLegend {
+  text-align: left;
+  margin: 5px 0;
+}
+
+.genderOption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38%;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  background-color: white;
+  transition: background-color 0.3s, border 0.3s;
+}
+
+.genderGroup label {
+  display: flex;
+}
+
+.genderGroup input {
+  margin-right: 5px;
+}
+
+/* Submit Button */
+.createAccountBtn {
+  background-color: #f1cd0c;
+  color: #000;
+  font-size: 16px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  .signupContainer {
+    width: 90%;
+  }
+
+  .hiddenOnMobile {
+    display: none;
+  }
+
+  .mobileLogo {
+    display: block;
+    margin: 10px auto;
+  }
+
+  .genderGroup label {
+    justify-content: center;
+    margin-bottom: 5px;
+  }
+}
