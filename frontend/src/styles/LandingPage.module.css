@@ -1,10 +1,3 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  margin: 0;
-  padding: 0;
-}
-
 .container {
   display: flex;
   flex-direction: column;
@@ -17,12 +10,12 @@ body {
 }
 
 /* Left Section */
-.left-section {
+.leftSection {
   text-align: center;
   margin-bottom: 30px;
 }
 
-.organization-logo {
+.organizationLogo {
   /* Make it larger than the button */
   width: 100%;
   max-width: 400px;
@@ -38,7 +31,7 @@ body {
   margin-bottom: 30px;
 }
 
-.program-logo {
+.programLogo {
   width: 50%;
   max-width: 200px;
   display: block;
@@ -47,13 +40,13 @@ body {
 }
 
 /* Right Section - Login Form */
-.right-section {
+.rightSection {
   display: flex;
   justify-content: center;
   width: 100%;
 }
 
-.form-container {
+.formContainer {
   background: white;
   padding: 30px;
   border-radius: 8px;
@@ -62,18 +55,18 @@ body {
   max-width: 350px;
 }
 
-.input-group {
+.inputGroup {
   margin-bottom: 15px;
 }
 
-.input-group label {
+.inputGroup label {
   display: block;
   font-weight: 600;
   margin-bottom: 5px;
   color: #333;
 }
 
-.input-group input {
+.inputGroup input {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
@@ -84,8 +77,8 @@ body {
 }
 
 /* Buttons */
-.sign-in-btn,
-.create-account-btn {
+.signInBtn,
+.createAccountBtn {
   width: 100%;
   padding: 12px;
   font-size: 16px;
@@ -95,13 +88,13 @@ body {
   transition: 0.3s ease;
 }
 
-.sign-in-btn {
+.signInBtn {
   background: #12538e;
   color: white;
   border: none;
 }
 
-.create-account-btn {
+.createAccountBtn {
   background: #f1cd0c;
   color: black;
   border: none;
@@ -109,9 +102,9 @@ body {
 }
 
 /* Make buttons and inputs the same width */
-.input-group input,
-.sign-in-btn,
-.create-account-btn {
+.inputGroup input,
+.signInBtn,
+.createAccountBtn {
   width: 100%;
 }
 
@@ -124,22 +117,19 @@ body {
     /* Reduce space */
     gap: 50px;
   }
-}
-
-/* Hide description in mobile view */
-@media (max-width: 767px) {
-  .hidden-on-mobile {
-    display: none;
-  }
-}
-
-@media (min-width: 768px) {
-  .left-section {
+  .leftSection {
     text-align: left;
     max-width: 50%;
   }
 
-  .right-section {
+  .rightSection {
     max-width: 50%;
+  }
+}
+
+/* Hide description in mobile view */
+@media (max-width: 767px) {
+  .hiddenOnMobile {
+    display: none;
   }
 }
