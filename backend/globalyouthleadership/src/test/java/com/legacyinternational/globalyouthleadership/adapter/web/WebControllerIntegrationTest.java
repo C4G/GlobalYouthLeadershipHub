@@ -42,7 +42,7 @@ public class WebControllerIntegrationTest {
         RestTemplateBuilder builder = new RestTemplateBuilder().rootUri(baseUrl + port);
         restTemplate = new TestRestTemplate(builder);
         // Given valid credentials
-        String username = "admin";
+        String username = "admin@gmail.com";
         String password = "admin123";
         // Create request
         LoginRequest loginRequest = new LoginRequest(username, password);
@@ -59,7 +59,7 @@ public class WebControllerIntegrationTest {
     @Test
     void testPing() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + token); // ✅ Attach JWT token
+        headers.set("Authorization", "Bearer " + token);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
