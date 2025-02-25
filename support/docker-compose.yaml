@@ -1,0 +1,50 @@
+services:
+  mysql:
+    image: mysql:8.4.4
+    container_name: app-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - network
+
+  backend:
+    build:
+      context: ..
+      dockerfile: support/backend.Dockerfile
+    container_name: app-api
+    restart: always
+    # not sure if environment is needed
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    networks:
+      - network
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: support/frontend.Dockerfile
+    container_name: app-web
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - network
+
+volumes:
+  mysql_data:
+
+networks:
+  network:
+    name: app_network
