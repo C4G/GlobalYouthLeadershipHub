@@ -1,12 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/LandingPage.module.css";
+import styles from "../styles/LoginPage.module.css";
 
-const LandingPage = () => {
+const LoginPage = () => {
   const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
+      {/* Logo Section */}
       <div className={styles.leftSection}>
         <img
           src="/organizationLogo.jpg"
@@ -20,9 +21,10 @@ const LandingPage = () => {
         </p>
       </div>
 
+      {/* Form Section */}
       <div className={styles.rightSection}>
         <div className={styles.formContainer}>
-          <form>
+          <form className={styles.loginForm}>
             <div className={styles.inputGroup}>
               <label htmlFor="email">Email address</label>
               <input
@@ -30,6 +32,7 @@ const LandingPage = () => {
                 id="email"
                 placeholder="Enter your email address"
                 aria-required="true"
+                required
               />
             </div>
             <div className={styles.inputGroup}>
@@ -39,19 +42,20 @@ const LandingPage = () => {
                 id="password"
                 placeholder="********"
                 aria-required="true"
+                required
               />
             </div>
             <button type="submit" className={styles.signInBtn}>
               SIGN IN
             </button>
           </form>
-          <hr className={styles.formLine}/>
+          <hr />
           <button
             type="button"
             className={styles.createAccountBtn}
             onClick={() => navigate("/signup")}
           >
-            CREATE ACCOUNT
+            REGISTER ACCOUNT
           </button>
         </div>
       </div>
@@ -59,4 +63,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default LoginPage;
