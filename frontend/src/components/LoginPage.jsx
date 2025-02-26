@@ -1,32 +1,30 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/LandingPage.module.css";
+import styles from "../styles/LoginPage.module.css";
 
-const LandingPage = () => {
+const LoginPage = () => {
   const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
-      <div className={styles.leftSectio}>
+      {/* Logo Section */}
+      <div className={styles.leftSection}>
         <img
           src="/organizationLogo.jpg"
-          alt="Legacy International Logo"
+          alt="Legacy International"
           className={styles.organizationLogo}
         />
         <p className={`${styles.description} ${styles.hiddenOnMobile}`}>
-          An initiative of the U.S. Department of State's Bureau of Educational
-          and Cultural Affairs (ECA) administered by Legacy International
+          The On-Demand Youth Leadership Program is an initiative of the U.S.
+          Department of State’s Bureau of Educational and Cultural Affairs (ECA)
+          administered by Legacy International
         </p>
-        <img
-          src="/programLogo.jpg"
-          alt="Youth Leadership Logo"
-          className={styles.programLogo}
-        />
       </div>
 
+      {/* Form Section */}
       <div className={styles.rightSection}>
         <div className={styles.formContainer}>
-          <form>
+          <form className={styles.loginForm}>
             <div className={styles.inputGroup}>
               <label htmlFor="email">Email address</label>
               <input
@@ -34,6 +32,7 @@ const LandingPage = () => {
                 id="email"
                 placeholder="Enter your email address"
                 aria-required="true"
+                required
               />
             </div>
             <div className={styles.inputGroup}>
@@ -43,6 +42,7 @@ const LandingPage = () => {
                 id="password"
                 placeholder="********"
                 aria-required="true"
+                required
               />
             </div>
             <button type="submit" className={styles.signInBtn}>
@@ -55,7 +55,7 @@ const LandingPage = () => {
             className={styles.createAccountBtn}
             onClick={() => navigate("/signup")}
           >
-            CREATE ACCOUNT
+            REGISTER ACCOUNT
           </button>
         </div>
       </div>
@@ -63,4 +63,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default LoginPage;
