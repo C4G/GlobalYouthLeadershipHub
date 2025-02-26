@@ -4,39 +4,26 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 20px;
-  /* Reduce space between left and right sections */
-  gap: 20px;
 }
 
 /* Left Section */
 .leftSection {
-  text-align: center;
   margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
 }
 
 .organizationLogo {
   /* Make it larger than the button */
   width: 100%;
   max-width: 400px;
-  margin-bottom: 50px;
+  column-gap: 0px;
 }
 
 .description {
-  font-size: 14px;
-  color: #555;
-  max-width: 300px;
-  /* Move closer to organizationLogo */
-  margin-top: -30px;
-  margin-bottom: 30px;
-}
-
-.programLogo {
-  width: 50%;
-  max-width: 200px;
-  display: block;
-  /* Aligns the logo to the right */
-  margin-left: auto;
+  font-size: 25px;
+  color: black;
+  max-width: 905;
 }
 
 /* Right Section - Login Form */
@@ -92,6 +79,7 @@
   background: #12538e;
   color: white;
   border: none;
+  margin-bottom: 10px;
 }
 
 .createAccountBtn {
@@ -99,6 +87,10 @@
   color: black;
   border: none;
   margin-top: 10px;
+}
+
+.formLine {
+  width: 80%;
 }
 
 /* Make buttons and inputs the same width */
@@ -114,17 +106,30 @@
     flex-direction: row;
     /* Centers content better */
     justify-content: center;
-    /* Reduce space */
-    gap: 50px;
   }
+
   .leftSection {
-    text-align: left;
+    margin-top: 5%;
+    margin-left: 10%;
+    align-self: flex-start;
+    text-align: justify;
     max-width: 50%;
+  }
+
+  .organizationLogo {
+    /* Make it larger than the button */
+    max-width: 100%;
   }
 
   .rightSection {
     max-width: 50%;
   }
+
+  .formContainer {
+    margin-left: -10vw;
+  }
+
+
 }
 
 /* Hide description in mobile view */

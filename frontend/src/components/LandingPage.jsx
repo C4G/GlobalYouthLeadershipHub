@@ -7,21 +7,17 @@ const LandingPage = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.leftSectio}>
+      <div className={styles.leftSection}>
         <img
           src="/organizationLogo.jpg"
-          alt="Legacy International Logo"
+          alt="Legacy International"
           className={styles.organizationLogo}
         />
         <p className={`${styles.description} ${styles.hiddenOnMobile}`}>
-          An initiative of the U.S. Department of State's Bureau of Educational
-          and Cultural Affairs (ECA) administered by Legacy International
+          The On-Demand Youth Leadership Program is an initiative of the U.S.
+          Department of State’s Bureau of Educational and Cultural Affairs (ECA)
+          administered by Legacy International
         </p>
-        <img
-          src="/programLogo.jpg"
-          alt="Youth Leadership Logo"
-          className={styles.programLogo}
-        />
       </div>
 
       <div className={styles.rightSection}>
@@ -49,7 +45,7 @@ const LandingPage = () => {
               SIGN IN
             </button>
           </form>
-          <hr />
+          <hr className={styles.formLine}/>
           <button
             type="button"
             className={styles.createAccountBtn}
