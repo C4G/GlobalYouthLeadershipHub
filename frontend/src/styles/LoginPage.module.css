@@ -68,6 +68,10 @@
   box-sizing: border-box;
 }
 
+.errorMessage {
+  color: #f00;
+}
+
 /* Buttons */
 .signInBtn,
 .createAccountBtn {
@@ -117,7 +121,7 @@ hr {
 
   .leftSection {
     margin-top: 5%;
-    margin-left: 10%;
+    margin-left: 5%;
     align-self: flex-start;
     max-width: 60%;
   }
@@ -129,7 +133,7 @@ hr {
 
   .rightSection {
     max-width: 40%;
-    justify-content: flex-start;
+    justify-content: center;
     margin-right: 50px;
   }
 }
