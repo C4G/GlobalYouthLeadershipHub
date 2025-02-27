@@ -65,13 +65,51 @@ const SignUpPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (emailExistMessage || errorMessage) {
       return;
     }
-    // Navigate to success page only if passwords match
-    navigate("/signup-success", { state: { email } });
+
+    try {
+      const userData = {
+        email,
+        password,
+        firstName,
+        lastName,
+        dateOfBirth: `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`,
+      };
+
+      await registerUser(userData);
+      // Navigate to success page only if passwords match
+      navigate("/signup-success", { state: { email } });
+    } catch (error) {
+      setErrorMessage(
+        error.message || "Registration failed. Please try again."
+      );
+    }
+  };
+
+
+  const registerUser = async (userData) => {
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Registration failed");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Error:", error);
+      throw error;
+    }
   };
 
   return (
