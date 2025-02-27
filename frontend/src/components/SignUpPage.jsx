@@ -80,7 +80,7 @@ const SignUpPage = () => {
         dateOfBirth: `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`,
       };
 
-      await registerUser(userData);
+      // await registerUser(userData);
       // Navigate to success page only if passwords match
       navigate("/signup-success", { state: { email } });
     } catch (error) {
