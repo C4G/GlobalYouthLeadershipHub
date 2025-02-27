@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,19 +27,35 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(unique = true)
     private String username;
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private LocalDateTime dateOfBirth;
+
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     private List<String> roles; // e.g., ["USER", "ADMIN"]
 
-    public User(String username, String password, List<String> roles) {
-        this.username = username;
+    public User(String email, String password, String firstName, String lastName, LocalDateTime dateOfBirth, List<String> roles) {
+        this.email = email;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
         this.roles = roles;
     }
 
@@ -47,6 +64,11 @@ public class User implements UserDetails {
         return roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     @Override
