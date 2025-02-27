@@ -16,7 +16,7 @@ const SignUpPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handlfirstName = (e) => {
+  const handleFirstName = (e) => {
     setFirstName(e.target.value);
   };
 
@@ -108,7 +108,7 @@ const SignUpPage = () => {
                   placeholder="First name *"
                   aria-required="true"
                   value={firstName}
-                  onChange={handlfirstName}
+                  onChange={handleFirstName}
                   required
                 />
               </div>
