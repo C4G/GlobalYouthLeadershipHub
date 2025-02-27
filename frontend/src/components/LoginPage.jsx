@@ -78,10 +78,10 @@ const LoginPage = () => {
             <div className={styles.inputGroup}>
               <label htmlFor="password">Password</label>
               <input
-                type="text"
+                type="password"
                 id="password"
                 placeholder="********"
-                value={maskedValue}
+                value={password}
                 onChange={handlePasswordChange}
                 aria-required="true"
                 required
