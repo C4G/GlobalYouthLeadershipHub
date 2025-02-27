@@ -1,7 +1,79 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/SignUpPage.module.css";
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailExistMessage, setEmailExistMessage] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handlfirstName = (e) => {
+    setFirstName(e.target.value);
+  };
+
+  const handleLastName = (e) => {
+    setLastName(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if (e.target.value === "admin@test.com") {
+      setEmailExistMessage("This user already exists!");
+    } else {
+      setEmailExistMessage("");
+    }
+  };
+
+  const handleDayChange = (e) => {
+    setDay(e.target.value);
+  };
+  const handleMonthChange = (e) => {
+    setMonth(e.target.value);
+  };
+  const handleYearChange = (e) => {
+    setYear(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    if (newPassword.length < 8) {
+      setErrorMessage("Password must be at least 8 characters long");
+    } else if (confirmPassword && newPassword !== confirmPassword) {
+      setErrorMessage("Passwords do not match");
+    } else {
+      setErrorMessage("");
+    }
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    if (password && e.target.value !== password) {
+      setErrorMessage("Passwords do not match");
+    } else {
+      setErrorMessage("");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (emailExistMessage || errorMessage) {
+      return;
+    }
+    // Navigate to success page only if passwords match
+    navigate("/signup-success", { state: { email } });
+  };
+
   return (
     <div className={styles.container}>
       {/* Logo Section */}
@@ -25,7 +97,7 @@ const SignUpPage = () => {
           <p>Signing up for an account is subject to admin's approval</p>
           <hr />
 
-          <form className={styles.registerForm}>
+          <form className={styles.registerForm} onSubmit={handleSubmit}>
             {/* Name Fields */}
             <div className={styles.nameGroup}>
               <div className={styles.inputGroup}>
@@ -35,6 +107,8 @@ const SignUpPage = () => {
                   name="first-name"
                   placeholder="First name *"
                   aria-required="true"
+                  value={firstName}
+                  onChange={handlfirstName}
                   required
                 />
               </div>
@@ -45,6 +119,8 @@ const SignUpPage = () => {
                   name="last-name"
                   placeholder="Last name *"
                   aria-required="true"
+                  value={lastName}
+                  onChange={handleLastName}
                   required
                 />
               </div>
@@ -54,7 +130,13 @@ const SignUpPage = () => {
             <div className={styles.dobGroup}>
               <label className={styles.dobGlabel}>Date of Birth</label>
               <div className={styles.dobFields}>
-                <select name="day" aria-label="Day">
+                <select
+                  name="day"
+                  aria-label="Day"
+                  value={day}
+                  onChange={handleDayChange}
+                  required
+                >
                   <option value="">Day</option>
                   {[...Array(31)].map((_, i) => (
                     <option key={i + 1} value={i + 1}>
@@ -62,7 +144,13 @@ const SignUpPage = () => {
                     </option>
                   ))}
                 </select>
-                <select name="month" aria-label="Month">
+                <select
+                  name="month"
+                  aria-label="Month"
+                  value={month}
+                  onChange={handleMonthChange}
+                  required
+                >
                   <option value="">Month</option>
                   {[
                     "Jan",
@@ -83,7 +171,13 @@ const SignUpPage = () => {
                     </option>
                   ))}
                 </select>
-                <select name="year" aria-label="Year">
+                <select
+                  name="year"
+                  aria-label="Year"
+                  value={year}
+                  onChange={handleYearChange}
+                  required
+                >
                   <option value="">Year</option>
                   {[...Array(40)].map((_, i) => (
                     <option key={2025 - i} value={2025 - i}>
@@ -102,15 +196,25 @@ const SignUpPage = () => {
                 name="email"
                 placeholder="Email Address"
                 aria-required="true"
+                value={email}
+                onChange={handleEmailChange}
                 required
               />
             </div>
+
+            {/* Error Message */}
+            {emailExistMessage && (
+              <p className={styles.errorMessage}>{emailExistMessage}</p>
+            )}
+
             <div className={styles.newPassword}>
               <input
                 type="password"
                 id="password"
                 name="password"
                 placeholder="New Password"
+                value={password}
+                onChange={handlePasswordChange}
                 aria-required="true"
                 required
               />
@@ -121,10 +225,17 @@ const SignUpPage = () => {
                 id="confirmPassword"
                 name="confirmPassword"
                 placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
                 aria-required="true"
                 required
               />
             </div>
+
+            {/* Error Message */}
+            {errorMessage && (
+              <p className={styles.errorMessage}>{errorMessage}</p>
+            )}
 
             {/* Submit Button */}
             <button type="submit" className={styles.createAccountBtn}>
