@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import styles from "../styles/LoginPage.module.css";
+import styles from "@/styles/LoginPage.module.css";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [maskedValue, setMaskedValue] = useState("");
   const [error, setError] = useState("");
   const [reset, setReset] = useState(false);
