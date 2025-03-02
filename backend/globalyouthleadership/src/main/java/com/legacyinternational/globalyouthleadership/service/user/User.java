@@ -5,19 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
+@Table(name = "users", schema = "SUSTSCH")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
@@ -35,35 +38,32 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "firstname")
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "lastname")
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "date_of_birth")
     private LocalDateTime dateOfBirth;
 
+    @Convert(converter = RoleConverter.class)
+//    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "role")
+    private Role role;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    private List<String> roles; // e.g., ["USER", "ADMIN"]
-
-    public User(String email, String password, String firstName, String lastName, LocalDateTime dateOfBirth, List<String> roles) {
+    public User(String email, String password, String firstName, String lastName, LocalDateTime dateOfBirth, Role role) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
-        this.roles = roles;
+        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override
@@ -81,5 +81,11 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() { return true; }
 
     @Override
-    public boolean isEnabled() { return true; }
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public boolean isVerified() {
+        return this.role != Role.PENDING_REVIEW;
+    }
 }

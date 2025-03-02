@@ -46,12 +46,33 @@ class UserServiceTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(mockUser));
 
         // Act
-        UserDetails userDetails = userService.loadUserByUsername(email);
+        User userDetails = userService.loadUserByUsername(email);
 
         // Assert
         assertNotNull(userDetails);
         assertEquals(email, userDetails.getUsername());
         assertEquals("encryptedPassword123", userDetails.getPassword());
+        assertTrue(userDetails.isVerified());
+    }
+
+    @Test
+    void loadUserByUsername_UserExists_ShouldReturnUserDetails_isVerifiedFalse() {
+        // Arrange
+        String email = "test@example.com";
+        User mockUser = new User();
+        mockUser.setEmail(email);
+        mockUser.setPassword("encryptedPassword123");
+        mockUser.setRole(Role.PENDING_REVIEW);
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(mockUser));
+
+        // Act
+        User userDetails = userService.loadUserByUsername(email);
+
+        // Assert
+        assertNotNull(userDetails);
+        assertEquals(email, userDetails.getUsername());
+        assertEquals("encryptedPassword123", userDetails.getPassword());
+        assertFalse(userDetails.isVerified());
     }
 
     @Test
@@ -77,6 +98,26 @@ class UserServiceTest {
         userService.registerUser(request);
 
         verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    void registerUser_ValidInput_ShouldSaveUser_DefaultsToPendingReview() {
+        RegisterRequest request = new RegisterRequest("test@example.com", "StrongPassword123!", "John", "Doe", dateOfBirth);
+        when(userRepository.existsByEmail(request.getEmail())).thenReturn(false);
+        when(passwordEncoder.encode(request.getPassword())).thenReturn("hashedPassword123");
+        User user = new User(request.getEmail(), request.getPassword(), request.getFirstName(), request.getLastName(), request.getDateOfBirth(), Role.PENDING_REVIEW);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        User expectedUser = userService.registerUser(request);
+
+        verify(userRepository, times(1)).save(any(User.class));
+        assertFalse(expectedUser.isVerified());
+        assertEquals("StrongPassword123!", expectedUser.getPassword());
+        assertEquals("John", expectedUser.getFirstName());
+        assertEquals("Doe", expectedUser.getLastName());
+        assertEquals(dateOfBirth, expectedUser.getDateOfBirth());
+        assertEquals(Role.PENDING_REVIEW, expectedUser.getRole());
+        assertEquals("test@example.com", expectedUser.getEmail());
     }
 
     @Test

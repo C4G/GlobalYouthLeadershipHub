@@ -1,8 +1,10 @@
 package com.legacyinternational.globalyouthleadership.adapter.auth;
 
 import com.legacyinternational.globalyouthleadership.service.authentication.JwtUtil;
+import com.legacyinternational.globalyouthleadership.service.user.Role;
 import com.legacyinternational.globalyouthleadership.service.user.User;
 import com.legacyinternational.globalyouthleadership.service.user.UserService;
+import org.apache.juli.logging.Log;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -53,13 +55,13 @@ class AuthControllerTest {
         String email = "admin@gmail.com";
         String password = "admin123";
         String jwtToken = "mocked-jwt-token";
-        UserDetails userDetails = new User(email, password, "firstName", "lastName", dateOfBirth, Collections.emptyList());
+        User user = new User(email, password, "firstName", "lastName", dateOfBirth, Role.ADMIN);
 
 
         // Mock behavior
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(new UsernamePasswordAuthenticationToken(email, password));
-        when(userService.loadUserByUsername(email)).thenReturn(userDetails);
+        when(userService.loadUserByUsername(email)).thenReturn(user);
         when(jwtUtil.generateToken(email)).thenReturn(jwtToken);
 
         LoginRequest loginRequest = new LoginRequest(email, password);
@@ -68,8 +70,9 @@ class AuthControllerTest {
 
         // Then
         assertEquals(200, response.getStatusCodeValue());
-        assertTrue(response.getBody() instanceof Map);
-        assertEquals(jwtToken, ((Map<?, ?>) response.getBody()).get("token"));
+        assertTrue(response.getBody() instanceof LoginResponse);
+        assertEquals(jwtToken, ((LoginResponse) response.getBody()).getToken());
+        assertEquals(true, ((LoginResponse) response.getBody()).getIsVerified());
 
         // Verify interactions
         verify(authenticationManager, times(1)).authenticate(new UsernamePasswordAuthenticationToken(email, password));
