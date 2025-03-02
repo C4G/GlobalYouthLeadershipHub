@@ -32,7 +32,7 @@ public class UserService implements UserDetailsService {
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
@@ -49,13 +49,13 @@ public class UserService implements UserDetailsService {
                     , "firstName"
                     , "lastName"
                     , LocalDateTime.parse("1990-05-20T00:00:00Z", ISO_FORMAT)
-                    , List.of("ADMIN"));
+                    , Role.ADMIN);
             userRepository.save(admin);
             System.out.println("Admin user created: admin / admin123");
         }
     }
 
-    public void registerUser(RegisterRequest registerRequest) {
+    public User registerUser(RegisterRequest registerRequest) {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new IllegalArgumentException("Email is already registered");
         }
@@ -66,9 +66,10 @@ public class UserService implements UserDetailsService {
         newUser.setFirstName(registerRequest.getFirstName());
         newUser.setLastName(registerRequest.getLastName());
         newUser.setDateOfBirth(LocalDateTime.parse(registerRequest.getDateOfBirth().toString(), ISO_FORMAT));
+        newUser.setRole(Role.PENDING_REVIEW);
 
         try {
-            userRepository.save(newUser);
+            return userRepository.save(newUser);
         } catch (Exception e) {
             throw new RuntimeException("Unable to save new user", e);
         }

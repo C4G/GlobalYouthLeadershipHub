@@ -1,6 +1,8 @@
 package com.legacyinternational.globalyouthleadership.adapter.auth;
 
 import com.legacyinternational.globalyouthleadership.service.authentication.JwtUtil;
+import com.legacyinternational.globalyouthleadership.service.user.Role;
+import com.legacyinternational.globalyouthleadership.service.user.User;
 import com.legacyinternational.globalyouthleadership.service.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +46,14 @@ public class AuthController {
         try {
 
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-            UserDetails userDetails = userService.loadUserByUsername(loginRequest.getEmail());
-            String token = jwtUtil.generateToken(userDetails.getUsername());
+            User user = userService.loadUserByUsername(loginRequest.getEmail());
+            String token = jwtUtil.generateToken(user.getUsername());
 
-            return ResponseEntity.ok(Map.of("token", token));
+            LoginResponse response = LoginResponse.builder()
+                    .token(token)
+                    .isVerified(user.isVerified())
+                    .build();
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Email or password");
         }
