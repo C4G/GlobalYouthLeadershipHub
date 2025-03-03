@@ -1,6 +1,7 @@
-const jwtToken = ""
+import { API } from "@/constants/env";
 
-const customFetcher = async (url, method, signal = null, data) => {
+const customFetcher = async (path, method, signal = null, data) => {
+    const jwtToken = localStorage.getItem("jwtToken")
     try {
         const options = {
             headers: {
@@ -15,7 +16,7 @@ const customFetcher = async (url, method, signal = null, data) => {
             options.body = JSON.stringify(data)
         }
 
-        const response = await fetch(url, options)
+        const response = await fetch(`${API}${path}`, options)
         if (!response.ok) {
             throw new Error(response.statusText)
         }
