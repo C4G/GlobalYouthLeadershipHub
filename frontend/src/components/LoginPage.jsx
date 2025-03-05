@@ -1,32 +1,25 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import styles from "@/styles/LoginPage.module.css";
-import { useMutation } from "@tanstack/react-query";
-import customFetcher from "@/services/api";
+import styles from "../styles/LoginPage.module.css";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [maskedValue, setMaskedValue] = useState("");
   const [error, setError] = useState("");
+  const [reset, setReset] = useState(false);
 
-  const mutation = useMutation({
-    mutationFn: async ({ email, password }) => {
-      return await customFetcher("/auth/login", "POST", null, { email, password })
-    },
-    onSuccess: (data) => {
-      if (data?.token) {
-        localStorage.setItem("jwtToken", data.token)
-        navigate("/login-success", { replace: true, state: { email } });
-      } else {
-        setError("Invalid response from server")
-      }
-    },
-    onError: (error) => {
-      setError(error.message || "Login failed")
+  // Reset email and password if navigating from logout
+  useEffect(() => {
+    if (location.state?.reset) {
+      setEmail("");
+      setPassword("");
+      setError("");
+      setReset(false);
     }
-  })
+  }, [location.state]);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -35,23 +28,20 @@ const LoginPage = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    setMaskedValue("*".repeat(e.target.value.length));
     setError("");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError("")
-    mutation.mutate({ email, password })
-  };
-
-  // Reset email and password if navigating from logout
-  useEffect(() => {
-    if (location.state?.reset) {
-      setEmail("");
-      setPassword("");
-      setError("");
+    if (email === "admin@test.com" && password === "admin") {
+      navigate("/login-success", { replace: true, state: { email, password, reset } });
+    } else if (email === "admin@test.com" && password !== "admin") {
+      setError("Incorrect password. Please enter it again.");
+    } else {
+      setError("User does not exist! Please register an account.");
     }
-  }, [location.state]);
+  };
 
   return (
     <div className={styles.container}>
