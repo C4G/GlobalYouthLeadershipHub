@@ -1,5 +1,6 @@
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import styles from "@/styles/LoginSuccessPage.module.css";
+import styles from "../styles/LoginSuccessPage.module.css";
 
 const LoginSuccessPage = () => {
   const navigate = useNavigate();

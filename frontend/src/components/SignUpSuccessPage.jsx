@@ -1,5 +1,6 @@
+import React from "react";
 import { useLocation } from "react-router-dom";
-import styles from "@/styles/SignUpSuccessPage.module.css";
+import styles from "../styles/SignUpSuccessPage.module.css";
 
 const SignUpSuccessPage = () => {
   const location = useLocation();
@@ -16,7 +17,7 @@ const SignUpSuccessPage = () => {
         />
         <p className={`${styles.description} ${styles.hiddenOnMobile}`}>
           The On-Demand Youth Leadership Program is an initiative of the U.S.
-          Department of State&apos;s Bureau of Educational and Cultural Affairs (ECA)
+          Department of State’s Bureau of Educational and Cultural Affairs (ECA)
           administered by Legacy International
         </p>
       </div>
@@ -30,7 +31,7 @@ const SignUpSuccessPage = () => {
             successfully.
           </p>
           <p className={styles.notice}>
-            Account creation is subjected to admin&apos;s approval.
+            Account creation is subjected to admin's approval.
           </p>
         </div>
       </div>
