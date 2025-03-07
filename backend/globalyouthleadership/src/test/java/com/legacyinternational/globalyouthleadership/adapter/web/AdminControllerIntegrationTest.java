@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class WebControllerIntegrationTest {
+public class AdminControllerIntegrationTest {
     private final String baseUrl = "http://localhost:";
     private TestRestTemplate restTemplate;
 
@@ -54,16 +54,52 @@ public class WebControllerIntegrationTest {
         token = objectMapper.readTree(response).get("token").asText();
     }
 
-    @Test
-    void testPing() {
+    private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
+        return headers;
+    }
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+    @Test
+    void testGetAllUsers() {
+        HttpEntity<String> entity = new HttpEntity<>(getHeaders());
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/ping", HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(
+                "/api/admin/users", HttpMethod.GET, entity, String.class);
 
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
-        assertThat(response.getBody()).contains("pong");
+        assertThat(response.getBody().toString()).containsIgnoringCase("{\"id\":1,\"email\":\"admin@gmail.com\",\"firstName\":\"firstName\",\"lastName\":\"lastName\",\"role\":\"admin\"}");
+    }
+
+    @Test
+    void testGetPendingReviewUsers() {
+        HttpEntity<String> entity = new HttpEntity<>(getHeaders());
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                "/api/admin/users/pending", HttpMethod.GET, entity, String.class);
+
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+    }
+
+    @Test
+    void testGetUserRoleUsers() {
+        HttpEntity<String> entity = new HttpEntity<>(getHeaders());
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                "/api/admin/users/user", HttpMethod.GET, entity, String.class);
+
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        assertThat(response.getBody().toString()).isEqualTo("[]");
+    }
+
+    @Test
+    void testGetAdminRoleUsers() {
+        HttpEntity<String> entity = new HttpEntity<>(getHeaders());
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                "/api/admin/users/admin", HttpMethod.GET, entity, String.class);
+
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+        assertThat(response.getBody().toString()).isEqualTo("[{\"id\":1,\"email\":\"admin@gmail.com\",\"firstName\":\"firstName\",\"lastName\":\"lastName\",\"role\":\"admin\"}]");
     }
 }

@@ -47,6 +47,7 @@ public class AuthController {
             LoginResponse response = LoginResponse.builder()
                     .token(token)
                     .isVerified(user.isVerified())
+                    .isAdmin(user.isAdmin())
                     .build();
             return ResponseEntity.ok(response);
         } catch (Exception e) {
