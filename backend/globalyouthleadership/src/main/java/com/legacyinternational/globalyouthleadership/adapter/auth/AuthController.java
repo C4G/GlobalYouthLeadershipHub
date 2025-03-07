@@ -1,18 +1,13 @@
 package com.legacyinternational.globalyouthleadership.adapter.auth;
 
 import com.legacyinternational.globalyouthleadership.service.authentication.JwtUtil;
-import com.legacyinternational.globalyouthleadership.service.user.Role;
 import com.legacyinternational.globalyouthleadership.service.user.User;
-import com.legacyinternational.globalyouthleadership.service.user.UserService;
-import jakarta.validation.Valid;
+import com.legacyinternational.globalyouthleadership.service.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +22,13 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserService userService) {
+    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserServiceImpl userServiceImpl) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @PostMapping("/login")
@@ -46,7 +41,7 @@ public class AuthController {
         try {
 
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-            User user = userService.loadUserByUsername(loginRequest.getEmail());
+            User user = userServiceImpl.loadUserByUsername(loginRequest.getEmail());
             String token = jwtUtil.generateToken(user.getUsername());
 
             LoginResponse response = LoginResponse.builder()
@@ -69,7 +64,7 @@ public class AuthController {
         }
 
         try {
-            userService.registerUser(registerRequest);
+            userServiceImpl.registerUser(registerRequest);
             return ResponseEntity.ok(Map.of("message", "User registered successfully"));
         } catch (IllegalArgumentException e) {
             //TODO: Clean up this generic error message
