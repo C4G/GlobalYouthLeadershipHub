@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/SignUpPage.module.css";
+import styles from "@/styles/SignUpPage.module.css";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -72,6 +72,7 @@ const SignUpPage = () => {
     }
 
     try {
+      // eslint-disable-next-line no-unused-vars
       const userData = {
         email,
         password,
@@ -91,6 +92,7 @@ const SignUpPage = () => {
   };
 
 
+  // eslint-disable-next-line no-unused-vars
   const registerUser = async (userData) => {
     try {
       const response = await fetch("/api/auth/register", {
@@ -124,7 +126,7 @@ const SignUpPage = () => {
         />
         <p className={`${styles.description} ${styles.hiddenOnMobile}`}>
           The On-Demand Youth Leadership Program is an initiative of the U.S.
-          Department of State’s Bureau of Educational and Cultural Affairs (ECA)
+          Department of State&apos;s Bureau of Educational and Cultural Affairs (ECA)
           administered by Legacy International
         </p>
       </div>
@@ -133,7 +135,7 @@ const SignUpPage = () => {
       <div className={styles.rightSection}>
         <div className={styles.formContainer}>
           <h2>Register a new account</h2>
-          <p>Signing up for an account is subject to admin's approval</p>
+          <p>Signing up for an account is subject to admin&apos;s approval</p>
           <hr />
 
           <form className={styles.registerForm} onSubmit={handleSubmit}>
