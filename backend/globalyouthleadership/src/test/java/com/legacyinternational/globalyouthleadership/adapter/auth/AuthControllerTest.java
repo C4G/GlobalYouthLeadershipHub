@@ -3,8 +3,7 @@ package com.legacyinternational.globalyouthleadership.adapter.auth;
 import com.legacyinternational.globalyouthleadership.service.authentication.JwtUtil;
 import com.legacyinternational.globalyouthleadership.service.user.Role;
 import com.legacyinternational.globalyouthleadership.service.user.User;
-import com.legacyinternational.globalyouthleadership.service.user.UserService;
-import org.apache.juli.logging.Log;
+import com.legacyinternational.globalyouthleadership.service.user.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,13 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +32,7 @@ class AuthControllerTest {
     private JwtUtil jwtUtil;
 
     @Mock
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @InjectMocks
     private AuthController authController;
@@ -61,7 +57,7 @@ class AuthControllerTest {
         // Mock behavior
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(new UsernamePasswordAuthenticationToken(email, password));
-        when(userService.loadUserByUsername(email)).thenReturn(user);
+        when(userServiceImpl.loadUserByUsername(email)).thenReturn(user);
         when(jwtUtil.generateToken(email)).thenReturn(jwtToken);
 
         LoginRequest loginRequest = new LoginRequest(email, password);
@@ -76,7 +72,7 @@ class AuthControllerTest {
 
         // Verify interactions
         verify(authenticationManager, times(1)).authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        verify(userService, times(1)).loadUserByUsername(email);
+        verify(userServiceImpl, times(1)).loadUserByUsername(email);
         verify(jwtUtil, times(1)).generateToken(email);
     }
 
@@ -95,7 +91,7 @@ class AuthControllerTest {
 
         // Verify interactions
         verify(authenticationManager, times(1)).authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        verify(userService, never()).loadUserByUsername(anyString());
+        verify(userServiceImpl, never()).loadUserByUsername(anyString());
         verify(jwtUtil, never()).generateToken(anyString());
     }
 
@@ -114,7 +110,7 @@ class AuthControllerTest {
 
         // Ensure no authentication attempts
         verifyNoInteractions(authenticationManager);
-        verifyNoInteractions(userService);
+        verifyNoInteractions(userServiceImpl);
         verifyNoInteractions(jwtUtil);
     }
 
@@ -133,7 +129,7 @@ class AuthControllerTest {
 
         // Ensure no authentication attempts
         verifyNoInteractions(authenticationManager);
-        verifyNoInteractions(userService);
+        verifyNoInteractions(userServiceImpl);
         verifyNoInteractions(jwtUtil);
     }
 
@@ -152,7 +148,7 @@ class AuthControllerTest {
 
         // Ensure no authentication attempts
         verifyNoInteractions(authenticationManager);
-        verifyNoInteractions(userService);
+        verifyNoInteractions(userServiceImpl);
         verifyNoInteractions(jwtUtil);
     }
 
@@ -164,7 +160,7 @@ class AuthControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("User registered successfully", ((Map<?, ?>) response.getBody()).get("message"));
-        verify(userService, times(1)).registerUser(request);
+        verify(userServiceImpl, times(1)).registerUser(request);
     }
 
     @Test
@@ -194,7 +190,7 @@ class AuthControllerTest {
     @Test
     void register_UserServiceThrowsException_ShouldReturnBadRequest() {
         RegisterRequest request = new RegisterRequest("test@example.com", "StrongPassword123!", "John", "Doe", dateOfBirth);
-        doThrow(new IllegalArgumentException("Email already in use")).when(userService).registerUser(request);
+        doThrow(new IllegalArgumentException("Email already in use")).when(userServiceImpl).registerUser(request);
 
         ResponseEntity<?> response = authController.register(request);
 

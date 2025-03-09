@@ -2,8 +2,8 @@ package com.legacyinternational.globalyouthleadership.service.user;
 
 import com.legacyinternational.globalyouthleadership.adapter.auth.RegisterRequest;
 import com.legacyinternational.globalyouthleadership.infrastructure.repositories.UserRepository;
+import com.legacyinternational.globalyouthleadership.service.UserService;
 import jakarta.annotation.PostConstruct;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,13 +14,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserServiceImpl implements UserDetailsService, UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private static final DateTimeFormatter ISO_FORMAT = DateTimeFormatter.ISO_DATE_TIME;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -55,6 +55,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    @Override
     public User registerUser(RegisterRequest registerRequest) {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new IllegalArgumentException("Email is already registered");
@@ -74,4 +75,16 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("Unable to save new user", e);
         }
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> getUsersByRole(Role role) {
+        return userRepository.findByRole(role);
+    }
+
+
 }

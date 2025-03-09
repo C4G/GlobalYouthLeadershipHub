@@ -88,4 +88,6 @@ public class User implements UserDetails {
     public boolean isVerified() {
         return this.role != Role.PENDING_REVIEW;
     }
+
+    public boolean isAdmin() { return this.role == Role.ADMIN; }
 }

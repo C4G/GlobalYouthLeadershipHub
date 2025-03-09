@@ -1,0 +1,13 @@
+package com.legacyinternational.globalyouthleadership.service;
+
+import com.legacyinternational.globalyouthleadership.adapter.auth.RegisterRequest;
+import com.legacyinternational.globalyouthleadership.service.user.Role;
+import com.legacyinternational.globalyouthleadership.service.user.User;
+
+import java.util.List;
+
+public interface UserService {
+    User registerUser(RegisterRequest registerRequest);
+    List<User> getAllUsers();
+    List<User> getUsersByRole(Role role);
+}

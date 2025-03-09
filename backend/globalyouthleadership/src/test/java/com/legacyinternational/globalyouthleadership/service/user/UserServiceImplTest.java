@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -17,7 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class UserServiceTest {
+class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
@@ -26,7 +25,7 @@ class UserServiceTest {
     private BCryptPasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     private LocalDateTime dateOfBirth = LocalDateTime.now();
 
@@ -46,7 +45,7 @@ class UserServiceTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(mockUser));
 
         // Act
-        User userDetails = userService.loadUserByUsername(email);
+        User userDetails = userServiceImpl.loadUserByUsername(email);
 
         // Assert
         assertNotNull(userDetails);
@@ -66,7 +65,7 @@ class UserServiceTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(mockUser));
 
         // Act
-        User userDetails = userService.loadUserByUsername(email);
+        User userDetails = userServiceImpl.loadUserByUsername(email);
 
         // Assert
         assertNotNull(userDetails);
@@ -83,7 +82,7 @@ class UserServiceTest {
 
         // Act & Assert
         UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class, () ->
-                userService.loadUserByUsername(email)
+                userServiceImpl.loadUserByUsername(email)
         );
 
         assertEquals("User not found with email: " + email, exception.getMessage());
@@ -95,7 +94,7 @@ class UserServiceTest {
         when(userRepository.existsByEmail(request.getEmail())).thenReturn(false);
         when(passwordEncoder.encode(request.getPassword())).thenReturn("hashedPassword123");
 
-        userService.registerUser(request);
+        userServiceImpl.registerUser(request);
 
         verify(userRepository, times(1)).save(any(User.class));
     }
@@ -108,7 +107,7 @@ class UserServiceTest {
         User user = new User(request.getEmail(), request.getPassword(), request.getFirstName(), request.getLastName(), request.getDateOfBirth(), Role.PENDING_REVIEW);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        User expectedUser = userService.registerUser(request);
+        User expectedUser = userServiceImpl.registerUser(request);
 
         verify(userRepository, times(1)).save(any(User.class));
         assertFalse(expectedUser.isVerified());
@@ -126,7 +125,7 @@ class UserServiceTest {
         when(userRepository.existsByEmail(request.getEmail())).thenReturn(true);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-                userService.registerUser(request)
+                userServiceImpl.registerUser(request)
         );
 
         assertEquals("Email is already registered", exception.getMessage());
@@ -139,7 +138,7 @@ class UserServiceTest {
         when(userRepository.existsByEmail(request.getEmail())).thenReturn(false);
         when(passwordEncoder.encode(request.getPassword())).thenReturn("hashedPassword123");
 
-        userService.registerUser(request);
+        userServiceImpl.registerUser(request);
 
         verify(userRepository).save(argThat(user -> !user.getPassword().equals(request.getPassword())));
     }
@@ -152,7 +151,7 @@ class UserServiceTest {
         doThrow(new RuntimeException("Database error")).when(userRepository).save(any(User.class));
 
         RuntimeException exception = assertThrows(RuntimeException.class, () ->
-                userService.registerUser(request)
+                userServiceImpl.registerUser(request)
         );
 
         assertEquals("Unable to save new user", exception.getMessage());
