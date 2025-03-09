@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import styles from "@/styles/SignUpSuccessPage.module.css";
+import Logo from "@/components/Logo";
 
 const SignUpSuccessPage = () => {
   const location = useLocation();
@@ -9,6 +10,7 @@ const SignUpSuccessPage = () => {
     <div className={styles.container}>
       {/* Logo Section */}
       <div className={styles.leftSection}>
+<<<<<<< HEAD:frontend/src/components/SignUpSuccessPage.jsx
         <img
           src="/organizationLogo.jpg"
           alt="Legacy International"
@@ -20,6 +22,9 @@ const SignUpSuccessPage = () => {
           Department of State&apos;s Bureau of Educational and Cultural Affairs (ECA)
           administered by Legacy International
         </p>
+=======
+        <Logo />
+>>>>>>> ac64343 (Refactor from page to components):frontend/src/pages/SignUpSuccessPage.jsx
       </div>
 
       {/* Message Section */}

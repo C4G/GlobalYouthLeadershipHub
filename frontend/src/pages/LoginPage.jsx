@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styles from "@/styles/LoginPage.module.css";
 import { useMutation } from "@tanstack/react-query";
 import customFetcher from "@/services/api";
+import Logo from "@/components/Logo";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const LoginPage = () => {
     onSuccess: (data) => {
       if (data?.token) {
         localStorage.setItem("jwtToken", data.token)
+        // TODO - this should navigate to landing page
         navigate("/login-success", { replace: true, state: { email } });
       } else {
         setError("Invalid response from server")
@@ -58,17 +60,7 @@ const LoginPage = () => {
     <div className={styles.container}>
       {/* Logo Section */}
       <div className={styles.leftSection}>
-        <img
-          src="/organizationLogo.jpg"
-          alt="Legacy International"
-          className={styles.organizationLogo}
-          loading="lazy"
-        />
-        <p className={`${styles.description} ${styles.hiddenOnMobile}`}>
-          The On-Demand Youth Leadership Program is an initiative of the U.S.
-          Department of State’s Bureau of Educational and Cultural Affairs (ECA)
-          administered by Legacy International
-        </p>
+        <Logo />
       </div>
 
       {/* Form Section */}

@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "@/styles/LoginSuccessPage.module.css";
+import Logo from "@/components/Logo";
 
 const LoginSuccessPage = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const LoginSuccessPage = () => {
     <div className={styles.container}>
       {/* Logo Section */}
       <div className={styles.leftSection}>
+<<<<<<< HEAD:frontend/src/components/LoginSuccessPage.jsx
         <img
           src="/organizationLogo.jpg"
           alt="Legacy International"
@@ -27,6 +29,9 @@ const LoginSuccessPage = () => {
           Department of State’s Bureau of Educational and Cultural Affairs (ECA)
           administered by Legacy International
         </p>
+=======
+        <Logo />
+>>>>>>> ac64343 (Refactor from page to components):frontend/src/pages/LoginSuccessPage.jsx
       </div>
 
       {/* Message Section */}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "@/styles/SignUpPage.module.css";
+import Logo from "@/components/Logo";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -118,6 +119,7 @@ const SignUpPage = () => {
     <div className={styles.container}>
       {/* Logo Section */}
       <div className={styles.leftSection}>
+<<<<<<< HEAD:frontend/src/components/SignUpPage.jsx
         <img
           src="/organizationLogo.jpg"
           alt="Legacy International"
@@ -129,6 +131,9 @@ const SignUpPage = () => {
           Department of State&apos;s Bureau of Educational and Cultural Affairs (ECA)
           administered by Legacy International
         </p>
+=======
+        <Logo />
+>>>>>>> ac64343 (Refactor from page to components):frontend/src/pages/SignUpPage.jsx
       </div>
 
       {/* Form Section */}
