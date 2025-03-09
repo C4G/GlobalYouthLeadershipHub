@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styles from "@/styles/LoginSuccessPage.module.css";
 import Logo from "@/components/Logo";
 
+// TODO - to remove once landing page is up
 const LoginSuccessPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
