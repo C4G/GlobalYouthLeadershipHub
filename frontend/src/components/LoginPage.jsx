@@ -44,6 +44,7 @@ const LoginPage = () => {
   };
 
   return (
+    <div>
     <div className={styles.container}>
       {/* Logo Section */}
       <div className={styles.leftSection}>
@@ -103,6 +104,8 @@ const LoginPage = () => {
           </button>
         </div>
       </div>
+    </div>
+    <a href="/team-homepage" className={styles.homepageLink}>Team Homepage</a>
     </div>
   );
 };

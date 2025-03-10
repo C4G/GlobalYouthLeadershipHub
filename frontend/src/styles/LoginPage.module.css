@@ -110,6 +110,37 @@ hr {
   width: 100%;
 }
 
+.homepageLink {
+  font-weight: bold;
+  position: relative;
+  color: #333;
+  display: block;
+  text-align: center;
+  margin-top: -50px;
+  text-decoration: underline;
+}
+
+.homepageLink:hover{
+  text-decoration: none;
+}
+
+.homepageLink::after {
+  content: "";
+  position: absolute;
+  left: 50%; 
+  bottom: -2px;
+  width: 0%;
+  height: 2px;
+  background-color: #000;
+  transition: width 0.3s ease-in-out;
+  transform: translateX(-50%);
+}
+
+.homepageLink:hover::after {
+  width: 130px;
+}
+
+
 /* Responsive Layout */
 @media (min-width: 768px) {
   .container {
