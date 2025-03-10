@@ -11,6 +11,7 @@ const LoginSuccessPage = () => {
   console.log(location.state.password);
 
   const handleLogout = () => {
+    localStorage.removeItem('token')
     navigate("/", { replace: true, reset: true });
   };
 

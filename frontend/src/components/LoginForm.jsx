@@ -13,14 +13,13 @@ const LoginForm = () => {
     const [error, setError] = useState("");
 
     const mutation = useMutation({
-        mutationFn: async ({ email, password }) => {
-            return await customFetcher("/auth/login", "POST", null, { email, password })
+        mutationFn: async (loginCredentials) => {
+            return await customFetcher("/auth/login", "POST", null, loginCredentials)
         },
         onSuccess: (data) => {
             if (data?.token) {
-                localStorage.setItem("jwtToken", data.token)
-                // TODO - this should navigate to landing page
-                navigate("/login-success", { replace: true, state: { email } });
+                localStorage.setItem("token", data.token)
+                navigate("/landing", { replace: true });
             } else {
                 setError("Invalid response from server")
             }
@@ -34,7 +33,8 @@ const LoginForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setError("")
-        mutation.mutate({ email, password })
+        const loginCredentials = { email, password }
+        mutation.mutate(loginCredentials)
     };
 
 
