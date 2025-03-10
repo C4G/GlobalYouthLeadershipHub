@@ -105,7 +105,7 @@ const LoginPage = () => {
         </div>
       </div>
     </div>
-    <a href="/team_homepage" className={styles.homepageLink}>Team Homepage</a>
+    <a href="/team-homepage" className={styles.homepageLink}>Team Homepage</a>
     </div>
   );
 };
