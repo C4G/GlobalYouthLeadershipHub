@@ -13,21 +13,14 @@ concurrency:
 jobs:
   deploy:
     runs-on: self-hosted
-    env:
-      DEPLOY_ENV: dev
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Build backend container
+      - name: Build container
         run: docker build -f support/backend.Dockerfile . -t globalyouth-backend:latest
 
-      - name: Build frontend container
-        run: docker build -f support/frontend.Dockerfile . -t globalyouth-frontend:latest
-
       - name: Restart app
-        run: |
-          echo "DEPLOY_ENV=${DEPLOY_ENV}" >> .env
-          docker compose -f /root/docker-compose.yml up -d --force-recreate globalyouth-app globalyouth-frontend
+        run: docker compose -f /root/docker-compose.yml up -d --force-recreate globalyouth-app
