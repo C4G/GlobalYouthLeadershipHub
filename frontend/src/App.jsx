@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/team_homepage" element={<TeamHomepage />} />
+        <Route path="/team-homepage" element={<TeamHomepage />} />
         <Route path="/" element={<LoginPage />} />
         <Route path="/login-success" element={<LoginSuccessPage />} />
         <Route path="/signup" element={<SignUpPage />} />
