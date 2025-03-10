@@ -1,19 +1,35 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 import styles from "@/styles/SignUpForm.module.css"
+import customFetcher from "@/services/api";
 
 const SignUpForm = () => {
     const navigate = useNavigate();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+
     const [day, setDay] = useState("");
     const [month, setMonth] = useState("");
     const [year, setYear] = useState("");
+
     const [email, setEmail] = useState("");
-    const [emailExistMessage, setEmailExistMessage] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+
+    const [error, setError] = useState("");
+
+    const mutation = useMutation({
+        mutationFn: async (userData) => {
+            return await customFetcher("/auth/register", "POST", null, userData);
+        },
+        onSuccess: () => {
+            navigate("/signup-success", { replace: true });
+        },
+        onError: (error) => {
+            setError(error.message || "Registration failed");
+        }
+    })
 
     const handleFirstName = (e) => {
         setFirstName(e.target.value);
@@ -21,15 +37,6 @@ const SignUpForm = () => {
 
     const handleLastName = (e) => {
         setLastName(e.target.value);
-    };
-
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-        if (e.target.value === "admin@test.com") {
-            setEmailExistMessage("This user already exists!");
-        } else {
-            setEmailExistMessage("");
-        }
     };
 
     const handleDayChange = (e) => {
@@ -42,75 +49,67 @@ const SignUpForm = () => {
         setYear(e.target.value);
     };
 
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+
     const handlePasswordChange = (e) => {
         const newPassword = e.target.value;
         setPassword(newPassword);
 
         if (newPassword.length < 8) {
-            setErrorMessage("Password must be at least 8 characters long");
+            setError("Password must be at least 8 characters long");
         } else if (confirmPassword && newPassword !== confirmPassword) {
-            setErrorMessage("Passwords do not match");
+            setError("Passwords do not match");
         } else {
-            setErrorMessage("");
+            setError("");
         }
     };
 
     const handleConfirmPasswordChange = (e) => {
         setConfirmPassword(e.target.value);
         if (password && e.target.value !== password) {
-            setErrorMessage("Passwords do not match");
+            setError("Passwords do not match");
         } else {
-            setErrorMessage("");
+            setError("");
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (emailExistMessage || errorMessage) {
-            return;
+        if (!firstName || !lastName) {
+            setError("First Name & Last Name are required!")
+            return
         }
 
-        try {
-            // eslint-disable-next-line no-unused-vars
-            const userData = {
-                email,
-                password,
-                firstName,
-                lastName,
-                dateOfBirth: `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`,
-            };
-
-            // await registerUser(userData);
-            // Navigate to success page only if passwords match
-            navigate("/signup-success", { state: { email } });
-        } catch (error) {
-            setErrorMessage(
-                error.message || "Registration failed. Please try again."
-            );
+        if (!email) {
+            setError("Email is required!")
+            return
         }
-    };
 
-
-    // eslint-disable-next-line no-unused-vars
-    const registerUser = async (userData) => {
-        try {
-            const response = await fetch("/api/auth/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(userData),
-            });
-
-            if (!response.ok) {
-                throw new Error("Registration failed");
-            }
-
-            return await response.json();
-        } catch (error) {
-            console.error("Error:", error);
-            throw error;
+        if (!day || !month || !year) {
+            setError("Date of Birth is required!")
+            return
         }
+
+        if (password !== confirmPassword) {
+            setError("Password do not match!")
+            return
+        }
+
+        setError("");
+
+        const selectedDateOfBirth = new Date(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`)
+        const formattedISODate = selectedDateOfBirth.toISOString()
+        const userData = {
+            email,
+            password,
+            firstName,
+            lastName,
+            dateOfBirth: formattedISODate,
+        };
+
+        mutation.mutate(userData)
     };
 
 
@@ -220,12 +219,6 @@ const SignUpForm = () => {
                         required
                     />
                 </div>
-
-                {/* Error Message */}
-                {emailExistMessage && (
-                    <p className={styles.errorMessage}>{emailExistMessage}</p>
-                )}
-
                 <div className={styles.newPassword}>
                     <input
                         type="password"
@@ -252,8 +245,8 @@ const SignUpForm = () => {
                 </div>
 
                 {/* Error Message */}
-                {errorMessage && (
-                    <p className={styles.errorMessage}>{errorMessage}</p>
+                {error && (
+                    <p className={styles.errorMessage}>{error}</p>
                 )}
 
                 {/* Submit Button */}
