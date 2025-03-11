@@ -19,21 +19,7 @@ const LoginSuccessPage = () => {
     <div className={styles.container}>
       {/* Logo Section */}
       <div className={styles.leftSection}>
-<<<<<<< HEAD:frontend/src/components/LoginSuccessPage.jsx
-        <img
-          src="/organizationLogo.jpg"
-          alt="Legacy International"
-          className={styles.organizationLogo}
-          loading="lazy"
-        />
-        <p className={`${styles.description} ${styles.hiddenOnMobile}`}>
-          The On-Demand Youth Leadership Program is an initiative of the U.S.
-          Department of State’s Bureau of Educational and Cultural Affairs (ECA)
-          administered by Legacy International
-        </p>
-=======
         <Logo />
->>>>>>> ac64343 (Refactor from page to components):frontend/src/pages/LoginSuccessPage.jsx
       </div>
 
       {/* Message Section */}

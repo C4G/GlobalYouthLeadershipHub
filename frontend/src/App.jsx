@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "@/styles/App.css";
-import TeamHomepage from "./components/TeamHomepage";
 import LoginPage from "@/pages/LoginPage";
 import LoginSuccessPage from "@/pages/LoginSuccessPage";
 import SignUpPage from "@/pages/SignUpPage";
 import SignUpSuccessPage from "@/pages/SignUpSuccessPage";
-import Landing from "./components/LandingPage";
+import TeamHomepage from "@/pages/TeamHomepage";
+import Landing from "@/pages/LandingPage";
 
 function App() {
   return (
