@@ -1,4 +1,5 @@
-import React from "react";
+// TODO - to remove this config
+/* eslint-disable react/no-unescaped-entities */
 import styles from "../styles/LandingPage.module.css";
 
 const Landing = () => {
@@ -38,9 +39,9 @@ const Landing = () => {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1"
                     d="M14 8H4m8 3.5v5M9.5 14h5M4 6v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-5.032a1 1 0 0 1-.768-.36l-1.9-2.28a1 1 0 0 0-.768-.36H5a1 1 0 0 0-1 1Z"
                   />
                 </svg>
@@ -58,7 +59,7 @@ const Landing = () => {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-width="1"
+                    strokeWidth="1"
                     d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                   />
                 </svg>
@@ -119,7 +120,7 @@ const Landing = () => {
                 10
               </div>
             </div>
-            <p className={styles.postStats} aaria-hidden="true">
+            <p className={styles.postStats} aria-hidden="true">
               2 comments
             </p>
             <div className={styles.actions}>
@@ -191,7 +192,7 @@ const Landing = () => {
                 9
               </div>
             </div>
-            <p className={styles.postStats} aaria-hidden="true">
+            <p className={styles.postStats} aria-hidden="true">
               3 comments
             </p>
             <div className={styles.actions}>
