@@ -25,5 +25,5 @@ dist-ssr
 
 ### dotenv ###
 .env
-.env.prod
+.env.production
 .env.local
