@@ -25,5 +25,6 @@ dist-ssr
 
 ### dotenv ###
 .env
-.env.production
+# TODO - to be commented once we have a good way of resolving envVar
+# .env.production
 .env.local
