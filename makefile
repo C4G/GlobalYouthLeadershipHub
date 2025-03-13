@@ -8,19 +8,23 @@ endif
 COMPOSE := ${DOCKER_COMPOSE_BIN} -f support/docker-compose.yaml
 setup: api-setup web
 
-api-setup: mysql sleep api
+api-setup: db sleep db-client sleep api
 
 teardown:
 	${COMPOSE} down -v
 	${COMPOSE} rm --force --stop -v
 
 # BASE METHODS
+db:
+	${COMPOSE} up -d db
+
+db-client: 
+	${COMPOSE} up -d phpmyadmin
+
 api:
-	${COMPOSE} up -d --build backend
+	${COMPOSE} up -d --build api
 
-mysql:
-	${COMPOSE} up -d mysql
-
+# TODO - not needed for now
 web: 
 	${COMPOSE} up -d frontend
 
