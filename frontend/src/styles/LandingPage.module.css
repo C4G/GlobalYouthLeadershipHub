@@ -3,6 +3,10 @@
   min-height: 100vh;
 }
 
+aside p {
+  display: none;
+}
+
 .sidebar {
   width: 250px;
   background-color: #f8f9fa;
@@ -31,7 +35,7 @@
 
 .navListButton {
   width: 160px;
-  cursor:pointer;
+  cursor: pointer;
   background-color: #f8f9fa;
   border: none;
   display: flex;
@@ -92,7 +96,7 @@
 
 .postContent {
   width: 80%;
-  padding:0% 10%;
+  padding: 0% 10%;
   font-size: 16px;
   text-align: left;
 }
@@ -151,8 +155,8 @@
   cursor: pointer;
 }
 
-.actionButton:hover{
-  padding: 10px;
+.actionButton:hover {
+  transform: translate(1px, -1px);
   background-color: hsl(210, 17%, 95%);
   border-radius: 15px;
 }

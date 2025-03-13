@@ -60,12 +60,13 @@ hr {
 }
 
 .homepageLink {
+  width: 130px;
   font-weight: bold;
   position: relative;
   color: #333;
   display: block;
   text-align: center;
-  margin-top: -50px;
+  margin: -50px auto;
   text-decoration: underline;
 }
 
