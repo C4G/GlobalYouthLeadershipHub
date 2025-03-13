@@ -1,50 +1,58 @@
 services:
-  mysql:
-    image: mysql:8.4.4
-    container_name: app-db
-    restart: always
+  db:
+    image: mysql:8
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: app_db
-      MYSQL_USER: app_user
-      MYSQL_PASSWORD: app_password
-    ports:
-      - "3306:3306"
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: sustSch
+      MYSQL_USER: local_user
+      MYSQL_PASSWORD: local123
     volumes:
       - mysql_data:/var/lib/mysql
-    networks:
-      - network
 
-  backend:
+  phpmyadmin:
+    image: phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      APACHE_PORT: 9000
+    ports:
+      - "9000:9000"
+
+  api:
     build:
       context: ..
       dockerfile: support/backend.Dockerfile
-    container_name: app-api
-    restart: always
-    # not sure if environment is needed
+    restart: unless-stopped
     depends_on:
-      - mysql
+      - db
     ports:
       - "8080:8080"
-    networks:
-      - network
+    environment:
+      # Use the dev application configuration
+      - DEPLOY_ENV=dev
+      # Set the database credentials from above
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=sustSch
+      - DB_USERNAME=local_user
+      - DB_PASSWORD=local123
 
-  frontend:
-    build:
-      context: ..
-      dockerfile: support/frontend.Dockerfile
-    container_name: app-web
-    restart: always
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    networks:
-      - network
+  ###
+  # The frontend should be run with `npm run dev`
+  # Uncomment this to test the frontend container for production.
+  # 
+  # frontend:
+  #   build:
+  #     context: ..
+  #     dockerfile: support/frontend.Dockerfile
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - api
 
 volumes:
   mysql_data:
-
-networks:
-  network:
-    name: app_network
