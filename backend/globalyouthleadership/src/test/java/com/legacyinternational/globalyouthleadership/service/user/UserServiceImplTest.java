@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -32,7 +33,6 @@ class UserServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-
     }
 
     @Test
@@ -156,6 +156,68 @@ class UserServiceImplTest {
 
         assertEquals("Unable to save new user", exception.getMessage());
         verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    void verifyUser_SuccessfulVerification_ReturnsUpdatedUser() {
+        User pendingUser = User.builder().id(1L).email("pending@example.com").firstName("Pending").lastName("User").role(Role.PENDING_REVIEW).dateOfBirth(LocalDateTime.MAX).build();
+        User updatedUser = User.builder().id(1L).email("pending@example.com").firstName("Pending").lastName("User").role(Role.USER).dateOfBirth(LocalDateTime.MAX).build();
+
+        when(userRepository.findByEmail("pending@example.com")).thenReturn(Optional.of(pendingUser));
+        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
+
+        User result = userServiceImpl.verifyUser("pending@example.com");
+
+        assertEquals(Role.USER, result.getRole());
+        verify(userRepository, times(1)).findByEmail("pending@example.com");
+        verify(userRepository, times(1)).save(pendingUser);
+    }
+
+    @Test
+    void verifyUser_UserNotFound_ThrowsBadRequest() {
+        when(userRepository.findByEmail("notfound@example.com")).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            userServiceImpl.verifyUser("notfound@example.com");
+        });
+
+        assertEquals(400, exception.getStatusCode().value());
+        assertEquals("User not found with email: notfound@example.com", exception.getReason());
+        verify(userRepository, times(1)).findByEmail("notfound@example.com");
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void verifyUser_UserNotPendingReview_ThrowsBadRequest() {
+        User existingUser = User.builder().id(1L).email("user@example.com").firstName("User").lastName("One").role(Role.USER).dateOfBirth(LocalDateTime.MAX).build();
+        when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(existingUser));
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            userServiceImpl.verifyUser("user@example.com");
+        });
+
+        assertEquals(400, exception.getStatusCode().value());
+        assertEquals("User is not pending review", exception.getReason());
+        verify(userRepository, times(1)).findByEmail("user@example.com");
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void verifyUser_SaveFails_ThrowsInternalServerError() {
+        User pendingUser = User.builder().id(1L).email("fail@example.com").firstName("Fail").lastName("User").role(Role.PENDING_REVIEW).dateOfBirth(LocalDateTime.MAX).build();
+        User failedUser = User.builder().id(1L).email("fail@example.com").firstName("Fail").lastName("User").role(Role.PENDING_REVIEW).dateOfBirth(LocalDateTime.MAX).build(); // Save doesn't change role
+
+        when(userRepository.findByEmail("fail@example.com")).thenReturn(Optional.of(pendingUser));
+        when(userRepository.save(any(User.class))).thenReturn(failedUser);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            userServiceImpl.verifyUser("fail@example.com");
+        });
+
+        assertEquals(500, exception.getStatusCode().value());
+        assertEquals("Verification of User failed", exception.getReason());
+        verify(userRepository, times(1)).findByEmail("fail@example.com");
+        verify(userRepository, times(1)).save(pendingUser);
     }
 
 }

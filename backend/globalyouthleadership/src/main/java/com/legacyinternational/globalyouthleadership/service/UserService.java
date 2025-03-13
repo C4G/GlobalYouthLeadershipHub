@@ -10,4 +10,5 @@ public interface UserService {
     User registerUser(RegisterRequest registerRequest);
     List<User> getAllUsers();
     List<User> getUsersByRole(Role role);
+    User verifyUser(String email);
 }
