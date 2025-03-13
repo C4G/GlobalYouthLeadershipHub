@@ -1,7 +1,8 @@
-import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import styles from "../styles/LoginSuccessPage.module.css";
+import styles from "@/styles/LoginSuccessPage.module.css";
+import Logo from "@/components/Logo";
 
+// TODO - to remove once landing page is up
 const LoginSuccessPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -10,6 +11,7 @@ const LoginSuccessPage = () => {
   console.log(location.state.password);
 
   const handleLogout = () => {
+    localStorage.removeItem('token')
     navigate("/", { replace: true, reset: true });
   };
 
@@ -17,17 +19,7 @@ const LoginSuccessPage = () => {
     <div className={styles.container}>
       {/* Logo Section */}
       <div className={styles.leftSection}>
-        <img
-          src="/organizationLogo.jpg"
-          alt="Legacy International"
-          className={styles.organizationLogo}
-          loading="lazy"
-        />
-        <p className={`${styles.description} ${styles.hiddenOnMobile}`}>
-          The On-Demand Youth Leadership Program is an initiative of the U.S.
-          Department of State’s Bureau of Educational and Cultural Affairs (ECA)
-          administered by Legacy International
-        </p>
+        <Logo />
       </div>
 
       {/* Message Section */}

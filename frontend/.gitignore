@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+### dotenv ###
+.env
+# TODO - to be commented once we have a good way of resolving envVar
+# .env.production
+.env.local

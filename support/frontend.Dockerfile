@@ -14,6 +14,8 @@ COPY ../frontend/public ./public
 COPY ../frontend/src ./src
 COPY ../frontend/vite.config.js ./
 COPY ../frontend/index.html ./
+# TODO - red flag, but i want to test the api on the develop first
+COPY ../frontend/.env.production ./ 
 
 # Build the frontend
 RUN npm run build

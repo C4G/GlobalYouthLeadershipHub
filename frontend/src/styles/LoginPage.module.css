@@ -13,20 +13,6 @@
   flex-direction: column;
 }
 
-.organizationLogo {
-  /* Make it larger than the button */
-  width: 100%;
-  max-width: 400px;
-  column-gap: 0px;
-}
-
-.description {
-  font-size: 25px;
-  color: #000;
-  max-width: 900px;
-  text-align: justify;
-}
-
 /* Right Section - Login Form */
 .rightSection {
   display: flex;
@@ -43,37 +29,7 @@
   max-width: 350px;
 }
 
-.loginForm {
-  margin-bottom: 20px;
-}
-
-.inputGroup {
-  margin-bottom: 15px;
-}
-
-.inputGroup label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-.inputGroup input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  /* Ensures padding doesn’t affect width */
-  box-sizing: border-box;
-}
-
-.errorMessage {
-  color: #f00;
-}
-
 /* Buttons */
-.signInBtn,
 .createAccountBtn {
   width: 100%;
   padding: 12px;
@@ -81,12 +37,6 @@
   font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
-}
-
-.signInBtn {
-  background: #12538e;
-  color: #fff;
-  border: none;
 }
 
 .createAccountBtn {
@@ -105,7 +55,6 @@ hr {
 
 /* Make buttons and inputs the same width */
 .inputGroup input,
-.signInBtn,
 .createAccountBtn {
   width: 100%;
 }
@@ -157,21 +106,9 @@ hr {
     max-width: 60%;
   }
 
-  .organizationLogo {
-    /* Make it larger than the button */
-    max-width: 100%;
-  }
-
   .rightSection {
     max-width: 40%;
     justify-content: center;
     margin-right: 50px;
-  }
-}
-
-/* Hide description in mobile view */
-@media (max-width: 767px) {
-  .hiddenOnMobile {
-    display: none;
   }
 }
