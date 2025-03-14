@@ -4,14 +4,17 @@ import com.legacyinternational.globalyouthleadership.adapter.auth.RegisterReques
 import com.legacyinternational.globalyouthleadership.infrastructure.repositories.UserRepository;
 import com.legacyinternational.globalyouthleadership.service.UserService;
 import jakarta.annotation.PostConstruct;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
@@ -86,5 +89,24 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return userRepository.findByRole(role);
     }
 
+    @Override
+    public User verifyUser(String email) {
+        //check if user exists
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with email: " + email);
+        }
 
+        User userToUpdate = optionalUser.get();
+        if(userToUpdate.getRole() != Role.PENDING_REVIEW) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not pending review");
+        }
+
+        userToUpdate.setRole(Role.USER);
+        User updatedUser = userRepository.save(userToUpdate);
+        if (updatedUser.getRole().equals(Role.USER)) {
+            return updatedUser;
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Verification of User failed");
+    }
 }

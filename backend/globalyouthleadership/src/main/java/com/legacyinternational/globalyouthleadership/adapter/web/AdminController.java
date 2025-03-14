@@ -4,14 +4,17 @@ import com.legacyinternational.globalyouthleadership.adapter.web.models.UserResp
 import com.legacyinternational.globalyouthleadership.service.UserService;
 import com.legacyinternational.globalyouthleadership.service.user.Role;
 import com.legacyinternational.globalyouthleadership.service.user.User;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.validator.routines.EmailValidator;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
@@ -56,6 +59,22 @@ public class AdminController {
                 .map(UserResponse::fromUser)
                 .toList();
         return ResponseEntity.ok(userList);
+    }
+
+    @PostMapping("/users/verify")
+    public ResponseEntity<ApiResponse> verifyUser(@RequestBody VerifyRequest verifyRequest) {
+
+        if (Objects.isNull(verifyRequest.getEmail()) || verifyRequest.getEmail().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is required");
+        }
+        if (!EmailValidator.getInstance().isValid(verifyRequest.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
+        }
+        userService.verifyUser(verifyRequest.getEmail());
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message(verifyRequest.getEmail() + " has been verified and updated successfully")
+                .build()
+        );
     }
 
 }
