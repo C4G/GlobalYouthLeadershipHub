@@ -10,8 +10,9 @@ setup: api-setup web
 
 api-setup: db sleep db-client sleep api
 
+# --rmi local removes the custom built dockerfiles
 teardown:
-	${COMPOSE} down -v
+	${COMPOSE} down -v --rmi local
 	${COMPOSE} rm --force --stop -v
 
 # BASE METHODS
