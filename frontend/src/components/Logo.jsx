@@ -2,9 +2,10 @@ import styles from "@/styles/Logo.module.css";
 import { Link } from "react-router-dom";
 
 const Logo = () => {
+  const jwtToken = localStorage.getItem('token')
   return (
     <>
-      <Link to={'/'}>
+      <Link to={jwtToken ? '/landing' : '/'}>
         <img
           src="/organizationLogo.jpg"
           alt="Legacy International"
