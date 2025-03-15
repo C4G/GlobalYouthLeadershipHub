@@ -1,8 +1,9 @@
 import { API } from "@/constants/env";
+import { getJWTToken } from "@/hooks/useAuth";
 
 const customFetcher = async (path, method, signal = null, data) => {
-    const userJwtToken = localStorage.getItem("jwtToken")
-    const parsedUserJwtToken = userJwtToken ? JSON.parse(userJwtToken) : null;
+    // TODO - might foresee some caching synchronization issue, will check when our get API is up
+    const parsedUserJwtToken = getJWTToken()
     const bearerToken = parsedUserJwtToken?.token || ""
 
     try {
