@@ -1,5 +1,4 @@
-import React from "react";
-import styles from "../styles/TeamHomepage.module.css";
+import styles from "@/styles/TeamHomepage.module.css";
 
 const TeamHomepage = () => {
   return (

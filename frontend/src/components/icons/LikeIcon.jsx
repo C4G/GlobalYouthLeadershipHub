@@ -1,7 +1,5 @@
-import React from "react";
-
 const LikeIcon = () => (
-    <svg
+  <svg
     aria-hidden="true"
     viewBox="0 0 122.88 104.19"
     fill="#000"
