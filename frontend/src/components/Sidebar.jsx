@@ -5,12 +5,15 @@ import HomeIcon from "@/components/icons/HomeIcon";
 import CreatePostIcon from "@/components/icons/CreatePostIcon";
 import MyPageIcon from "@/components/icons/MyPageIcon";
 import LogoutIcon from "@/components/icons/LogoutIcon";
+import { useRemoveJWTToken } from "@/hooks/useAuth";
 
 const Sidebar = () => {
   const navigate = useNavigate();
 
+  const { mutate: removeJWTToken } = useRemoveJWTToken()
+
   const handleLogout = () => {
-    localStorage.removeItem('jwtToken')
+    removeJWTToken()
     navigate("/", { replace: true });
   };
 

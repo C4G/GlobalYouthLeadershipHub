@@ -1,8 +1,10 @@
+import { useJWTToken } from "@/hooks/useAuth";
 import styles from "@/styles/Logo.module.css";
 import { Link } from "react-router-dom";
 
 const Logo = () => {
-  const jwtToken = localStorage.getItem('jwtToken')
+  const { data: jwtToken } = useJWTToken()
+
   return (
     <>
       <Link to={jwtToken ? '/landing' : '/'}>
