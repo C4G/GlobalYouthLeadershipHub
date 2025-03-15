@@ -1,12 +1,15 @@
 import { API } from "@/constants/env";
 
 const customFetcher = async (path, method, signal = null, data) => {
-    const jwtToken = localStorage.getItem("token")
+    const userJwtToken = localStorage.getItem("jwtToken")
+    const parsedUserJwtToken = userJwtToken ? JSON.parse(userJwtToken) : null;
+    const bearerToken = parsedUserJwtToken?.token || ""
+
     try {
         const options = {
             headers: {
                 "Content-Type": "application/json",
-                ...jwtToken ? { 'Authorization': `Bearer ${jwtToken}` } : {}
+                ...bearerToken ? { 'Authorization': `Bearer ${bearerToken}` } : {}
             },
             method: method,
             signal: signal,

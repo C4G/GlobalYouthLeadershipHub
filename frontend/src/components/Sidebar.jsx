@@ -10,7 +10,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('jwtToken')
     navigate("/", { replace: true });
   };
 

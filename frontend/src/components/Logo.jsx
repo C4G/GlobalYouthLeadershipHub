@@ -2,7 +2,7 @@ import styles from "@/styles/Logo.module.css";
 import { Link } from "react-router-dom";
 
 const Logo = () => {
-  const jwtToken = localStorage.getItem('token')
+  const jwtToken = localStorage.getItem('jwtToken')
   return (
     <>
       <Link to={jwtToken ? '/landing' : '/'}>
