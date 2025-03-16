@@ -17,8 +17,8 @@ const LoginForm = () => {
             return await customFetcher("/auth/login", "POST", null, loginCredentials)
         },
         onSuccess: (data) => {
-            if (data?.token) {
-                localStorage.setItem("token", data.token)
+            if (data) {
+                localStorage.setItem("jwtToken", JSON.stringify(data))
                 navigate("/landing", { replace: true });
             } else {
                 setError("Invalid response from server")
