@@ -1,4 +1,4 @@
-import { useJWTToken } from "@/hooks/useAuth"
+import { useJWTToken } from "@/hooks/auth"
 import { Navigate } from "react-router-dom"
 
 // eslint-disable-next-line react/prop-types

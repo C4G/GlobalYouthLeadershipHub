@@ -1,5 +1,5 @@
 import { API } from "@/constants/env";
-import { getJWTToken } from "@/hooks/useAuth";
+import { getJWTToken } from "@/hooks/auth";
 
 const customFetcher = async (path, method, signal = null, data) => {
     // TODO - might foresee some caching synchronization issue, will check when our get API is up

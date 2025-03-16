@@ -6,7 +6,7 @@ import TeamHomepage from "@/pages/TeamHomepage";
 import Landing from "@/pages/LandingPage";
 import AdminPage from "@/pages/AdminPage";
 import "@/styles/App.css";
-import { useSyncLocalStorage } from "@/hooks/useAuth";
+import { useSyncLocalStorage } from "@/hooks/auth";
 import { ProtectedAdminRoute, ProtectedRoutes } from "./components/ProtectedRoutes";
 
 function App() {
