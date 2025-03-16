@@ -7,6 +7,7 @@ import Landing from "@/pages/LandingPage";
 import AdminPage from "@/pages/AdminPage";
 import "@/styles/App.css";
 import { useSyncLocalStorage } from "@/hooks/useAuth";
+import { ProtectedAdminRoute, ProtectedRoutes } from "./components/ProtectedRoutes";
 
 function App() {
   useSyncLocalStorage()
@@ -14,12 +15,23 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<LoginPage />} />
-        <Route path="/team-homepage" element={<TeamHomepage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signup-success" element={<SignUpSuccessPage />} />
-        <Route path="/landing" element={<Landing />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/team-homepage" element={<TeamHomepage />} />
+        {/* Login Routes */}
+        <Route path="/landing" element={
+          <ProtectedRoutes>
+            <Landing />
+          </ProtectedRoutes>}
+        />
+        {/* Admin Route */}
+        <Route path="/admin" element={
+          <ProtectedAdminRoute>
+            <AdminPage />
+          </ProtectedAdminRoute>
+        } />
       </Routes>
     </Router>
   );
