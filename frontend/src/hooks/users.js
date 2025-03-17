@@ -1,5 +1,5 @@
 import customFetcher from "@/services/api"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 export const useGetUnverifiedUsers = () => {
     return useQuery(
@@ -8,4 +8,10 @@ export const useGetUnverifiedUsers = () => {
             queryFn: ({ signal }) => customFetcher("/admin/users/pending", "GET", signal),
         }
     )
+}
+
+export const useVerifyPendingUser = () => {
+    return useMutation({
+        mutationFn: ({ email }) => customFetcher("/admin/users/verify", "POST", null, { email })
+    })
 }
