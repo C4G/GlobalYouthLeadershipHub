@@ -1,0 +1,29 @@
+import { useGetUnverifiedUsers } from "@/hooks/users";
+import styles from "@/styles/PendingUsersList.module.css"
+import Spinner from "./Spinner";
+
+// eslint-disable-next-line react/prop-types
+const PendingUsersList = ({ onSelect }) => {
+    const { isLoading, data: unverifiedUsers } = useGetUnverifiedUsers()
+
+    if (isLoading) {
+        return (
+            <>
+                <Spinner text={"Loading..."} />
+            </>
+        )
+    }
+
+    return (
+        <>
+            <h2>Pending Users</h2>
+            <div className={styles.userList}>
+                <ul>
+                    {unverifiedUsers.map(user => <li key={user.id} onClick={() => onSelect(user)}>{user.email}</li>)}
+                </ul>
+            </div>
+        </>
+    )
+}
+
+export default PendingUsersList
