@@ -1,11 +1,22 @@
+import PendingUsersList from "@/components/PendingUsersList";
+import SelectedPendingUser from "@/components/SelectedPendingUser";
 import Sidebar from "@/components/Sidebar"
-import { useGetUnverifiedUsers } from "@/hooks/users";
+import queryClient from "@/libs/queryClient";
 import styles from "@/styles/AdminPage.module.css";
 
-const AdminPage = () => {
+import { useState } from "react";
 
-    const { data: unverifiedUsers } = useGetUnverifiedUsers()
-    console.log('unverifiedUsers', unverifiedUsers)
+const AdminPage = () => {
+    const [selectedUser, setSelectedUser] = useState(null)
+
+    const refetchUnverifiedUsers = () => {
+        queryClient.invalidateQueries(["unverifiedUsers"])
+        setSelectedUser(null)
+    }
+
+    const handleSelect = (user) => {
+        setSelectedUser(user)
+    }
 
     return (
         <div className={styles.container}>
@@ -16,38 +27,10 @@ const AdminPage = () => {
                 </div>
                 <div className={styles.dashboard}>
                     <div className={styles.card}>
-                        <h2>Pending Users</h2>
-                        <div className={styles.userList}>
-                            <ul>
-                                <li>User 1 - user1@email.com</li>
-                                <li>User 2 - user2@email.com</li>
-                                <li>User 3 - user3@email.com</li>
-                                <li>User 4 - user4@email.com</li>
-                                <li>User 1 - user1@email.com</li>
-                                <li>User 2 - user2@email.com</li>
-                                <li>User 3 - user3@email.com</li>
-                                <li>User 4 - user4@email.com</li>
-                                <li>User 1 - user1@email.com</li>
-                                <li>User 2 - user2@email.com</li>
-                                <li>User 3 - user3@email.com</li>
-                                <li>User 4 - user4@email.com</li>
-                                <li>User 1 - user1@email.com</li>
-                                <li>User 2 - user2@email.com</li>
-                                <li>User 3 - user3@email.com</li>
-                                <li>User 4 - user4@email.com</li>
-                            </ul>
-                        </div>
-
+                        <PendingUsersList onSelect={handleSelect} />
                     </div>
-
                     <div className={styles.card} >
-                        <h2>Selected Pending User Profile</h2>
-                        <div className={styles.verifySection}>
-                            <p><strong>Name:</strong> John Doe</p>
-                            <p><strong>Email:</strong> johndoe@email.com</p>
-                            <p><strong>Status:</strong> Pending Verification</p>
-                            <button>Verify User</button>
-                        </div>
+                        <SelectedPendingUser user={selectedUser} refetchUnverifiedUsers={refetchUnverifiedUsers} />
                     </div>
                 </div>
             </main >
