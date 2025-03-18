@@ -3,6 +3,7 @@ import styles from "@/styles/components/PostCard.module.css";
 import HeartIcon from "@/components/icons/HeartIcon";
 import LikeIcon from "@/components/icons/LikeIcon";
 import ReplyIcon from "@/components/icons/ReplyIcon";
+import CommentSection from "@/components/CommentSection";
 
 // eslint-disable-next-line react/prop-types
 const PostCard = ({
@@ -11,14 +12,20 @@ const PostCard = ({
   content,
   imageSrc,
   likes,
-  comments,
+  user,
 }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
+  const [commentCounts, setCommentCounts] = useState(0);
+  const [isReplying, setIsReplying] = useState(false);
 
   const handleLikeToggle = () => {
     setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
     setIsLiked(!isLiked);
+  };
+
+  const handleReplyClick = () => {
+    setIsReplying((isReplying) => !isReplying);
   };
 
   return (
@@ -41,11 +48,11 @@ const PostCard = ({
       <div className={styles.postFooter}>
         <div className={styles.reactions}>
           <div aria-hidden="true" className={styles.reactionsSvg}>
-            <HeartIcon /> <span>{likeCount}</span> 
+            <HeartIcon /> <span>{likeCount}</span>
           </div>
         </div>
         <p className={styles.postStats} aria-hidden="true">
-          {comments} comments
+          {commentCounts} comments
         </p>
         <div className={styles.actions}>
           <button
@@ -55,11 +62,21 @@ const PostCard = ({
           >
             <LikeIcon filled={isLiked} /> Like
           </button>
-          <button className={styles.actionButton} aria-label="reply on post">
+          <button
+            className={styles.actionButton}
+            aria-label="reply on post"
+            onClick={handleReplyClick}
+          >
             <ReplyIcon /> Reply
           </button>
         </div>
       </div>
+      <CommentSection
+        user={user}
+        isReplying={isReplying}
+        setIsReplying={setIsReplying}
+        setCommentCounts={setCommentCounts}
+      />
     </div>
   );
 };
