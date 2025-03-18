@@ -42,7 +42,11 @@
 }
 
 .signInBtn {
-  background: #12538e;
+  background: rgba(18, 83, 142, 1);
   color: #fff;
   border: none;
+}
+
+.signInBtn:hover {
+  background: rgba(18, 83, 142, 0.8);
 }
