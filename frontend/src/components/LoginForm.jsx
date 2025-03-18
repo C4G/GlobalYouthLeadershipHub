@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import customFetcher from "@/services/api";
 import styles from "@/styles/components/LoginForm.module.css"
+import { useSetJWTToken } from "@/hooks/auth";
 
 const LoginForm = () => {
     const location = useLocation();
@@ -12,13 +13,15 @@ const LoginForm = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    const { mutate: setJWTToken } = useSetJWTToken()
+
     const mutation = useMutation({
         mutationFn: async (loginCredentials) => {
             return await customFetcher("/auth/login", "POST", null, loginCredentials)
         },
         onSuccess: (data) => {
             if (data) {
-                localStorage.setItem("jwtToken", JSON.stringify(data))
+                setJWTToken(data)
                 navigate("/landing", { replace: true });
             } else {
                 setError("Invalid response from server")

@@ -3,12 +3,13 @@ import HeartIcon from "@/components/icons/HeartIcon";
 import LikeIcon from "@/components/icons/LikeIcon";
 import ReplyIcon from "@/components/icons/ReplyIcon";
 
+// eslint-disable-next-line react/prop-types
 const PostCard = ({ initials, projectName, content, imageSrc, likes, comments }) => {
   return (
     <div className={styles.postCard}>
       <div className={styles.postHeader}>
         <div className={styles.avatar} aria-hidden="true">
-        {initials}
+          {initials}
         </div>
         <div className={styles.postInfo}>
           <h2 className={styles.projectName}>{projectName}</h2>
