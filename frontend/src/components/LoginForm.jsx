@@ -22,7 +22,7 @@ const LoginForm = () => {
         onSuccess: (data) => {
             if (data) {
                 setJWTToken(data)
-                navigate("/landing", { replace: true });
+                navigate("/landing", { replace: true , state: { user: email }});
             } else {
                 setError("Invalid response from server")
             }

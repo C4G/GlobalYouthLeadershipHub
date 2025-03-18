@@ -1,8 +1,12 @@
+import { useLocation } from "react-router-dom";
 import styles from "@/styles/pages/LandingPage.module.css";
 import Sidebar from "@/components/Sidebar";
 import PostCard from "@/components/PostCard";
 
 const Landing = () => {
+  const location = useLocation();
+  const userEmail = location.state?.user;
+
   return (
     <div className={styles.container}>
       <Sidebar />
@@ -21,7 +25,7 @@ A core feature of CollabSync is its focus on inclusivity and diversity of though
 Ultimately, CollabSync is more than just a tool—it’s a framework for building stronger, more cohesive teams. It equips organizations with the means to navigate complex projects, adapt to changing requirements, and achieve collective success. With CollabSync, collaboration becomes effortless, focused, and impactful."
           imageSrc="/testPicture1.jpg"
           likes={10}
-          comments={2}
+          user={{ name: userEmail }}
         />
         <PostCard
           initials="MJ"
@@ -37,7 +41,7 @@ Beyond the field, the program emphasizes personal development by introducing edu
 NextGen Soccer Stars is more than a sports initiative—it’s a platform for building confidence, fostering friendships, and empowering young players to embrace challenges with courage and enthusiasm. Through soccer, children learn skills that shape them into stronger individuals, ready to take on any goal in life."
           imageSrc="/testPicture2.jpg"
           likes={9}
-          comments={3}
+          user={{ name: userEmail }}
         />
       </main>
     </div>
