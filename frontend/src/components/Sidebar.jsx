@@ -5,12 +5,18 @@ import HomeIcon from "@/components/icons/HomeIcon";
 import CreatePostIcon from "@/components/icons/CreatePostIcon";
 import MyPageIcon from "@/components/icons/MyPageIcon";
 import LogoutIcon from "@/components/icons/LogoutIcon";
+import { useJWTToken, useRemoveJWTToken } from "@/hooks/auth";
+import AdminIcon from "@/components/icons/AdminIcon";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  // Check for admin access to render admin page component
+  const { data: jwtToken } = useJWTToken()
+  const adminAccess = jwtToken?.isAdmin
 
+  const { mutate: removeJWTToken } = useRemoveJWTToken()
   const handleLogout = () => {
-    localStorage.removeItem('jwtToken')
+    removeJWTToken()
     navigate("/", { replace: true });
   };
 
@@ -42,6 +48,15 @@ const Sidebar = () => {
               <MyPageIcon /> My Page
             </button>
           </li>
+          {adminAccess &&
+            <li>
+              <button
+                onClick={() => navigate('/admin')}
+                className={styles.navListButton}>
+                <AdminIcon />Admin Page
+              </button>
+            </li>
+          }
           <li>
             <button className={styles.navListButton} onClick={handleLogout}>
               <LogoutIcon /> Logout
