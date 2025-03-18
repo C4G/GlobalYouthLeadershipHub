@@ -1,4 +1,4 @@
-import styles from "@/styles/LandingPage.module.css";
+import styles from "@/styles/pages/LandingPage.module.css";
 import Sidebar from "@/components/Sidebar";
 import PostCard from "@/components/PostCard";
 

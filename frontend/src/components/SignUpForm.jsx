@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import styles from "@/styles/SignUpForm.module.css"
+import styles from "@/styles/components/SignUpForm.module.css"
 import customFetcher from "@/services/api";
 
 const SignUpForm = () => {

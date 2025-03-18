@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import styles from "@/styles/SignUpSuccessPage.module.css";
+import styles from "@/styles/pages/SignUpSuccessPage.module.css";
 import Logo from "@/components/Logo";
 
 const SignUpSuccessPage = () => {

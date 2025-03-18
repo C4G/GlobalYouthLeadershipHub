@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import styles from "@/styles/LandingPage.module.css";
+import { useState } from "react";
+import styles from "@/styles/components/Sidebar.module.css";
 import Logo from "@/components/Logo";
+import NavIcon from "@/components/icons/NavIcon";
 import HomeIcon from "@/components/icons/HomeIcon";
 import CreatePostIcon from "@/components/icons/CreatePostIcon";
 import MyPageIcon from "@/components/icons/MyPageIcon";
@@ -10,10 +12,10 @@ import AdminIcon from "@/components/icons/AdminIcon";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
   // Check for admin access to render admin page component
   const { data: jwtToken } = useJWTToken()
   const adminAccess = jwtToken?.isAdmin
-
   const { mutate: removeJWTToken } = useRemoveJWTToken()
   const handleLogout = () => {
     removeJWTToken()
@@ -23,12 +25,18 @@ const Sidebar = () => {
   return (
     <aside className={styles.sidebar}>
       <Logo />
+
+      <button className={`${styles.hamburger} ${isOpen ? styles.open : ""}`} onClick={() => setIsOpen(!isOpen)}>
+        <NavIcon />
+      </button>
+
       <nav>
-        <ul className={styles.navList}>
+        <ul className={`${styles.navList} ${isOpen ? styles.open : ""}`}>
           <li>
             <button
-              onClick={() => navigate('/landing')}
-              className={styles.navListButton}>
+              onClick={() => navigate("/landing")}
+              className={styles.navListButton}
+            >
               <HomeIcon /> Home
             </button>
           </li>
