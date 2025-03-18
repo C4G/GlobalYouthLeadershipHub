@@ -1,6 +1,6 @@
 import Logo from "@/components/Logo";
 import SignUpForm from "@/components/SignUpForm";
-import styles from "@/styles/SignUpPage.module.css";
+import styles from "@/styles/pages/SignUpPage.module.css";
 
 const SignUpPage = () => {
   return (

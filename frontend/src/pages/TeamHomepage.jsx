@@ -1,4 +1,4 @@
-import styles from "@/styles/TeamHomepage.module.css";
+import styles from "@/styles/pages/TeamHomepage.module.css";
 
 const TeamHomepage = () => {
   return (

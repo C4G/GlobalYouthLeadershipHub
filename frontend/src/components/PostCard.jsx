@@ -1,5 +1,4 @@
-import React from "react";
-import styles from "@/styles/LandingPage.module.css";
+import styles from "@/styles/components/PostCard.module.css";
 import HeartIcon from "@/components/icons/HeartIcon";
 import LikeIcon from "@/components/icons/LikeIcon";
 import ReplyIcon from "@/components/icons/ReplyIcon";
