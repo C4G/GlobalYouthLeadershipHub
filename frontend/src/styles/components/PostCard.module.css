@@ -102,3 +102,9 @@
   background-color: hsl(210, 17%, 95%);
   border-radius: 15px;
 }
+
+.liked {
+  color: blue;
+  background-color: rgb(247, 244, 239);
+  border-radius: 15px;
+}

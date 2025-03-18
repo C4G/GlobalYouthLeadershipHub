@@ -1,10 +1,26 @@
+import { useState } from "react";
 import styles from "@/styles/components/PostCard.module.css";
 import HeartIcon from "@/components/icons/HeartIcon";
 import LikeIcon from "@/components/icons/LikeIcon";
 import ReplyIcon from "@/components/icons/ReplyIcon";
 
 // eslint-disable-next-line react/prop-types
-const PostCard = ({ initials, projectName, content, imageSrc, likes, comments }) => {
+const PostCard = ({
+  initials,
+  projectName,
+  content,
+  imageSrc,
+  likes,
+  comments,
+}) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(likes);
+
+  const handleLikeToggle = () => {
+    setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
+    setIsLiked(!isLiked);
+  };
+
   return (
     <div className={styles.postCard}>
       <div className={styles.postHeader}>
@@ -25,15 +41,19 @@ const PostCard = ({ initials, projectName, content, imageSrc, likes, comments })
       <div className={styles.postFooter}>
         <div className={styles.reactions}>
           <div aria-hidden="true" className={styles.reactionsSvg}>
-            <HeartIcon /> {likes}
+            <HeartIcon /> <span>{likeCount}</span> 
           </div>
         </div>
         <p className={styles.postStats} aria-hidden="true">
           {comments} comments
         </p>
         <div className={styles.actions}>
-          <button className={styles.actionButton} aria-label="like post">
-            <LikeIcon /> Like
+          <button
+            className={`${styles.actionButton} ${isLiked ? styles.liked : ""}`}
+            aria-label="like post"
+            onClick={handleLikeToggle}
+          >
+            <LikeIcon filled={isLiked} /> Like
           </button>
           <button className={styles.actionButton} aria-label="reply on post">
             <ReplyIcon /> Reply
