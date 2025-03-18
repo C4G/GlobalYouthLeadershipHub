@@ -78,6 +78,7 @@
 }
 
 .postStats {
+  margin-left: 10px;
   font-size: 16px;
   color: gray;
 }
@@ -104,7 +105,7 @@
 }
 
 .liked {
-  color: blue;
+  color: silver;
   background-color: rgb(247, 244, 239);
   border-radius: 15px;
 }

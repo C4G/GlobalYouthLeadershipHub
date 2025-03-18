@@ -2,7 +2,7 @@ const LikeIcon = ({ filled = false }) => (
   <svg
     aria-hidden="true"
     viewBox="0 0 122.88 104.19"
-    fill={filled ? "blue" : "black"}
+    fill={filled ? "silver" : "black"}
     width="24"
     height="24"
   >
