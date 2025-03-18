@@ -62,7 +62,7 @@
 
 /* Submit Button */
 .createAccountBtn {
-  background-color: #f1cd0c;
+  background: rgba(241, 205, 12, 1);
   color: #000;
   font-size: 16px;
   padding: 10px;
@@ -70,4 +70,8 @@
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
+}
+
+.createAccountBtn:hover {
+  background: rgba(241, 205, 12, 0.8);
 }
