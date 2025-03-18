@@ -26,7 +26,7 @@ const Sidebar = () => {
     <aside className={styles.sidebar}>
       <Logo />
 
-      <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)}>
+      <button className={`${styles.hamburger} ${isOpen ? styles.open : ""}`} onClick={() => setIsOpen(!isOpen)}>
         <NavIcon />
       </button>
 
