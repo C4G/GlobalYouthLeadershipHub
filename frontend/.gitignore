@@ -26,4 +26,5 @@ dist-ssr
 ### dotenv ###
 .env
 .env.local
-.env.production
+# TODO - To enable once we can do it with GitHub Secret
+# .env.production
