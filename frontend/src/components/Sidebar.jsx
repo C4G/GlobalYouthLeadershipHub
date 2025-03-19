@@ -10,15 +10,15 @@ import LogoutIcon from "@/components/icons/LogoutIcon";
 import { useJWTToken, useRemoveJWTToken } from "@/hooks/auth";
 import AdminIcon from "@/components/icons/AdminIcon";
 
-const Sidebar = () => {
+const Sidebar = ({ setModalOpen }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   // Check for admin access to render admin page component
-  const { data: jwtToken } = useJWTToken()
-  const adminAccess = jwtToken?.isAdmin
-  const { mutate: removeJWTToken } = useRemoveJWTToken()
+  const { data: jwtToken } = useJWTToken();
+  const adminAccess = jwtToken?.isAdmin;
+  const { mutate: removeJWTToken } = useRemoveJWTToken();
   const handleLogout = () => {
-    removeJWTToken()
+    removeJWTToken();
     navigate("/", { replace: true });
   };
 
@@ -26,7 +26,10 @@ const Sidebar = () => {
     <aside className={styles.sidebar}>
       <Logo />
 
-      <button className={`${styles.hamburger} ${isOpen ? styles.open : ""}`} onClick={() => setIsOpen(!isOpen)}>
+      <button
+        className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
         <NavIcon />
       </button>
 
@@ -42,9 +45,9 @@ const Sidebar = () => {
           </li>
           <li>
             <button
-              // TODO - to uncomment once create post page is up
-              // onClick={() => navigate('/create')}
-              className={styles.navListButton}>
+              onClick={() => setModalOpen(true)}
+              className={styles.navListButton}
+            >
               <CreatePostIcon /> Create Post
             </button>
           </li>
@@ -52,19 +55,22 @@ const Sidebar = () => {
             <button
               // TODO - to uncomment once create post page is up
               // onClick={() => navigate('/project')}
-              className={styles.navListButton}>
+              className={styles.navListButton}
+            >
               <MyPageIcon /> My Page
             </button>
           </li>
-          {adminAccess &&
+          {adminAccess && (
             <li>
               <button
-                onClick={() => navigate('/admin')}
-                className={styles.navListButton}>
-                <AdminIcon />Admin Page
+                onClick={() => navigate("/admin")}
+                className={styles.navListButton}
+              >
+                <AdminIcon />
+                Admin Page
               </button>
             </li>
-          }
+          )}
           <li>
             <button className={styles.navListButton} onClick={handleLogout}>
               <LogoutIcon /> Logout
