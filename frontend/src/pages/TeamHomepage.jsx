@@ -145,13 +145,13 @@ const TeamHomepage = () => {
 
         <h3>The same questions are reused for all 3 tasks</h3>
         <p className={styles.paragraph}>
-          1.How easy did you find the task? (1-5 rating, with 1 being very easy and 5 being very difficult)
+          1.How easy did you find the task? (1-5 rating, with 1 being very easy and 5 being very difficult).
         </p>
         <p className={styles.paragraph}>
-          2.How long did the task take? (please record the time taken to complete the task and select an option below)
+          2.How long did the task take? (please record the time taken to complete the task and select an option below).
         </p>
         <p className={styles.paragraph}>
-          3.General feedback
+          3.General feedback.
         </p>
       </section>
 
@@ -161,17 +161,17 @@ const TeamHomepage = () => {
           <li>
             <b>Kevin E Taylor:</b>
             <ul>
-              <li>Built the backend API</li>
-              <li>Implemented Role-Based Access Controls</li>
-              <li>Automated database migration scripts</li>
+              <li>Built the backend API.</li>
+              <li>Implemented Role-Based Access Controls.</li>
+              <li>Automated database migration scripts.</li>
             </ul>
           </li>
           <li>
             <b>Jun Siang Neo:</b>
             <ul>
-              <li>Co-designed UI/UX components</li>
-              <li>Set up cloud and Dockerfiles for deployment</li>
-              <li>Built and integrated user registration and login flow</li>
+              <li>Co-designed UI/UX components.</li>
+              <li>Set up cloud and Dockerfiles for deployment.</li>
+              <li>Built and integrated user registration and login flow.</li>
             </ul>
           </li>
           <li>
@@ -224,17 +224,17 @@ const TeamHomepage = () => {
           <li>
             <b>Jeffrey Tan Jian Sheng:</b>
             <ul>
-              <li>Co-designed UI/UX components</li>
-              <li>Drafted and created surveys for evaluations</li>
-              <li>Performed integration and deployment testing</li>
-              <li>Worked on backend API development</li>
+              <li>Co-designed UI/UX components.</li>
+              <li>Drafted and created surveys for evaluations.</li>
+              <li>Performed integration and deployment testing.</li>
+              <li>Worked on backend API development.</li>
             </ul>
           </li>
           <li>
             <b>Franklyn Abraham Diaz:</b>
             <ul>
-              <li>Assisted with PR actions</li>
-              <li>Developed backend API for project access</li>
+              <li>Assisted with PR actions.</li>
+              <li>Developed backend API for project access.</li>
             </ul>
           </li>
         </ul>
