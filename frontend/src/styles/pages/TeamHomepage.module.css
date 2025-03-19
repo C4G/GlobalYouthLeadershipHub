@@ -24,13 +24,101 @@ h1 {
     color: black;
 }
 
-.paragraph {
+h2 {
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+h3 {
+    color: #444;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+p {
     font-size: 16px;
-    color:black;
+    color: black;
+    text-align: left;
 }
 
 ul {
     padding-left: 20px;
+}
+
+ul li {
+    margin-bottom: 5px;
+}
+
+.section a {
+    font-weight: bold;
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.section a:hover {
+    text-decoration: underline;
+}
+
+#tasks {
+    text-align: left;
+}
+
+#tasks h2 {
+    font-weight: bold;
+    text-align: left;
+}
+
+#tasks p {
+    margin: 5px 0;
+}
+
+#tasks h3 {
+    font-weight: bold;
+    text-align: left;
+    margin-top: 15px;
+}
+
+#tasks ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#tasks ul li {
+    margin-bottom: 5px;
+}
+
+#tasks .expected-result {
+    font-weight: bold;
+    display: block;
+    margin-top: 5px;
+}
+
+#tasks .admin-credentials {
+    font-weight: bold;
+    text-align: left;
+    margin-top: 10px;
+}
+
+#tasks .admin-credentials p {
+    font-weight: normal;
+    margin: 3px 0;
+}
+
+#team-members ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#team-members ul li {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#team-members ul li ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    font-weight: normal;
 }
 
 .footer {
@@ -39,6 +127,10 @@ ul {
     padding: 15px;
     background: #e0e0e0;
     border-radius: 8px;
+}
+
+.footerLink {
+    text-align: center;
 }
 
 .footer a {
@@ -56,27 +148,27 @@ ul {
     text-align: center;
     margin-top: -100px;
     text-decoration: underline;
-  }
-  
-  .projectHomepageLink:hover{
+}
+
+.projectHomepageLink:hover {
     text-decoration: none;
-  }
-  
-  .projectHomepageLink::after {
+}
+
+.projectHomepageLink::after {
     content: "";
     position: absolute;
-    left: 50%; 
+    left: 50%;
     bottom: -2px;
     width: 0%;
     height: 2px;
     background-color: #000;
     transition: width 0.3s ease-in-out;
     transform: translateX(-50%);
-  }
-  
-  .projectHomepageLink:hover::after {
+}
+
+.projectHomepageLink:hover::after {
     width: 140px;
-  }
+}
 
 /* Mobile Responsiveness */
 @media (max-width: 600px) {
@@ -98,7 +190,8 @@ ul {
         font-size: 18px;
     }
 
-    ul,p {
+    ul,
+    p {
         font-size: 14px;
     }
 }
