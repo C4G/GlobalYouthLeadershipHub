@@ -167,7 +167,7 @@ const TeamHomepage = () => {
             </ul>
           </li>
           <li>
-            <b>Jeffrey Tan Jian Sheng:</b>
+            <b>Jun Siang Neo:</b>
             <ul>
               <li>Co-designed UI/UX components</li>
               <li>Set up cloud and Dockerfiles for deployment</li>
@@ -222,7 +222,7 @@ const TeamHomepage = () => {
             </ul>
           </li>
           <li>
-            <b>Jun Siang Neo:</b>
+            <b>Jeffrey Tan Jian Sheng:</b>
             <ul>
               <li>Co-designed UI/UX components</li>
               <li>Drafted and created surveys for evaluations</li>
