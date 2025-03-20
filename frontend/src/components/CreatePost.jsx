@@ -34,11 +34,11 @@ const CreatePost = ({ user, onClose, onPostCreate }) => {
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
-        <h2>Create a Project</h2>
+        <h2>Create a Post</h2>
         <input
           type="text"
           className={styles.inputField}
-          placeholder="Enter project name"
+          placeholder="Enter post title"
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
         />
