@@ -43,11 +43,11 @@ const CommentSection = ({
         {comments.map((comment) => (
           <div key={comment.id} className={styles.comment}>
             <div className={styles.profilePic}>
-              {comment.user.name.slice(0, 2).toUpperCase()}
+              {comment.user?.name?.slice(0, 2).toUpperCase() || "ME"}
             </div>
 
             <div className={styles.commentContent}>
-              <p className={styles.userName}>{comment.user.name}</p>
+              <p className={styles.userName}>{comment.user?.name || "ME"}</p>
               <span>says:</span>
               <p className={styles.commentText}>{comment.text}</p>
             </div>

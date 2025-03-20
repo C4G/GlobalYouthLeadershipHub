@@ -20,7 +20,7 @@ const CreatePost = ({ user, onClose, onPostCreate }) => {
     }
 
     onPostCreate({
-      initials: user.name.slice(0, 2).toUpperCase(),
+      initials: user?.name ? user.name.slice(0, 2).toUpperCase() : "ME",
       projectName: projectName,
       content: postText,
       imageSrc: image,
