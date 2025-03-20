@@ -38,7 +38,7 @@ const CreatePost = ({ user, onClose, onPostCreate }) => {
         <input
           type="text"
           className={styles.inputField}
-          placeholder="Enter post name"
+          placeholder="Enter post title"
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
         />
