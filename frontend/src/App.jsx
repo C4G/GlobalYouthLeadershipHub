@@ -22,9 +22,9 @@ function App() {
         <Route path="/team-homepage" element={<TeamHomepage />} />
         {/* Login Routes */}
         <Route path="/landing" element={
-
-            <Landing />}
-
+          <ProtectedRoutes>
+            <Landing />
+          </ProtectedRoutes>}
         />
         {/* Admin Route */}
         <Route path="/admin" element={
