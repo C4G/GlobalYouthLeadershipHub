@@ -233,6 +233,8 @@ const TeamHomepage = () => {
           <li>
             <b>Franklyn Abraham Diaz:</b>
             <ul>
+              <li>Created schemas and tables for use in the project.</li>
+              <li>Created docker container with mysql db and data persistence for poject use.</li>
               <li>Assisted with PR actions.</li>
               <li>Developed backend API for project access.</li>
             </ul>
