@@ -1,7 +1,7 @@
-package com.legacyinternational.globalyouthleadership.controller.project;
+package com.legacyinternational.globalyouthleadership.adapter.web;
 
 import com.legacyinternational.globalyouthleadership.service.project.Project;
-import com.legacyinternational.globalyouthleadership.service.project.ProjectService;
+import com.legacyinternational.globalyouthleadership.service.project.ProjectServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +11,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/projects")
 public class ProjectController {
-    private final ProjectService projectService;
+    private final ProjectServiceImpl projectService;
 
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectServiceImpl projectService) {
         this.projectService = projectService;
     }
 

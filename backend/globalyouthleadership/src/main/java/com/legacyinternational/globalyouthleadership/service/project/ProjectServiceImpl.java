@@ -1,16 +1,17 @@
 package com.legacyinternational.globalyouthleadership.service.project;
 
 import com.legacyinternational.globalyouthleadership.infrastructure.repositories.ProjectRepository;
+import com.legacyinternational.globalyouthleadership.service.ProjectService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProjectService {
+public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
 
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
 
