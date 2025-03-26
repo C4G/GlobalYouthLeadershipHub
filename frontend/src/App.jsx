@@ -5,9 +5,10 @@ import SignUpSuccessPage from "@/pages/SignUpSuccessPage";
 import TeamHomepage from "@/pages/TeamHomepage";
 import Landing from "@/pages/LandingPage";
 import AdminPage from "@/pages/AdminPage";
+import ProjectPage from "@/pages/ProjectPage";
+import { ProtectedAdminRoute, ProtectedRoutes } from "@/components/ProtectedRoutes";
 import "@/styles/App.css";
 import { useJWTToken, useSyncLocalStorage } from "@/hooks/auth";
-import { ProtectedAdminRoute, ProtectedRoutes } from "./components/ProtectedRoutes";
 
 function App() {
   useSyncLocalStorage()
@@ -23,12 +24,20 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signup-success" element={<SignUpSuccessPage />} />
         <Route path="/team-homepage" element={<TeamHomepage />} />
+
         {/* Login Routes */}
         <Route path="/landing" element={
           <ProtectedRoutes>
             <Landing />
           </ProtectedRoutes>}
         />
+
+        <Route path="/project" element={
+          <ProtectedRoutes>
+            <ProjectPage />
+          </ProtectedRoutes>}
+        />
+
         {/* Admin Route */}
         <Route path="/admin" element={
           <ProtectedAdminRoute>
