@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import styles from "@/styles/pages/LandingPage.module.css";
 import Sidebar from "@/components/Sidebar";
 import PostCard from "@/components/PostCard";
-import CreatePost from "@/components/CreatePost";
+import CreateProject from "@/components/CreateProject";
 
 const Landing = () => {
   const location = useLocation();
@@ -43,7 +43,7 @@ const Landing = () => {
       <Sidebar setModalOpen={setModalOpen} />
       <main className={styles.mainContent}>
         {isModalOpen && (
-          <CreatePost
+          <CreateProject
             user={{ name: userEmail }}
             onClose={() => setModalOpen(false)}
             onPostCreate={handlePostCreate}

@@ -3,8 +3,9 @@ import { useState } from "react";
 import styles from "@/styles/components/Sidebar.module.css";
 import Logo from "@/components/Logo";
 import NavIcon from "@/components/icons/NavIcon";
+import CloseIcon from "@/components/icons/CloseIcon";
 import HomeIcon from "@/components/icons/HomeIcon";
-import CreatePostIcon from "@/components/icons/CreatePostIcon";
+import CreateProjectIcon from "@/components/icons/CreateProjectIcon";
 import MyPageIcon from "@/components/icons/MyPageIcon";
 import LogoutIcon from "@/components/icons/LogoutIcon";
 import { useJWTToken, useRemoveJWTToken } from "@/hooks/auth";
@@ -30,7 +31,7 @@ const Sidebar = ({ setModalOpen }) => {
         className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <NavIcon />
+        {isOpen ? <CloseIcon /> : <NavIcon />}
       </button>
 
       <nav>
@@ -45,10 +46,13 @@ const Sidebar = ({ setModalOpen }) => {
           </li>
           <li>
             <button
-              onClick={() => setModalOpen(true)}
+              onClick={() => {
+                setIsOpen(false);
+                setModalOpen(true);
+              }}
               className={styles.navListButton}
             >
-              <CreatePostIcon /> Create Post
+              <CreateProjectIcon /> Create Project
             </button>
           </li>
           <li>
