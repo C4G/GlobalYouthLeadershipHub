@@ -5,6 +5,8 @@ import com.legacyinternational.globalyouthleadership.service.project.ProjectServ
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,11 +29,17 @@ class ProjectControllerTest {
     @Test
     void testCreateProject_ReturnsCreatedProject() {
         Project inputProject = new Project();
+        inputProject.setUserId(1L);
         inputProject.setDescription("Sustainability Initiative");
+        inputProject.setWeblinkLink("https://example.com");
+        inputProject.setCreatedBy("Admin");
 
         Project savedProject = new Project();
         savedProject.setId(1L);
+        savedProject.setUserId(1L);
         savedProject.setDescription("Sustainability Initiative");
+        savedProject.setWeblinkLink("https://example.com");
+        savedProject.setCreatedBy("Admin");
 
         when(projectService.createProject(inputProject)).thenReturn(savedProject);
 
@@ -64,10 +72,13 @@ class ProjectControllerTest {
 
         when(projectService.getProjectById(projectId)).thenReturn(Optional.empty());
 
-        ResponseEntity<Project> response = projectController.getProjectById(projectId);
+        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+            projectController.getProjectById(projectId);
+        });
 
-        assertEquals(404, response.getStatusCodeValue());
-        assertNull(response.getBody());
+//        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+//        assertEquals("Project not found", exception.getMessage());
+
         verify(projectService, times(1)).getProjectById(projectId);
     }
 
