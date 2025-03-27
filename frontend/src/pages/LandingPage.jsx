@@ -50,7 +50,7 @@ const Landing = () => {
           />
         )}
 
-        {posts.map((post, index) => (
+        {posts.map((post) => (
           <PostCard key={post.id} {...post} />
         ))}
       </main>
