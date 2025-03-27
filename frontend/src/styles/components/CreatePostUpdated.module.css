@@ -1,0 +1,88 @@
+/* Post Card */
+.postCard {
+  width: 300px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: rgb(255, 255, 255);
+}
+
+/* Button Styles */
+.createPostButton {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  background: rgba(235, 246, 11, 0.337);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.createPostButton:hover {
+  background: rgba(235, 246, 11, 0.8);
+}
+
+/* Form Container */
+/* Form Styling */
+.form {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Add spacing between elements */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form h3 {
+  text-align: center;
+}
+
+/* Inputs and Textarea */
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+.form textarea {
+  resize: vertical; /* Allows resizing only vertically */
+}
+
+/* Button Styles */
+.form button {
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background 0.3s ease-in-out;
+  width: 90%; /* Reduce button width slightly */
+  align-self: center; /* Center buttons */
+}
+
+.form button[type="submit"] {
+  background: #28a745;
+  color: white;
+}
+
+.form button[type="submit"]:hover {
+  background: #218838;
+}
+
+.form button[type="button"] {
+  background: #dc3545;
+  color: white;
+}
+
+.form button[type="button"]:hover {
+  background: #c82333;
+}
