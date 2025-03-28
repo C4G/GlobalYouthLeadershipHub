@@ -1,7 +1,7 @@
 import { useState } from "react";
-import styles from "@/styles/components/CreatePost.module.css";
+import styles from "@/styles/components/CreateProject.module.css";
 
-const CreatePost = ({ user, onClose, onPostCreate }) => {
+const CreateProject = ({ user, onClose, onPostCreate }) => {
   const [projectName, setProjectName] = useState("");
   const [postText, setPostText] = useState("");
   const [image, setImage] = useState(null);
@@ -34,11 +34,11 @@ const CreatePost = ({ user, onClose, onPostCreate }) => {
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
-        <h2>Create a Post</h2>
+        <h2>Create a Project</h2>
         <input
           type="text"
           className={styles.inputField}
-          placeholder="Enter post title"
+          placeholder="Enter project title"
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
         />
@@ -67,4 +67,4 @@ const CreatePost = ({ user, onClose, onPostCreate }) => {
   );
 };
 
-export default CreatePost;
+export default CreateProject;

@@ -78,3 +78,9 @@
     background: #12538e;
     color: white;
 }
+
+@media (max-width: 767px) {
+    .modal {
+        width: 85%;
+    }
+  }

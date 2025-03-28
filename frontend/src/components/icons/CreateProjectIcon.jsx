@@ -1,4 +1,4 @@
-const CreatePostIcon = () => (
+const CreateProjectIcon = () => (
   <svg
     aria-hidden="true"
     width="40"
@@ -16,4 +16,4 @@ const CreatePostIcon = () => (
   </svg>
 );
 
-export default CreatePostIcon;
+export default CreateProjectIcon;

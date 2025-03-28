@@ -252,7 +252,7 @@ const TeamHomepage = () => {
           <li>Performance: 100</li>
           <li>Accessibility: 100</li>
           <li>Best Practices: 100</li>
-          <li>SEO: 91</li>
+          <li>SEO: 92</li>
         </ul>
       </section>
 
