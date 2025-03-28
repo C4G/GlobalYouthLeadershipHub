@@ -69,20 +69,24 @@
   align-self: center; /* Center buttons */
 }
 
+/* To change the coloring of the button */
 .form button[type="submit"] {
   background: #28a745;
   color: white;
 }
 
+/* To change the coloring of the button */
 .form button[type="submit"]:hover {
   background: #218838;
 }
 
+/* To change the coloring of the button */
 .form button[type="button"] {
   background: #dc3545;
   color: white;
 }
 
+/* To change the coloring of the button */
 .form button[type="button"]:hover {
   background: #c82333;
 }

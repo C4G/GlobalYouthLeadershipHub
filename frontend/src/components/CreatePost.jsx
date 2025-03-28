@@ -1,8 +1,8 @@
-import styles from "@/styles/components/CreatePostUpdated.module.css"
+import styles from "@/styles/components/CreatePost.module.css"
 import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 
-const CreatePostUpdated = () => {
+const CreatePost = () => {
     const [openForm, setOpenForm] = useState(false)
 
     const mutation = useMutation({
@@ -44,4 +44,4 @@ const CreatePostUpdated = () => {
     )
 }
 
-export default CreatePostUpdated
+export default CreatePost
