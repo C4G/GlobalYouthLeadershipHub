@@ -20,15 +20,29 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<Project> createProject(@RequestBody Project project) {
+    public ResponseEntity<ProjectResponse> createProject(@RequestBody ProjectRequest projectRequest) {
         try {
-            Project.validateInput(project);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+            ProjectRequest.validateInput(projectRequest);
 
-        try {
-            return ResponseEntity.ok(projectService.createProject(project));
+            Project project = Project.builder()
+                    .userId(projectRequest.getUserId())
+                    .description(projectRequest.getDescription())
+                    .weblinkLink(projectRequest.getWeblinkLink())
+                    .build();
+
+            Project savedProject = projectService.createProject(project);
+
+            ProjectResponse response = ProjectResponse.builder()
+                    .id(savedProject.getId())
+                    .userId(savedProject.getUserId())
+                    .description(savedProject.getDescription())
+                    .weblinkLink(savedProject.getWeblinkLink())
+                    .createdBy(savedProject.getCreatedBy())
+                    .build();
+
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to create project");
         }

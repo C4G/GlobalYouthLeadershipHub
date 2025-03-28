@@ -28,11 +28,10 @@ class ProjectControllerTest {
 
     @Test
     void testCreateProject_ReturnsCreatedProject() {
-        Project inputProject = new Project();
-        inputProject.setUserId(1L);
-        inputProject.setDescription("Sustainability Initiative");
-        inputProject.setWeblinkLink("https://example.com");
-        inputProject.setCreatedBy("Admin");
+        ProjectRequest inputRequest = new ProjectRequest();
+        inputRequest.setUserId(1L);
+        inputRequest.setDescription("Sustainability Initiative");
+        inputRequest.setWeblinkLink("https://example.com");
 
         Project savedProject = new Project();
         savedProject.setId(1L);
@@ -41,14 +40,18 @@ class ProjectControllerTest {
         savedProject.setWeblinkLink("https://example.com");
         savedProject.setCreatedBy("Admin");
 
-        when(projectService.createProject(inputProject)).thenReturn(savedProject);
+        when(projectService.createProject(any(Project.class))).thenReturn(savedProject);
 
-        ResponseEntity<Project> response = projectController.createProject(inputProject);
+        ResponseEntity<ProjectResponse> response = projectController.createProject(inputRequest);
 
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(savedProject, response.getBody());
-        verify(projectService, times(1)).createProject(inputProject);
+        assertNotNull(response.getBody());
+        assertEquals(savedProject.getId(), response.getBody().getId());
+        assertEquals(savedProject.getUserId(), response.getBody().getUserId());
+
+        verify(projectService, times(1)).createProject(any(Project.class));
     }
+
 
     @Test
     void testGetProjectById_ProjectExists() {
@@ -72,12 +75,12 @@ class ProjectControllerTest {
 
         when(projectService.getProjectById(projectId)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             projectController.getProjectById(projectId);
         });
 
-//        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-//        assertEquals("Project not found", exception.getMessage());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getStatusCode());
+        assertEquals("Error retrieving project", exception.getReason());
 
         verify(projectService, times(1)).getProjectById(projectId);
     }

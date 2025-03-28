@@ -38,16 +38,4 @@ public class Project {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    public static void validateInput(Project request) throws IllegalArgumentException {
-        if (Objects.isNull(request.getUserId())) {
-            throw new IllegalArgumentException("User ID is required");
-        }
-        if (Objects.isNull(request.getDescription()) || request.getDescription().length() > 255) {
-            throw new IllegalArgumentException("Description cannot exceed 255 characters");
-        }
-        if (Objects.isNull(request.getWeblinkLink()) || !request.getWeblinkLink().matches("^(http|https)://.*$") || request.getDescription().length() > 255) {
-            throw new IllegalArgumentException("Invalid URL, the URL format must be valid and cannot exceed 255 characters");
-        }
-    }
 }
