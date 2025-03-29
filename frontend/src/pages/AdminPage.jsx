@@ -2,7 +2,7 @@ import PendingUsersList from "@/components/PendingUsersList";
 import SelectedPendingUser from "@/components/SelectedPendingUser";
 import Sidebar from "@/components/Sidebar"
 import queryClient from "@/libs/queryClient";
-import styles from "@/styles/AdminPage.module.css";
+import styles from "@/styles/pages/AdminPage.module.css";
 
 import { useState } from "react";
 

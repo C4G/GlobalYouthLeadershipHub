@@ -11,6 +11,7 @@ import LogoutIcon from "@/components/icons/LogoutIcon";
 import { useJWTToken, useRemoveJWTToken } from "@/hooks/auth";
 import AdminIcon from "@/components/icons/AdminIcon";
 
+// eslint-disable-next-line react/prop-types
 const Sidebar = ({ setModalOpen }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -57,8 +58,7 @@ const Sidebar = ({ setModalOpen }) => {
           </li>
           <li>
             <button
-              // TODO - to uncomment once create post page is up
-              // onClick={() => navigate('/project')}
+              onClick={() => navigate('/project')}
               className={styles.navListButton}
             >
               <MyPageIcon /> My Page
