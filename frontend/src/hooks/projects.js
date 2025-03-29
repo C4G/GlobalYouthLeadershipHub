@@ -1,9 +1,10 @@
+import customFetcher from "@/services/api"
 import { useQuery } from "@tanstack/react-query"
 
 export const useGetProjects = () => {
     return useQuery({
         queryKey: ["projects"],
-        queryFn: ({})
+        queryFn: ({ signal }) => customFetcher('/projects', "GET", signal),
     })
 }
 
