@@ -6,6 +6,11 @@ const customFetcher = async (path, method, signal = null, data) => {
     const parsedUserJwtToken = getJWTToken()
     const bearerToken = parsedUserJwtToken?.token || ""
 
+    const requiredAuth = !path.startsWith('/auth')
+    if (requiredAuth && !bearerToken) {
+        throw new Error("Authentication token is missing");
+    }
+
     try {
         const options = {
             headers: {
