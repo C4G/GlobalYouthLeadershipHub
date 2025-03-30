@@ -30,9 +30,8 @@ const LoginPage = () => {
       </div>
     </div>
     <a href="/team-homepage" className={styles.homepageLink}>Team Homepage</a>
-    <br />
     <a href="https://drive.google.com/file/d/1GjxNukWve8xrKWZeyArVAr41asHU_kfX/view?usp=drive_link"
-        className={styles.projectHomepageLink}
+        className={styles.homepageLink}
     >
       P6-Demo
     </a>
