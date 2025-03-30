@@ -18,6 +18,7 @@ const CreateProject = ({ onClose }) => {
   })
 
   const handleImageChange = (event) => {
+    // TODO - to decide on whether to do some file and size validation
     const file = event.target.files[0];
     if (file) {
       const newImageURL = URL.createObjectURL(file)
@@ -29,7 +30,7 @@ const CreateProject = ({ onClose }) => {
   };
 
   const handleSubmitProject = () => {
-    if (projectName.trim() === "" || !image) {
+    if (projectName.trim() === "") {
       setError("Please enter a project name");
       return;
     }
@@ -39,6 +40,7 @@ const CreateProject = ({ onClose }) => {
       return;
     }
 
+    // TODO - to decided whether to make it optional
     if (!image) {
       setError("Please upload an image");
       return;

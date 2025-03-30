@@ -13,6 +13,7 @@ const ProjectCard = ({ project }) => {
         <div className={styles.projectCard} onClick={() => onLinkToPost(id)}>
             <div className={styles.projectHeader}>
                 <div className={styles.avatar} aria-hidden="true">
+                    {/* TODO - to decided on whether to use "AS" for anonymous */}
                     {createdBy ?? "AS"}
                 </div>
 
