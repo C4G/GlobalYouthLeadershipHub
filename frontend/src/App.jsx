@@ -6,9 +6,11 @@ import TeamHomepage from "@/pages/TeamHomepage";
 import Landing from "@/pages/LandingPage";
 import AdminPage from "@/pages/AdminPage";
 import ProjectPage from "@/pages/ProjectPage";
+import PostsPage from "@/pages/PostsPage";
 import { ProtectedAdminRoute, ProtectedRoutes } from "@/components/ProtectedRoutes";
-import "@/styles/App.css";
 import { useJWTToken, useSyncLocalStorage } from "@/hooks/auth";
+
+import "@/styles/App.css";
 
 function App() {
   useSyncLocalStorage()
@@ -35,6 +37,12 @@ function App() {
         <Route path="/project" element={
           <ProtectedRoutes>
             <ProjectPage />
+          </ProtectedRoutes>}
+        />
+
+        <Route path="/projects/:projectId/posts" element={
+          <ProtectedRoutes>
+            <PostsPage />
           </ProtectedRoutes>}
         />
 
