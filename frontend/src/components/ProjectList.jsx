@@ -17,9 +17,7 @@ const ProjectList = ({ projects, isLoading }) => {
             {projects.length === 0 && <EmptyList text={"No Projects Found"} />}
             {projects.map(project => {
                 return (
-                    <>
-                        <ProjectCard key={project.id} project={project} />
-                    </>
+                    <ProjectCard key={project.id} project={project} />
                 )
             })}
         </>

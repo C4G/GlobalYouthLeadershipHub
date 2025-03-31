@@ -21,7 +21,6 @@ const ProjectPage = () => {
             </main>
         </div>
     );
-
 }
 
 export default ProjectPage
