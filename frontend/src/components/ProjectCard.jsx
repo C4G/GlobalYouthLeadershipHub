@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
-
+import { useNavigate } from "react-router-dom"
 import styles from "@/styles/components/ProjectCard.module.css"
 
 const ProjectCard = ({ project }) => {
+    const navigate = useNavigate()
     const { id, createdBy, name, description, weblinkLink, updatedAt } = project
 
     const onLinkToPost = (id) => {
-        console.log('hello world', id)
+        navigate(`/projects/${id}/posts`)
     }
 
     return (
