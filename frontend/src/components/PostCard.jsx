@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import styles from "@/styles/components/PostCard.module.css";
 import HeartIcon from "@/components/icons/HeartIcon";
@@ -5,10 +6,9 @@ import LikeIcon from "@/components/icons/LikeIcon";
 import ReplyIcon from "@/components/icons/ReplyIcon";
 import CommentSection from "@/components/CommentSection";
 
-// eslint-disable-next-line react/prop-types
 const PostCard = ({
   initials,
-  projectName,
+  postName,
   content,
   imageSrc,
   likes,
@@ -35,7 +35,7 @@ const PostCard = ({
           {initials}
         </div>
         <div className={styles.postInfo}>
-          <h2 className={styles.projectName}>{projectName}</h2>
+          <h2 className={styles.postName}>{postName}</h2>
         </div>
       </div>
 
