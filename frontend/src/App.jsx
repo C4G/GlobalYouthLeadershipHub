@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import LoginPage from "@/pages/LoginPage";
 import SignUpPage from "@/pages/SignUpPage";
 import SignUpSuccessPage from "@/pages/SignUpSuccessPage";
-import TeamHomepage from "@/pages/TeamHomepage";
+import TeamHomepageSpr25 from "@/pages/team/TeamHomepageSpr25";
 import Landing from "@/pages/LandingPage";
 import AdminPage from "@/pages/AdminPage";
 import ProjectPage from "@/pages/ProjectPage";
@@ -25,7 +25,6 @@ function App() {
         <Route path="/" element={isLoggedIn ? <Navigate to="/landing" replace /> : <LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signup-success" element={<SignUpSuccessPage />} />
-        <Route path="/team-homepage" element={<TeamHomepage />} />
 
         {/* Login Routes */}
         <Route path="/landing" element={
@@ -53,6 +52,10 @@ function App() {
           </ProtectedAdminRoute>
         } />
       </Routes>
+      <>
+        {/* Area for future teams working on this project to display their team homepage */}
+        <Route path="/team-homepage-spr25" element={<TeamHomepageSpr25/>} /> {/* Please keep this route. It's fine if the link isn't displayed on any page, but kindly don't remove it permanently. Thanks!*/}
+      </>
     </Router>
   );
 }

@@ -1,6 +1,6 @@
-import styles from "@/styles/pages/TeamHomepage.module.css";
+import styles from "@/styles/pages/team/TeamHomepageSpr25.module.css";
 
-const TeamHomepage = () => {
+const TeamHomepageSpr25 = () => {
   return (
     <div className={styles.container}>
       <header className={styles.header} aria-label="Project Title">
@@ -271,4 +271,4 @@ const TeamHomepage = () => {
   );
 };
 
-export default TeamHomepage;
+export default TeamHomepageSpr25;

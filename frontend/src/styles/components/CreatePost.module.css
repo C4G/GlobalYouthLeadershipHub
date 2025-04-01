@@ -78,7 +78,7 @@
 .cancelButton {
   background: gray;
   color: white;
-  transition: background 0.2s;
+  transition: background 1s;
 }
 
 .cancelButton:hover {
@@ -88,7 +88,7 @@
 .confirmButton {
   background: #12538e;
   color: white;
-  transition: background 0.2s;
+  transition: background 1s;
 }
 
 .confirmButton:hover {

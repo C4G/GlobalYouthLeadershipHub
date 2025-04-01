@@ -7,6 +7,7 @@ import ReplyIcon from "@/components/icons/ReplyIcon";
 import CommentSection from "@/components/CommentSection";
 
 const PostCard = ({ post }) => {
+  // TODO - to integrate with comment API
   const { id,initials, name, description, weblinkLink, likes, user } = post;
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);

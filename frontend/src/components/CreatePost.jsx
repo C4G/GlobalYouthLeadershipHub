@@ -9,6 +9,14 @@ const CreatePost = ({ onClose, onCreate }) => {
   
     const [error, setError] = useState("");
 
+  // TODO - retain this for API integration
+  //   const [openForm, setOpenForm] = useState(false)
+  //   const mutation = useMutation({
+  //     mutationFn: async () => { },
+  //     onSuccess: () => setOpenForm(prev => !prev),
+  //     onError: () => { }
+  // })
+
     const handleImageChange = (event) => {
         // TODO - to decide on whether to do some file and size validation
         const file = event.target.files[0];
