@@ -6,13 +6,14 @@ import NavIcon from "@/components/icons/NavIcon";
 import CloseIcon from "@/components/icons/CloseIcon";
 import HomeIcon from "@/components/icons/HomeIcon";
 import CreateProjectIcon from "@/components/icons/CreateProjectIcon";
+import CreatePostIcon from "@/components/icons/CreatePostIcon";
 import MyPageIcon from "@/components/icons/MyPageIcon";
 import LogoutIcon from "@/components/icons/LogoutIcon";
 import { useJWTToken, useRemoveJWTToken } from "@/hooks/auth";
 import AdminIcon from "@/components/icons/AdminIcon";
 
 // eslint-disable-next-line react/prop-types
-const Sidebar = ({ setModalOpen }) => {
+const Sidebar = ({ setModalOpen, isPostsPage = false }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   // Check for admin access to render admin page component
@@ -53,12 +54,20 @@ const Sidebar = ({ setModalOpen }) => {
               }}
               className={styles.navListButton}
             >
-              <CreateProjectIcon /> Create Project
+              {isPostsPage ? (
+                <>
+                  <CreatePostIcon /> Create Post
+                </>
+              ) : (
+                <>
+                  <CreateProjectIcon /> Create Project
+                </>
+              )}
             </button>
           </li>
           <li>
             <button
-              onClick={() => navigate('/project')}
+             onClick={() => navigate("/project")}
               className={styles.navListButton}
             >
               <MyPageIcon /> My Page

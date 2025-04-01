@@ -1,22 +1,35 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import PostCard from "@/components/PostCard";
+import styles from "@/styles/pages/PostsPage.module.css";
 import Sidebar from "@/components/Sidebar";
-import styles from "@/styles/pages/ProjectPage.module.css"
+import CreatePost from "@/components/CreatePost";
+import PostList from "@/components/PostList";
 
 const PostsPage = () => {
-    const { projectId } = useParams()
-    // TODO - to revise once API is up
-    console.log("pId", projectId)
+  const [posts, setPosts] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const { projectId } = useParams();
+  // TODO - to revise once API is up
+  console.log("pId", projectId);
 
-    return (
-        <div className={styles.container}>
-            <Sidebar />
-            <main className={styles.mainContent}>
-                {/* TODO - to enable once API is wire up */}
-                <PostCard />
-            </main>
-        </div>
-    );
-}
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
-export default PostsPage
+  const handleCreatePost = (newPost) => {
+    setPosts((prev) => [...prev, newPost]);
+  };
+
+  return (
+    <div className={styles.container}>
+      <Sidebar isPostsPage={true} setModalOpen={setModalOpen} />
+      <main className={styles.mainContent}>
+        {/* TODO - to enable once API is wire up */}
+        {isModalOpen && <CreatePost onClose={handleCloseModal} onCreate={handleCreatePost}/>}
+        <PostList posts={posts}/>
+      </main>
+    </div>
+  );
+};
+
+export default PostsPage;

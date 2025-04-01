@@ -6,16 +6,10 @@ import LikeIcon from "@/components/icons/LikeIcon";
 import ReplyIcon from "@/components/icons/ReplyIcon";
 import CommentSection from "@/components/CommentSection";
 
-const PostCard = ({
-  initials,
-  postName,
-  content,
-  imageSrc,
-  likes,
-  user,
-}) => {
+const PostCard = ({ post }) => {
+  const { id,initials, name, description, weblinkLink, likes, user } = post;
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(likes);
+  const [likeCount, setLikeCount] = useState(0);
   const [commentCounts, setCommentCounts] = useState(0);
   const [isReplying, setIsReplying] = useState(false);
 
@@ -32,17 +26,17 @@ const PostCard = ({
     <div className={styles.postCard}>
       <div className={styles.postHeader}>
         <div className={styles.avatar} aria-hidden="true">
-          {initials}
+          {initials ?? "MJ"}
         </div>
         <div className={styles.postInfo}>
-          <h2 className={styles.postName}>{postName}</h2>
+          <h2 className={styles.postName}>{name}</h2>
         </div>
       </div>
 
-      <p className={styles.postContent}>{content}</p>
+      <p className={styles.postContent}>{description}</p>
 
       <div className={styles.photoContainer}>
-        <img src={imageSrc} alt="Image Not Found" className={styles.photo} />
+        <img src={weblinkLink} alt="Image Not Found" className={styles.photo} />
       </div>
 
       <div className={styles.postFooter}>

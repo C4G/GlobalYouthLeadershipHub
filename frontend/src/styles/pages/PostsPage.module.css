@@ -6,8 +6,7 @@
 .mainContent {
   flex-grow: 1;
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  flex-flow: column;
   padding: 20px;
   row-gap: 10px;
 }

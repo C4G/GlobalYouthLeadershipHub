@@ -29,7 +29,7 @@ const ProjectCard = ({ project }) => {
                 <img src={`blob:${weblinkLink}`} className={styles.photo} />
             </div>
 
-            <p className={styles.projectUpdatedAt}>Last Updated: {updatedAt ?? new Date().toISOString()}</p>
+            <p className={styles.projectUpdatedAt}>Last Updated: {updatedAt ?? new Date().toLocaleString()}</p>
         </div>
     )
 

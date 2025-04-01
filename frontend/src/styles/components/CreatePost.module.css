@@ -1,92 +1,102 @@
-/* Post Card */
-.postCard {
-  width: 300px;
-  height: 150px;
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
   align-items: center;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: rgb(255, 255, 255);
+  justify-content: center;
 }
 
-/* Button Styles */
-.createPostButton {
-  padding: 10px 15px;
-  font-size: 16px;
-  border: none;
-  background: rgba(235, 246, 11, 0.337);
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.createPostButton:hover {
-  background: rgba(235, 246, 11, 0.8);
-}
-
-/* Form Container */
-/* Form Styling */
-.form {
+.modal {
   background: white;
   padding: 20px;
-  border-radius: 8px;
-  width: 320px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Add spacing between elements */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  align-items: center;
 }
 
-.form h3 {
-  text-align: center;
-}
-
-/* Inputs and Textarea */
-.form input,
-.form textarea {
+.inputField {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 14px;
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
 }
 
-.form textarea {
-  resize: vertical; /* Allows resizing only vertically */
+.textInput {
+  width: 100%;
+  height: 80px;
+  max-width: 100%;
+  max-height: 50vh;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  resize: vertical;
+  overflow: auto;
 }
 
-/* Button Styles */
-.form button {
-  padding: 10px 15px;
+.fileInputLabel {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-left: 20%;
+  margin-bottom: 10px;
+}
+
+.previewImage {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.errorMessage {
+  color: #f00;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.cancelButton,
+.confirmButton {
+  padding: 8px 12px;
   border: none;
-  cursor: pointer;
   border-radius: 5px;
-  font-size: 16px;
-  transition: background 0.3s ease-in-out;
-  width: 90%; /* Reduce button width slightly */
-  align-self: center; /* Center buttons */
+  cursor: pointer;
 }
 
-/* To change the coloring of the button */
-.form button[type="submit"] {
-  background: #28a745;
+.cancelButton {
+  background: gray;
   color: white;
+  transition: background 0.2s;
 }
 
-/* To change the coloring of the button */
-.form button[type="submit"]:hover {
-  background: #218838;
+.cancelButton:hover {
+  background: rgba(128, 128, 128, 0.7);
 }
 
-/* To change the coloring of the button */
-.form button[type="button"] {
-  background: #dc3545;
+.confirmButton {
+  background: #12538e;
   color: white;
+  transition: background 0.2s;
 }
 
-/* To change the coloring of the button */
-.form button[type="button"]:hover {
-  background: #c82333;
+.confirmButton:hover {
+  background: rgba(18, 83, 142, 0.7);
+}
+
+@media (max-width: 767px) {
+  .modal {
+    width: 85%;
+  }
 }

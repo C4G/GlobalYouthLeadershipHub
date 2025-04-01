@@ -78,11 +78,21 @@
 .cancelButton {
   background: gray;
   color: white;
+  transition: background 0.2s;
+}
+
+.cancelButton:hover {
+  background: rgba(128, 128, 128, 0.7);
 }
 
 .confirmButton {
   background: #12538e;
   color: white;
+  transition: background 0.2s;
+}
+
+.confirmButton:hover {
+  background: rgba(18, 83, 142, 0.7);
 }
 
 @media (max-width: 767px) {
