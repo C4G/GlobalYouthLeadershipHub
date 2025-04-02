@@ -25,6 +25,10 @@ function App() {
         <Route path="/" element={isLoggedIn ? <Navigate to="/landing" replace /> : <LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signup-success" element={<SignUpSuccessPage />} />
+        {/* Area for future teams working on this project to display their team homepage */}
+        {/* Please keep this route. It's fine if the link isn't displayed on any page, but kindly don't remove it permanently. Thanks!*/}
+        <Route path="/team-homepage-spr25" element={<TeamHomepageSpr25 />} />
+
 
         {/* Login Routes */}
         <Route path="/landing" element={
@@ -52,10 +56,6 @@ function App() {
           </ProtectedAdminRoute>
         } />
       </Routes>
-      <>
-        {/* Area for future teams working on this project to display their team homepage */}
-        <Route path="/team-homepage-spr25" element={<TeamHomepageSpr25/>} /> {/* Please keep this route. It's fine if the link isn't displayed on any page, but kindly don't remove it permanently. Thanks!*/}
-      </>
     </Router>
   );
 }
