@@ -25,8 +25,10 @@ const PostsPage = () => {
       <Sidebar isPostsPage={true} setModalOpen={setModalOpen} />
       <main className={styles.mainContent}>
         {/* TODO - to enable once API is wire up */}
-        {isModalOpen && <CreatePost onClose={handleCloseModal} onCreate={handleCreatePost}/>}
-        <PostList posts={posts}/>
+        {isModalOpen && <CreatePost onClose={handleCloseModal} onCreate={handleCreatePost} />}
+        {/* TODO - to enable once API is wire up */}
+        <h2>Project Name To Be Displayed Here</h2>
+        <PostList posts={posts} />
       </main>
     </div>
   );
