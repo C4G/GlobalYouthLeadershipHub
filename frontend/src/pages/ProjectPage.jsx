@@ -18,6 +18,10 @@ const ProjectPage = () => {
             <Sidebar />
             <main className={styles.mainContent}>
                 {/* TODO - to enable once API is wire up */}
+                <div className={styles.underConstruction}>
+                    <h1>🚧 Page Under Construction 🚧</h1>
+                    <p>We&apos;re working hard to bring this page to life. Stay tuned!</p>
+                </div>
             </main>
         </div>
     );

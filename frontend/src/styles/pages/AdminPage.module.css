@@ -48,6 +48,10 @@
   }
 
   .mainContent {
-    width: 90%;
+    max-width: 90%;
+  }
+
+  .card {
+    word-break: break-word;
   }
 }

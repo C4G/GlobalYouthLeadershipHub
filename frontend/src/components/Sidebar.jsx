@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import styles from "@/styles/components/Sidebar.module.css";
@@ -12,8 +13,11 @@ import LogoutIcon from "@/components/icons/LogoutIcon";
 import { useJWTToken, useRemoveJWTToken } from "@/hooks/auth";
 import AdminIcon from "@/components/icons/AdminIcon";
 
-// eslint-disable-next-line react/prop-types
-const Sidebar = ({ setModalOpen, isPostsPage = false }) => {
+const Sidebar = ({
+  setModalOpen,
+  isLandingPage = false,
+  isPostsPage = false,
+}) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   // Check for admin access to render admin page component
@@ -46,28 +50,34 @@ const Sidebar = ({ setModalOpen, isPostsPage = false }) => {
               <HomeIcon /> Home
             </button>
           </li>
+          {isLandingPage ? (
+            <li>
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  setModalOpen(true);
+                }}
+                className={styles.navListButton}
+              >
+                <CreateProjectIcon /> Create Project
+              </button>
+            </li>
+          ) : isPostsPage ? (
+            <li>
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  setModalOpen(true);
+                }}
+                className={styles.navListButton}
+              >
+                <CreatePostIcon /> Create Post
+              </button>
+            </li>
+          ) : null}
           <li>
             <button
-              onClick={() => {
-                setIsOpen(false);
-                setModalOpen(true);
-              }}
-              className={styles.navListButton}
-            >
-              {isPostsPage ? (
-                <>
-                  <CreatePostIcon /> Create Post
-                </>
-              ) : (
-                <>
-                  <CreateProjectIcon /> Create Project
-                </>
-              )}
-            </button>
-          </li>
-          <li>
-            <button
-             onClick={() => navigate("/project")}
+              onClick={() => navigate("/project")}
               className={styles.navListButton}
             >
               <MyPageIcon /> My Page

@@ -16,7 +16,7 @@ const Landing = () => {
 
   return (
     <div className={styles.container}>
-      <Sidebar setModalOpen={setModalOpen} />
+      <Sidebar isLandingPage={true} setModalOpen={setModalOpen} />
       <main className={styles.mainContent}>
         {isModalOpen && (
           <CreateProject
