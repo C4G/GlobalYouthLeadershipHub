@@ -19,14 +19,18 @@ const ProjectCard = ({ project }) => {
                 </div>
 
                 <div className={styles.projectInfo}>
-                    <h2 className={styles.projectName}>{name ?? "Project Unknown"}</h2>
+                    <h2 className={styles.projectName}>{name ?? "Project To Be Displayed"}</h2>
                 </div>
             </div>
 
             <p className={styles.projectContent}>{description}</p>
 
             <div className={styles.photoContainer}>
-                <img src={`blob:${weblinkLink}`} className={styles.photo} />
+                <img
+                    src={`blob:${weblinkLink}`}
+                    className={styles.photo}
+                    onError={e => e.target.src = "../../assets/project_fallback.jpeg"}
+                />
             </div>
 
             <p className={styles.projectUpdatedAt}>Last Updated: {updatedAt ?? new Date().toLocaleString()}</p>

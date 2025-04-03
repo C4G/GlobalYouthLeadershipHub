@@ -8,7 +8,8 @@ import CommentSection from "@/components/CommentSection";
 
 const PostCard = ({ post }) => {
   // TODO - to integrate with comment API
-  const { id,initials, name, description, weblinkLink, likes, user } = post;
+  // eslint-disable-next-line no-unused-vars
+  const { id, initials, name, description, weblinkLink, likes, user } = post;
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [commentCounts, setCommentCounts] = useState(0);
@@ -30,14 +31,20 @@ const PostCard = ({ post }) => {
           {initials ?? "MJ"}
         </div>
         <div className={styles.postInfo}>
-          <h2 className={styles.postName}>{name}</h2>
+          {/* TODO - to remove after Demo */}
+          <h2 className={styles.postName}>{name ?? "Post Name to Be Displayed"}</h2>
         </div>
       </div>
 
       <p className={styles.postContent}>{description}</p>
 
       <div className={styles.photoContainer}>
-        <img src={weblinkLink} alt="Image Not Found" className={styles.photo} />
+        <img
+          src={weblinkLink}
+          alt="Post Not Found"
+          className={styles.photo}
+          onError={e => e.target.src = "../../assets/post_fallback.jpeg"}
+        />
       </div>
 
       <div className={styles.postFooter}>
