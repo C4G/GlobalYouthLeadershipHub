@@ -1,10 +1,12 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "@/styles/pages/SignUpSuccessPage.module.css";
 import Logo from "@/components/Logo";
 
 const SignUpSuccessPage = () => {
   const location = useLocation();
+  const navigate = useNavigate()
   const email = location.state?.email || "your email"; // Default fallback
+
 
   return (
     <div className={styles.container}>
@@ -24,6 +26,9 @@ const SignUpSuccessPage = () => {
           <p className={styles.notice}>
             Account creation is subjected to admin&apos;s approval.
           </p>
+          <button onClick={() => navigate('/')} className={styles.returnToLoginBtn}>
+            Return to Login Page
+          </button>
         </div>
       </div>
     </div>
