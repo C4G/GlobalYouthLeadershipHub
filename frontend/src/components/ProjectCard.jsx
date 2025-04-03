@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom"
 import styles from "@/styles/components/ProjectCard.module.css"
+import { useState } from "react"
 
 const ProjectCard = ({ project }) => {
     const navigate = useNavigate()
     const { id, createdBy, name, description, weblinkLink, updatedAt } = project
+
+    const [projectImg, setProjectImg] = useState(`blob:${weblinkLink}`)
 
     const onLinkToPost = (id) => {
         navigate(`/projects/${id}/posts`)
@@ -27,9 +30,9 @@ const ProjectCard = ({ project }) => {
 
             <div className={styles.photoContainer}>
                 <img
-                    src={`blob:${weblinkLink}`}
+                    src={projectImg}
                     className={styles.photo}
-                    onError={e => e.target.src = "../../assets/project_fallback.jpeg"}
+                    onError={() => setProjectImg("../../assets/project_fallback.jpeg")}
                 />
             </div>
 
