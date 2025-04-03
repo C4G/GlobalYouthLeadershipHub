@@ -17,7 +17,6 @@ const PostCard = ({ post }) => {
 
   const [postImg, setPostImg] = useState(`blob:${weblinkLink}`)
 
-
   const handleLikeToggle = () => {
     setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
     setIsLiked(!isLiked);
@@ -46,7 +45,7 @@ const PostCard = ({ post }) => {
           src={postImg}
           alt="Post Not Found"
           className={styles.photo}
-          onError={() => setPostImg("../../assets/post_fallback.jpeg")}
+          onError={() => setPostImg("/post_fallback.jpeg")}
         />
       </div>
 

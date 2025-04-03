@@ -32,7 +32,7 @@ const ProjectCard = ({ project }) => {
                 <img
                     src={projectImg}
                     className={styles.photo}
-                    onError={() => setProjectImg("../../assets/project_fallback.jpeg")}
+                    onError={() => setProjectImg("/project_fallback.jpeg")}
                 />
             </div>
 
