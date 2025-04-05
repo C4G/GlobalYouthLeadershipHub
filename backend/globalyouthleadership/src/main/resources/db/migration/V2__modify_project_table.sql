@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS `sustSch`.`projects`;
 -- Recreate table with new schema
 CREATE TABLE `sustSch`.`projects` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `project_owner` BIGINT,
+    `project_owner` VARCHAR(255) NOT NULL,
     `name` VARCHAR(255) NOT NULL,
     `description` VARCHAR(255),
     `file_name` VARCHAR(255),
@@ -17,5 +17,5 @@ CREATE TABLE `sustSch`.`projects` (
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_by` VARCHAR(255) NOT NULL,
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`project_owner`) REFERENCES `sustSch`.`users`(`email`) ON DELETE SET NULL
+    FOREIGN KEY (`project_owner`) REFERENCES `sustSch`.`users`(`email`)
 );
