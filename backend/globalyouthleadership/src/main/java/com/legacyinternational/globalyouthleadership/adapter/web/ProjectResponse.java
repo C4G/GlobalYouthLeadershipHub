@@ -9,8 +9,12 @@ import lombok.Setter;
 @Builder
 public class ProjectResponse {
     private Long id;
-    private Long userId;
+    private String projectOwner;
+    private String name;
     private String description;
-    private String weblinkLink;
+    private String projectImageUrl;
     private String createdBy;
+    private String createdDate;
+    private String lastModifiedBy;
+    private String lastModifiedDate;
 }

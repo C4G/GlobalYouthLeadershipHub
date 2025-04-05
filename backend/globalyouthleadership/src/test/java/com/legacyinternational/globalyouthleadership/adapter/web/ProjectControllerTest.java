@@ -6,116 +6,151 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class ProjectControllerTest {
+public class ProjectControllerTest {
 
     private ProjectServiceImpl projectService;
-    private ProjectController projectController;
+    private ProjectController controller;
+    private Principal mockPrincipal;
 
     @BeforeEach
-    void setUp() {
+    void setup() {
         projectService = mock(ProjectServiceImpl.class);
-        projectController = new ProjectController(projectService);
+        controller = new ProjectController(projectService);
+        mockPrincipal = () -> "testuser@example.com";
     }
 
     @Test
-    void testCreateProject_ReturnsCreatedProject() {
-        ProjectRequest inputRequest = new ProjectRequest();
-        inputRequest.setUserId(1L);
-        inputRequest.setDescription("Sustainability Initiative");
-        inputRequest.setWeblinkLink("https://example.com");
+    void testCreateProjectSuccess() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("file", "test.jpg", "image/jpeg", "bytes".getBytes());
 
-        Project savedProject = new Project();
-        savedProject.setId(1L);
-        savedProject.setUserId(1L);
-        savedProject.setDescription("Sustainability Initiative");
-        savedProject.setWeblinkLink("https://example.com");
-        savedProject.setCreatedBy("Admin");
-
-        when(projectService.createProject(any(Project.class))).thenReturn(savedProject);
-
-        ResponseEntity<ProjectResponse> response = projectController.createProject(inputRequest);
-
-        assertEquals(200, response.getStatusCodeValue());
-        assertNotNull(response.getBody());
-        assertEquals(savedProject.getId(), response.getBody().getId());
-        assertEquals(savedProject.getUserId(), response.getBody().getUserId());
-
-        verify(projectService, times(1)).createProject(any(Project.class));
-    }
-
-
-    @Test
-    void testGetProjectById_ProjectExists() {
-        Long projectId = 1L;
         Project mockProject = new Project();
-        mockProject.setId(projectId);
-        mockProject.setDescription("Youth Climate Campaign");
+        mockProject.setId(1L);
+        mockProject.setName("Test Project");
+        mockProject.setDescription("A cool project");
+        mockProject.setProjectOwner("testuser@example.com");
+        mockProject.setCreatedBy("testuser@example.com");
+        mockProject.setCreatedAt(LocalDateTime.now());
+        mockProject.setUpdatedBy("testuser@example.com");
+        mockProject.setUpdatedAt(LocalDateTime.now());
 
-        when(projectService.getProjectById(projectId)).thenReturn(Optional.of(mockProject));
+        when(projectService.createProject(any())).thenReturn(mockProject);
 
-        ResponseEntity<Project> response = projectController.getProjectById(projectId);
+        ResponseEntity<ProjectResponse> response = controller.createProject("Test Project", "A cool project", file, mockPrincipal);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(mockProject, response.getBody());
-        verify(projectService, times(1)).getProjectById(projectId);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getName()).isEqualTo("Test Project");
+        verify(projectService).createProject(any(ProjectRequest.class));
     }
 
     @Test
-    void testGetProjectById_ProjectNotFound() {
-        Long projectId = 99L;
-
-        when(projectService.getProjectById(projectId)).thenReturn(Optional.empty());
-
+    void testCreateProjectInvalidInputThrowsException() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            projectController.getProjectById(projectId);
+            controller.createProject("", "", null, mockPrincipal);
         });
-
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getStatusCode());
-        assertEquals("Error retrieving project", exception.getReason());
-
-        verify(projectService, times(1)).getProjectById(projectId);
+        assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    void testGetProjectsByUserId_ReturnsProjectList() {
-        Long userId = 42L;
+    void testGetProjectImageSuccess() {
+        Project project = new Project();
+        project.setId(1L);
+        project.setFileName("img.jpg");
+        project.setFileType("image/jpeg");
+        project.setFileData("imagebytes".getBytes());
 
-        List<Project> mockProjects = Arrays.asList(
-                Project.builder().id(1L).description("Climate App").userId(userId).build(),
-                Project.builder().id(2L).description("Tree Planting Tracker").userId(userId).build()
-        );
+        when(projectService.getProjectById(1L)).thenReturn(Optional.of(project));
 
-        when(projectService.getProjectsByUserId(userId)).thenReturn(mockProjects);
+        ResponseEntity<byte[]> response = controller.getProjectImage(1L);
 
-        ResponseEntity<List<Project>> response = projectController.getProjectsByUserId(userId);
-
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(mockProjects, response.getBody());
-        verify(projectService, times(1)).getProjectsByUserId(userId);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo("imagebytes".getBytes());
     }
 
     @Test
-    void testGetAllProjects_ReturnsAllProjects() {
-        List<Project> allProjects = Arrays.asList(
-                Project.builder().id(3L).description("Recycling Game").userId(100L).build(),
-                Project.builder().id(4L).description("Plastic Audit").userId(101L).build()
-        );
+    void testGetProjectImageInvalidId() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            controller.getProjectImage(-1L);
+        });
+        assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
 
-        when(projectService.getAllProjects()).thenReturn(allProjects);
+    @Test
+    void testGetProjectImageNotFound() {
+        when(projectService.getProjectById(99L)).thenReturn(Optional.empty());
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            controller.getProjectImage(99L);
+        });
+        assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
 
-        ResponseEntity<List<Project>> response = projectController.getAllProjects();
+    @Test
+    void testGetProjectByIdSuccess() {
+        Project project = new Project();
+        project.setId(1L);
+        project.setName("Test Project");
+        project.setDescription("A test");
+        project.setProjectOwner("testuser@example.com");
+        project.setCreatedBy("testuser@example.com");
+        project.setCreatedAt(LocalDateTime.now());
+        project.setUpdatedBy("testuser@example.com");
+        project.setUpdatedAt(LocalDateTime.now());
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(allProjects, response.getBody());
-        verify(projectService, times(1)).getAllProjects();
+        when(projectService.getProjectById(1L)).thenReturn(Optional.of(project));
+
+        ResponseEntity<ProjectResponse> response = controller.getProjectById(1L);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getName()).isEqualTo("Test Project");
+    }
+
+    @Test
+    void testGetProjectByIdNotFound() {
+        when(projectService.getProjectById(404L)).thenReturn(Optional.empty());
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            controller.getProjectById(404L);
+        });
+        assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    void testGetAllProjects() {
+        Project p1 = new Project();
+        p1.setId(1L);
+        p1.setName("Proj1");
+        p1.setProjectOwner("testuser@example.com");
+        p1.setCreatedAt(LocalDateTime.now());
+        p1.setCreatedBy("admin");
+        p1.setUpdatedAt(LocalDateTime.now());
+        p1.setUpdatedBy("admin");
+
+        when(projectService.getAllProjects()).thenReturn(List.of(p1));
+
+        ResponseEntity<List<ProjectResponse>> response = controller.getAllProjects();
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().size()).isEqualTo(1);
+    }
+
+    @Test
+    void testGetAllProjectsFailure() {
+        when(projectService.getAllProjects()).thenThrow(new RuntimeException("fail"));
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> {
+            controller.getAllProjects();
+        });
+        assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
