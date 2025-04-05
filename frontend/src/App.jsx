@@ -3,9 +3,9 @@ import LoginPage from "@/pages/LoginPage";
 import SignUpPage from "@/pages/SignUpPage";
 import SignUpSuccessPage from "@/pages/SignUpSuccessPage";
 import TeamHomepageSpr25 from "@/pages/team/TeamHomepageSpr25";
-import Landing from "@/pages/LandingPage";
-import AdminPage from "@/pages/AdminPage";
-import ProjectPage from "@/pages/ProjectPage";
+import ProjectsPage from "@/pages/ProjectsPage";
+import AdminPortalPage from "@/pages/AdminPortalPage";
+import MyProjectPage from "@/pages/MyProjectPage";
 import PostsPage from "@/pages/PostsPage";
 import { ProtectedAdminRoute, ProtectedRoutes } from "@/components/ProtectedRoutes";
 import { useJWTToken, useSyncLocalStorage } from "@/hooks/auth";
@@ -29,13 +29,13 @@ function App() {
         {/* Login Routes */}
         <Route path="/landing" element={
           <ProtectedRoutes>
-            <Landing />
+            <ProjectsPage />
           </ProtectedRoutes>}
         />
 
         <Route path="/project" element={
           <ProtectedRoutes>
-            <ProjectPage />
+            <MyProjectPage />
           </ProtectedRoutes>}
         />
 
@@ -48,14 +48,14 @@ function App() {
         {/* Admin Route */}
         <Route path="/admin" element={
           <ProtectedAdminRoute>
-            <AdminPage />
+            <AdminPortalPage />
           </ProtectedAdminRoute>
         } />
 
         <>
-        {/* Area for future teams working on this project to display their team homepage */}
-        {/* Please keep this route. It's fine if the link isn't displayed on any page, but kindly don't remove it permanently. Thanks!*/}
-        <Route path="/team-homepage-spr25" element={<TeamHomepageSpr25 />} />
+          {/* Area for future teams working on this project to display their team homepage */}
+          {/* Please keep this route. It's fine if the link isn't displayed on any page, but kindly don't remove it permanently. Thanks!*/}
+          <Route path="/team-homepage-spr25" element={<TeamHomepageSpr25 />} />
         </>
 
       </Routes>

@@ -1,9 +1,10 @@
+import Container from "@/components/Container";
 import Sidebar from "@/components/Sidebar";
 // import Spinner from "@/components/Spinner";
 // import { useGetProjectByUserId } from "@/hooks/projects";
-import styles from "@/styles/pages/ProjectPage.module.css"
+import styles from "@/styles/pages/MyProjectPage.module.css"
 
-const ProjectPage = () => {
+const MyProjectPage = () => {
 
     {/* TODO - to enable once API is wire up */ }
     // const { data, isLoading } = useGetProjectByUserId()
@@ -14,7 +15,7 @@ const ProjectPage = () => {
     // }
 
     return (
-        <div className={styles.container}>
+        <Container>
             <Sidebar />
             <main className={styles.mainContent}>
                 {/* TODO - to enable once API is wire up */}
@@ -23,8 +24,8 @@ const ProjectPage = () => {
                     <p>We&apos;re working hard to bring this page to life. Stay tuned!</p>
                 </div>
             </main>
-        </div>
+        </Container>
     );
 }
 
-export default ProjectPage
+export default MyProjectPage
