@@ -90,7 +90,7 @@ const Sidebar = ({
                 className={styles.navListButton}
               >
                 <AdminIcon />
-                Admin Page
+                Admin Portal
               </button>
             </li>
           )}
