@@ -2,8 +2,8 @@ CREATE SCHEMA IF NOT EXISTS `sustSch`;
 use `sustSch`;
 
 CREATE TABLE IF NOT EXISTS `sustSch`.`users` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `email` VARCHAR(255) NOT NULL UNIQUE,
+                                                 `id` INT AUTO_INCREMENT PRIMARY KEY,
+                                                 `email` VARCHAR(255) NOT NULL UNIQUE,
     `username` VARCHAR(255),
     `password` VARCHAR(255) NOT NULL,
     `firstname` VARCHAR(100) NOT NULL,
@@ -17,9 +17,9 @@ CREATE TABLE IF NOT EXISTS `sustSch`.`users` (
     );
 
 CREATE TABLE IF NOT EXISTS `sustSch`.`follows` (
-    `following_user_id` INT NOT NULL,
-    `followed_user_id` INT NOT NULL,
-    `created_by` VARCHAR(255) NOT NULL,
+                                                   `following_user_id` INT NOT NULL,
+                                                   `followed_user_id` INT NOT NULL,
+                                                   `created_by` VARCHAR(255) NOT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated_by` VARCHAR(255),
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -29,9 +29,9 @@ CREATE TABLE IF NOT EXISTS `sustSch`.`follows` (
     );
 
 CREATE TABLE IF NOT EXISTS `sustSch`.`projects` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `user_id` INT NOT NULL,
-    `description` VARCHAR(255),
+                                                    `id` INT AUTO_INCREMENT PRIMARY KEY,
+                                                    `user_id` INT NOT NULL,
+                                                    `description` VARCHAR(255),
     `weblink_link` VARCHAR(255),
     `created_by` VARCHAR(255),
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -41,8 +41,8 @@ CREATE TABLE IF NOT EXISTS `sustSch`.`projects` (
     );
 
 CREATE TABLE IF NOT EXISTS `sustSch`.`posts` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `post_type` ENUM('public', 'reply') NOT NULL,
+                                                 `id` INT AUTO_INCREMENT PRIMARY KEY,
+                                                 `post_type` ENUM('public', 'reply') NOT NULL,
     `replied_post_id` INT COMMENT 'Post replied to',
     `private_user` INT COMMENT 'User for private msg',
     `project_id` INT,
@@ -61,9 +61,9 @@ CREATE TABLE IF NOT EXISTS `sustSch`.`posts` (
     );
 
 CREATE TABLE IF NOT EXISTS `sustSch`.`pictures` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY COMMENT 'id of picture',
-    `user_id` INT NOT NULL COMMENT 'id of the user',
-    `path` VARCHAR(255),
+                                                    `id` INT AUTO_INCREMENT PRIMARY KEY COMMENT 'id of picture',
+                                                    `user_id` INT NOT NULL COMMENT 'id of the user',
+                                                    `path` VARCHAR(255),
     `name` VARCHAR(255),
     `created_by` VARCHAR(255),
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
