@@ -1,12 +1,13 @@
+import Container from "@/components/Container";
 import PendingUsersList from "@/components/PendingUsersList";
 import SelectedPendingUser from "@/components/SelectedPendingUser";
 import Sidebar from "@/components/Sidebar"
 import queryClient from "@/libs/queryClient";
-import styles from "@/styles/pages/AdminPage.module.css";
+import styles from "@/styles/pages/AdminPortalPage.module.css";
 
 import { useState } from "react";
 
-const AdminPage = () => {
+const AdminPortalPage = () => {
     const [selectedUser, setSelectedUser] = useState(null)
 
     const refetchUnverifiedUsers = () => {
@@ -19,7 +20,7 @@ const AdminPage = () => {
     }
 
     return (
-        <div className={styles.container}>
+        <Container>
             <Sidebar />
             <main className={styles.mainContent}>
                 <div className={styles.header}>
@@ -34,8 +35,8 @@ const AdminPage = () => {
                     </div>
                 </div>
             </main >
-        </div >
+        </Container>
     )
 }
 
-export default AdminPage
+export default AdminPortalPage
