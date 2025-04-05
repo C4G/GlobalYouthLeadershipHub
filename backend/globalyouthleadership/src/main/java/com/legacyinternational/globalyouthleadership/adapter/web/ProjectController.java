@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -106,7 +107,9 @@ public class ProjectController {
     public ResponseEntity<List<ProjectResponse>> getAllProjects() {
         try {
             List<Project> allProjects = projectService.getAllProjects();
-            List<ProjectResponse> projectResponses = allProjects.stream().map(project -> ProjectResponse.builder()
+            List<ProjectResponse> projectResponses = allProjects.stream()
+                    .sorted(Comparator.comparing(Project::getUpdatedAt).reversed())
+                    .map(project -> ProjectResponse.builder()
                     .id(project.getId())
                     .name(project.getName())
                     .projectOwner(project.getProjectOwner())
