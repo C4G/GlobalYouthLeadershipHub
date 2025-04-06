@@ -1,8 +1,7 @@
 import { API } from "@/constants/env";
 import { getJWTToken } from "@/hooks/auth";
 
-const customFetcher = async (path, method, signal = null, data) => {
-    // TODO - might foresee some caching synchronization issue, will check when our get API is up
+const customFetcher = async (path, method, signal = null, data, raw = false) => {
     const parsedUserJwtToken = getJWTToken()
     const bearerToken = parsedUserJwtToken?.token || ""
 
@@ -15,14 +14,20 @@ const customFetcher = async (path, method, signal = null, data) => {
         const options = {
             headers: {
                 "Content-Type": "application/json",
-                ...bearerToken ? { 'Authorization': `Bearer ${bearerToken}` } : {}
+                ...bearerToken ? { 'Authorization': `Bearer ${bearerToken}` } : {},
             },
             method: method,
             signal: signal,
         };
 
         if (["POST", "PUT", "PATCH"].includes(method) && data) {
-            options.body = JSON.stringify(data)
+            const isFormData = data instanceof FormData
+            options.body = isFormData ? data : JSON.stringify(data);
+
+            // Deleted "Content-Type" because it is defaulted to "application/json"
+            if (isFormData && options.headers["Content-Type"]) {
+                delete options.headers["Content-Type"];
+            }
         }
 
         const response = await fetch(`${API}${path}`, options)
@@ -35,7 +40,8 @@ const customFetcher = async (path, method, signal = null, data) => {
             */
             throw new Error(errorResponse.error || JSON.stringify(errorResponse) || "Something went wrong");
         }
-        return await response.json();
+
+        return raw ? response : await response.json();
     } catch (error) {
         console.error(error)
         // throw error so that you react-query can handle callback for onError 
