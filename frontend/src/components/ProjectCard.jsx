@@ -32,6 +32,8 @@ const ProjectCard = ({ project }) => {
                     <img
                         className={styles.photo}
                         src={imageUrl || "/project_fallback.jpeg"}
+                        // to handle on first render where this it is showing broken image
+                        onError={(e) => (e.currentTarget.src = "/project_fallback.jpeg")}
                     />
                 }
             </div>
