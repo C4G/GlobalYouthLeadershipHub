@@ -6,8 +6,11 @@ import customFetcher from "@/services/api";
 
 const CreateProject = ({ onClose }) => {
   const [projectName, setProjectName] = useState("");
-  const [projectText, setProjectText] = useState("");
-  const [image, setImage] = useState(null);
+  const [projectDesc, setProjectDesc] = useState("");
+  // handle the actual file for upload
+  const [imageFile, setImageFile] = useState(null);
+  // handle the file for image preview on frontend
+  const [imageFilePreview, setImageFilePreview] = useState(null);
 
   const [error, setError] = useState("");
 
@@ -18,15 +21,29 @@ const CreateProject = ({ onClose }) => {
   })
 
   const handleImageChange = (event) => {
-    // TODO - to decide on whether to do some file and size validation
-    const file = event.target.files[0];
-    if (file) {
-      const newImageURL = URL.createObjectURL(file)
-      setImage(newImageURL);
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB (in bytes)
 
-      // This is to prevent memory leaks
-      return () => URL.revokeObjectURL(newImageURL);
+    const file = event.target.files[0];
+
+    if (!file) {
+      setError("No file selected.");
+      return;
     }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setError("File Size is above 10MB")
+      return
+    }
+
+    // store image file for upload
+    setImageFile(file)
+
+    // create a blob so that it can be used to preview the image
+    const newImagePreviewURL = URL.createObjectURL(file)
+    setImageFilePreview(newImagePreviewURL);
+
+    // This is to prevent memory leaks
+    return () => URL.revokeObjectURL(newImagePreviewURL);
   };
 
   const handleSubmitProject = () => {
@@ -35,27 +52,29 @@ const CreateProject = ({ onClose }) => {
       return;
     }
 
-    if (projectText.trim() === "") {
+    if (projectDesc.trim() === "") {
       setError("Please enter post content");
       return;
     }
 
-    // TODO - to decided whether to make it optional
-    if (!image) {
+    if (!imageFile) {
       setError("Please upload an image");
       return;
     }
 
     setError("")
 
+    const projectFormData = new FormData()
     const projectData = {
-      userId: 1,
       name: projectName,
-      description: projectText,
-      weblinkLink: image.replace("blob:", "")
+      description: projectDesc,
+      file: imageFile
     }
+    Object.
+      entries(projectData).
+      forEach(([key, value]) => projectFormData.append(key, value))
 
-    mutation.mutate(projectData)
+    mutation.mutate(projectFormData)
   };
 
   return (
@@ -66,24 +85,24 @@ const CreateProject = ({ onClose }) => {
         <input
           type="text"
           className={styles.inputField}
-          placeholder="Enter project title"
+          placeholder="Enter title of your project"
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
         />
 
         <textarea
           className={styles.textInput}
-          placeholder="What's on your mind?"
-          value={projectText}
-          onChange={(e) => setProjectText(e.target.value)}
+          placeholder="Describe your project — What is it about? Include your goals, achievements, or current progress."
+          value={projectDesc}
+          onChange={(e) => setProjectDesc(e.target.value)}
         />
 
         <label className={styles.fileInputLabel}>
           <input type="file" accept="image/*" onChange={handleImageChange} />
         </label>
 
-        {image && (
-          <img src={image} alt="Preview" className={styles.previewImage} />
+        {imageFilePreview && (
+          <img src={imageFilePreview} alt="Preview" className={styles.previewImage} />
         )}
 
         {error && (
