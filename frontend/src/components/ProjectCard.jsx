@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom"
 import styles from "@/styles/components/ProjectCard.module.css"
 import { truncateOwnerName, dateStringToLocaleString } from "@/utils/utils"
 import { useGetProjectImageById } from "@/hooks/projects"
+import ThrashIcon from "@/components/icons/ThrashIcon"
+import ArrowIcon from "@/components/icons/ArrowIcon"
 
 const ProjectCard = ({ project }) => {
     const navigate = useNavigate()
@@ -13,8 +15,12 @@ const ProjectCard = ({ project }) => {
         navigate(`/projects/${id}/posts`)
     }
 
+    const handleDelete = (id) => {
+        console.log('post deleted', id)
+    }
+
     return (
-        <div className={styles.projectCard} onClick={() => onLinkToPost(id)}>
+        <div className={styles.projectCard}>
             <div className={styles.projectHeader}>
                 <div className={styles.avatar} aria-hidden="true">
                     {truncateOwnerName(projectOwner)}
@@ -22,6 +28,15 @@ const ProjectCard = ({ project }) => {
 
                 <div className={styles.projectInfo}>
                     <h2 className={styles.projectName}>{name}</h2>
+                </div>
+
+                <div className={styles.projectActionButtons}>
+                    <button className={styles.deleteButton} onClick={() => handleDelete(id)}>
+                        <ThrashIcon />
+                    </button>
+                    <button className={styles.arrowButton} onClick={() => onLinkToPost(id)}>
+                        <ArrowIcon />
+                    </button>
                 </div>
             </div>
 

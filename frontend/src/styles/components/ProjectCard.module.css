@@ -37,6 +37,27 @@
   font-weight: bold;
 }
 
+.projectActionButtons {
+  gap: 8px;
+  margin-left: auto;
+  align-items: center;
+}
+
+.arrowButton,
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #888;
+  transition: color 0.2s ease;
+}
+
+.arrowButton:hover,
+.deleteButton:hover {
+  color: #000;
+}
+
 .projectContent {
   width: 80%;
   padding: 0% 10%;
