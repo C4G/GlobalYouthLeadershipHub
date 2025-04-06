@@ -12,7 +12,7 @@ const ProjectCard = ({ project }) => {
     const { data: imageUrl, isLoading: isImageLoading } = useGetProjectImageById(projectImageUrl);
 
     const onLinkToPost = (id) => {
-        navigate(`/projects/${id}/posts`)
+        navigate(`/projects/${id}/posts`, { state: { name } })
     }
 
     const handleDelete = (id) => {
