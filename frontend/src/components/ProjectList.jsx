@@ -15,14 +15,11 @@ const ProjectList = ({ projects, isLoading }) => {
     return (
         <>
             {projects.length === 0 && <EmptyList text={"No Projects Found"} />}
-            {projects.
-                // TODO - temporary as this should be sort by createdAt
-                sort((a, b) => b.id - a.id).
-                map(project => {
-                    return (
-                        <ProjectCard key={project.id} project={project} />
-                    )
-                })}
+            {projects.map(project => {
+                return (
+                    <ProjectCard key={project.id} project={project} />
+                )
+            })}
         </>
     )
 }

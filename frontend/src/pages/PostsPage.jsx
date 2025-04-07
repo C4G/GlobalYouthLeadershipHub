@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
 import CreatePost from "@/components/CreatePost";
 import PostList from "@/components/PostList";
@@ -7,12 +7,15 @@ import Container from "@/components/Container";
 import styles from "@/styles/pages/PostsPage.module.css";
 
 const PostsPage = () => {
-  const [posts, setPosts] = useState([]);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const { projectId } = useParams();
+  const location = useLocation()
+  const projectName = location.state.name
+
   // TODO - to revise once API is up
+  const { projectId } = useParams();
   console.log("pId", projectId);
 
+  const [posts, setPosts] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
   const handleCloseModal = () => {
     setModalOpen(false);
   };
@@ -27,8 +30,7 @@ const PostsPage = () => {
       <main className={styles.mainContent}>
         {/* TODO - to enable once API is wire up */}
         {isModalOpen && <CreatePost onClose={handleCloseModal} onCreate={handleCreatePost} />}
-        {/* TODO - to enable once API is wire up */}
-        <h2>Project Name To Be Displayed Here</h2>
+        <h2>{projectName}</h2>
         <PostList posts={posts} />
       </main>
     </Container>
