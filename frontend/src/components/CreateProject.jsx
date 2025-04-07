@@ -101,6 +101,10 @@ const CreateProject = ({ onClose }) => {
           <input type="file" accept="image/*" onChange={handleImageChange} />
         </label>
 
+        <label className={styles.fileSizeLabel}>
+          <p>File size should not exceed 10MB</p>
+        </label>
+
         {imageFilePreview && (
           <img src={imageFilePreview} alt="Preview" className={styles.previewImage} />
         )}
