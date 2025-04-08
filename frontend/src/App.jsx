@@ -7,6 +7,7 @@ import ProjectsPage from "@/pages/ProjectsPage";
 import AdminPortalPage from "@/pages/AdminPortalPage";
 import MyProjectPage from "@/pages/MyProjectPage";
 import PostsPage from "@/pages/PostsPage";
+import PostPage from "@/pages/PostPage";
 import { ProtectedAdminRoute, ProtectedRoutes } from "@/components/ProtectedRoutes";
 import { useJWTToken, useSyncLocalStorage } from "@/hooks/auth";
 
@@ -42,6 +43,12 @@ function App() {
         <Route path="/projects/:projectId/posts" element={
           <ProtectedRoutes>
             <PostsPage />
+          </ProtectedRoutes>}
+        />
+
+        <Route path="/projects/:projectId/posts/:postId" element={
+          <ProtectedRoutes>
+            <PostPage />
           </ProtectedRoutes>}
         />
 

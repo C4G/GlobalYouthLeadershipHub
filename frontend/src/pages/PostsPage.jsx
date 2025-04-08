@@ -5,10 +5,11 @@ import CreatePost from "@/components/CreatePost";
 import PostList from "@/components/PostList";
 import Container from "@/components/Container";
 import styles from "@/styles/pages/PostsPage.module.css";
+import CreatePostIcon from "@/components/icons/CreatePostIcon";
 
 const PostsPage = () => {
-  const location = useLocation()
-  const projectName = location.state.name
+  const location = useLocation();
+  const projectName = location.state.name;
 
   // TODO - to revise once API is up
   const { projectId } = useParams();
@@ -26,11 +27,29 @@ const PostsPage = () => {
 
   return (
     <Container>
-      <Sidebar isPostsPage={true} setModalOpen={setModalOpen} />
+      <Sidebar setModalOpen={setModalOpen} />
       <main className={styles.mainContent}>
-        {/* TODO - to enable once API is wire up */}
-        {isModalOpen && <CreatePost onClose={handleCloseModal} onCreate={handleCreatePost} />}
-        <h2>{projectName}</h2>
+        <div className={styles.headerRow}>
+          {/* TODO - to enable once API is wire up */}
+          {isModalOpen && (
+            <CreatePost
+              onClose={handleCloseModal}
+              onCreate={handleCreatePost}
+            />
+          )}
+          <div className={styles.actionRow}>
+            <button
+              onClick={() => {
+                setModalOpen(true);
+              }}
+              className={styles.navListButton}
+            >
+              <CreatePostIcon /> Create Post
+            </button>
+          </div>
+
+          <h2>{projectName}</h2>
+        </div>
         <PostList posts={posts} />
       </main>
     </Container>
