@@ -50,6 +50,14 @@
   margin-bottom: 10px;
 }
 
+.fileSizeLabel {
+  p {
+    font-size: 12px;
+    color: grey;
+    margin: 0;
+  }
+}
+
 .previewImage {
   width: 100%;
   max-height: 200px;

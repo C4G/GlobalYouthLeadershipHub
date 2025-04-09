@@ -18,6 +18,8 @@ const CreatePost = ({ onClose, onCreate }) => {
   // })
 
     const handleImageChange = (event) => {
+      const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB (in bytes)
+
         // TODO - to decide on whether to do some file and size validation
         const file = event.target.files[0];
         if (file) {
@@ -28,6 +30,12 @@ const CreatePost = ({ onClose, onCreate }) => {
           return () => URL.revokeObjectURL(newImageURL);
         }
       };
+
+      // TODO - limit image size
+      // if (file.size > MAX_FILE_SIZE) {
+      //   setError("File Size is above 10MB")
+      //   return
+      // }
     
       const handleSubmitPost = () => {
         if (postName.trim() === "") {
@@ -75,13 +83,17 @@ const CreatePost = ({ onClose, onCreate }) => {
 
         <textarea
           className={styles.textInput}
-          placeholder="What's on your mind?"
+          placeholder="What’s on your mind? Share updates, milestones, challenges, or anything else about your project."
           value={postText}
           onChange={(e) => setPostText(e.target.value)}
         />
 
         <label className={styles.fileInputLabel}>
           <input type="file" accept="image/*" onChange={handleImageChange} />
+        </label>
+
+        <label className={styles.fileSizeLabel}>
+          <p>File size should not exceed 10MB</p>
         </label>
 
         {image && (

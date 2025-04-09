@@ -1,0 +1,13 @@
+.mainContent {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column;
+    padding: 20px;
+    row-gap: 10px;
+  }
+  
+  @media (max-width: 767px) {
+    .mainContent {
+      width: 90%;
+    }
+  }

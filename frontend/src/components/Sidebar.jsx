@@ -13,11 +13,7 @@ import LogoutIcon from "@/components/icons/LogoutIcon";
 import { useJWTToken, useRemoveJWTToken } from "@/hooks/auth";
 import AdminIcon from "@/components/icons/AdminIcon";
 
-const Sidebar = ({
-  setModalOpen,
-  isLandingPage = false,
-  isPostsPage = false,
-}) => {
+const Sidebar = ({ setModalOpen, isLandingPage = false }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   // Check for admin access to render admin page component
@@ -60,18 +56,6 @@ const Sidebar = ({
                 className={styles.navListButton}
               >
                 <CreateProjectIcon /> Create Project
-              </button>
-            </li>
-          ) : isPostsPage ? (
-            <li>
-              <button
-                onClick={() => {
-                  setIsOpen(false);
-                  setModalOpen(true);
-                }}
-                className={styles.navListButton}
-              >
-                <CreatePostIcon /> Create Post
               </button>
             </li>
           ) : null}

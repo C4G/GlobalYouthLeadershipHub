@@ -9,6 +9,14 @@
   padding: 20px;
 }
 
+.clickableCard {
+  cursor: pointer;
+}
+
+.staticCard {
+  cursor: default;
+}
+
 .postHeader {
   display: flex;
   align-items: center;
@@ -34,6 +42,22 @@
   margin: 0;
   font-size: 18px;
   font-weight: bold;
+}
+
+.postActionButtons {
+  gap: 8px;
+  margin-left: auto;
+  align-items: center;
+}
+
+.arrowButton,
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #888;
+  transition: color 0.2s ease;
 }
 
 .postContent {
