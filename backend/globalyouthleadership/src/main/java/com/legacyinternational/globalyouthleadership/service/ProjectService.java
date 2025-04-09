@@ -1,6 +1,6 @@
 package com.legacyinternational.globalyouthleadership.service;
 
-import com.legacyinternational.globalyouthleadership.adapter.web.ProjectRequest;
+import com.legacyinternational.globalyouthleadership.adapter.web.models.ProjectRequest;
 import com.legacyinternational.globalyouthleadership.service.project.Project;
 
 import java.util.List;

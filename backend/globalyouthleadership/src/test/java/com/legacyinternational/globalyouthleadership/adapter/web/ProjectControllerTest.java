@@ -1,5 +1,7 @@
 package com.legacyinternational.globalyouthleadership.adapter.web;
 
+import com.legacyinternational.globalyouthleadership.adapter.web.models.ProjectRequest;
+import com.legacyinternational.globalyouthleadership.adapter.web.models.ProjectResponse;
 import com.legacyinternational.globalyouthleadership.service.project.Project;
 import com.legacyinternational.globalyouthleadership.service.project.ProjectServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

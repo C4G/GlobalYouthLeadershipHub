@@ -1,4 +1,4 @@
-package com.legacyinternational.globalyouthleadership.adapter.web;
+package com.legacyinternational.globalyouthleadership.adapter.web.models;
 
 import lombok.Builder;
 import lombok.Getter;

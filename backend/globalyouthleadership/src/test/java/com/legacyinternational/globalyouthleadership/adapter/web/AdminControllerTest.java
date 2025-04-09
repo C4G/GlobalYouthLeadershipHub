@@ -1,6 +1,8 @@
 package com.legacyinternational.globalyouthleadership.adapter.web;
 
+import com.legacyinternational.globalyouthleadership.adapter.web.models.ApiResponse;
 import com.legacyinternational.globalyouthleadership.adapter.web.models.UserResponse;
+import com.legacyinternational.globalyouthleadership.adapter.web.models.VerifyRequest;
 import com.legacyinternational.globalyouthleadership.service.UserService;
 import com.legacyinternational.globalyouthleadership.service.user.Role;
 import com.legacyinternational.globalyouthleadership.service.user.User;

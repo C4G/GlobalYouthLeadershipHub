@@ -3,6 +3,8 @@ package com.legacyinternational.globalyouthleadership.adapter.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.legacyinternational.globalyouthleadership.adapter.auth.LoginRequest;
 import com.legacyinternational.globalyouthleadership.adapter.auth.RegisterRequest;
+import com.legacyinternational.globalyouthleadership.adapter.web.models.ApiResponse;
+import com.legacyinternational.globalyouthleadership.adapter.web.models.VerifyRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

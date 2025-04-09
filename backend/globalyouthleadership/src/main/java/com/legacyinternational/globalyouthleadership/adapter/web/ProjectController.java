@@ -1,11 +1,18 @@
 package com.legacyinternational.globalyouthleadership.adapter.web;
 
+import com.legacyinternational.globalyouthleadership.adapter.web.models.*;
+import com.legacyinternational.globalyouthleadership.infrastructure.repositories.PostImageRepository;
+import com.legacyinternational.globalyouthleadership.service.post.PostImage;
+import com.legacyinternational.globalyouthleadership.service.project.PostServiceImpl;
 import com.legacyinternational.globalyouthleadership.service.project.Project;
 import com.legacyinternational.globalyouthleadership.service.project.ProjectServiceImpl;
+import com.legacyinternational.globalyouthleadership.service.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,9 +29,14 @@ import static org.springframework.http.MediaType.*;
 @RequestMapping("/api/projects")
 public class ProjectController {
     private final ProjectServiceImpl projectService;
+    private final PostServiceImpl postService;
+    private final PostImageRepository postImageRepository;
 
-    public ProjectController(ProjectServiceImpl projectService) {
+    @Autowired
+    public ProjectController(ProjectServiceImpl projectService, PostServiceImpl postService, PostImageRepository postImageRepository) {
         this.projectService = projectService;
+        this.postService = postService;
+        this.postImageRepository = postImageRepository;
     }
 
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
@@ -41,6 +53,7 @@ public class ProjectController {
                 .build();
         try {
             ProjectRequest.validateInput(projectRequest);
+            String fullName = ((User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal()).getFullName();
             String email = principal.getName();
             projectRequest.setProjectOwner(email);
 
@@ -48,7 +61,7 @@ public class ProjectController {
             ProjectResponse projectResponse = ProjectResponse.builder()
                     .id(project.getId())
                     .name(project.getName())
-                    .projectOwner(project.getProjectOwner())
+                    .projectOwner(fullName)
                     .description(project.getDescription())
                     .projectImageUrl(String.format("/projects/%s/image", project.getId()))
                     .createdDate(String.valueOf(project.getCreatedAt()))
@@ -125,5 +138,75 @@ public class ProjectController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving all projects");
         }
+    }
+
+    @PostMapping(value = "/{projectId}/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostResponse> createPost(@PathVariable Long projectId,
+                                                   @RequestParam("content") String content,
+                                                   @RequestParam(value = "images", required = false) List<MultipartFile> images,
+                                                   Principal principal) {
+        return ResponseEntity.ok(postService.createPost(projectId, content, images, principal.getName()));
+    }
+
+    @GetMapping("/{projectId}/posts")
+    public ResponseEntity<List<PostResponse>> getPostsByProject(@PathVariable Long projectId) {
+        return ResponseEntity.ok(postService.getPostsByProject(projectId));
+    }
+
+    @GetMapping("/{projectId}/posts/{postId}")
+    public ResponseEntity<PostDetailResponse> getPostDetails(@PathVariable Long postId) {
+        return ResponseEntity.ok(postService.getPostDetails(postId));
+    }
+
+    @GetMapping("/{projectId}/posts/{postId}/images/{imageId}")
+    public ResponseEntity<byte[]> getPostImage(@PathVariable Long projectId, @PathVariable Long postId, @PathVariable Long imageId) {
+        if (Objects.isNull(projectId) || projectId.intValue() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid project id");
+        }
+        if (Objects.isNull(postId) || postId.intValue() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid post id");
+        }
+        if (Objects.isNull(imageId) || imageId.intValue() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid image id");
+        }
+
+        Optional<Project> projectById = projectService.getProjectById(projectId);
+        if (projectById.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found");
+        }
+        Project project = projectById.get();
+
+        List<PostResponse> postsByProject = postService.getPostsByProject(projectId);
+        if (postsByProject.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
+        }
+        Optional<PostImage> image = postImageRepository.findById(imageId);
+        if (image.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Image not found");
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(image.get().getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + image.get().getFileName() + "\"")
+                .body(image.get().getFileData());
+
+    }
+
+    @PostMapping("/{projectId}/posts/{postId}/like")
+    public ResponseEntity<ApiResponse> likePost(@PathVariable Long postId, Principal principal) {
+        postService.likePost(postId, principal.getName());
+        return ResponseEntity.ok(new ApiResponse("Post liked successfully"));
+    }
+
+    @PostMapping("/{projectId}/posts/{postId}/comments")
+    public ResponseEntity<ApiResponse> addComment(@PathVariable Long postId,
+                                                  @RequestBody CommentRequest request,
+                                                  Principal principal) {
+        postService.addComment(postId, principal.getName(), request);
+        return ResponseEntity.ok(new ApiResponse("Comment added successfully"));
+    }
+
+    @GetMapping("/{projectId}/posts/{postId}/comments")
+    public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long postId) {
+        return ResponseEntity.ok(postService.getComments(postId));
     }
 }

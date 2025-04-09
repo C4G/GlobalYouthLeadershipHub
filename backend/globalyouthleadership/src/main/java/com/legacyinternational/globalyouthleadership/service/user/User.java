@@ -87,5 +87,9 @@ public class User implements UserDetails {
         return this.role != Role.PENDING_REVIEW;
     }
 
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
     public boolean isAdmin() { return this.role == Role.ADMIN; }
 }

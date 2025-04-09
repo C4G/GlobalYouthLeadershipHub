@@ -1,6 +1,6 @@
 package com.legacyinternational.globalyouthleadership.service.project;
 
-import com.legacyinternational.globalyouthleadership.adapter.web.ProjectRequest;
+import com.legacyinternational.globalyouthleadership.adapter.web.models.ProjectRequest;
 import com.legacyinternational.globalyouthleadership.infrastructure.repositories.ProjectRepository;
 import com.legacyinternational.globalyouthleadership.service.ProjectService;
 import org.springframework.http.HttpStatus;
