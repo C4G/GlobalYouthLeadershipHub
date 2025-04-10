@@ -77,4 +77,18 @@ public class AdminController {
         );
     }
 
+    @PostMapping("/users/promote-to-admin")
+    public ResponseEntity<ApiResponse> promoteToAdmin(@RequestBody PromoteRequest promoteRequest) {
+        if (Objects.isNull(promoteRequest.getEmail()) || promoteRequest.getEmail().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is required");
+        }
+        if (!EmailValidator.getInstance().isValid(promoteRequest.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
+        }
+
+        User promotedUser = userService.promoteToAdmin(promoteRequest.getEmail());
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message(promotedUser.getEmail() + " has been promoted to admin")
+                .build());
+    }
 }

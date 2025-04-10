@@ -11,4 +11,5 @@ public interface UserService {
     List<User> getAllUsers();
     List<User> getUsersByRole(Role role);
     User verifyUser(String email);
+    User promoteToAdmin(String email);
 }
