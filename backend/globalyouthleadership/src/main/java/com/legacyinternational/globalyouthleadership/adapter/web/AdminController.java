@@ -77,4 +77,34 @@ public class AdminController {
         );
     }
 
+    @PostMapping("/users/promote-to-admin")
+    public ResponseEntity<ApiResponse> promoteToAdmin(@RequestBody PromoteRequest promoteRequest) {
+        if (Objects.isNull(promoteRequest.getEmail()) || promoteRequest.getEmail().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is required");
+        }
+        if (!EmailValidator.getInstance().isValid(promoteRequest.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
+        }
+
+        User promotedUser = userService.promoteToAdmin(promoteRequest.getEmail());
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message(promotedUser.getEmail() + " has been promoted to admin")
+                .build());
+    }
+
+    @PostMapping("/users/demote-to-user")
+    public ResponseEntity<ApiResponse> demoteToUser(@RequestBody DemoteRequest demoteRequest) {
+        if (Objects.isNull(demoteRequest.getEmail()) || demoteRequest.getEmail().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is required");
+        }
+        if (!EmailValidator.getInstance().isValid(demoteRequest.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
+        }
+
+        User demotedUser = userService.demoteToUser(demoteRequest.getEmail());
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message(demotedUser.getEmail() + " has been demoted to regular user")
+                .build());
+    }
+
 }

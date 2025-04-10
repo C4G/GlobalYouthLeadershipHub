@@ -133,4 +133,82 @@ class AdminControllerTest {
         assertEquals("Invalid email", exception.getReason());
         verify(userService, never()).verifyUser(anyString());
     }
+
+    @Test
+    void promoteToAdmin_SuccessfulPromotion_ReturnsOk() {
+        PromoteRequest promoteRequest = new PromoteRequest("user1@example.com");
+        User promotedUser = new User(1L, "user1@example.com", "username", "password", "User", "One", LocalDateTime.MAX, Role.ADMIN);
+        when(userService.promoteToAdmin(promoteRequest.getEmail())).thenReturn(promotedUser);
+
+        ResponseEntity<ApiResponse> response = adminController.promoteToAdmin(promoteRequest);
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals("user1@example.com has been promoted to admin", response.getBody().getMessage());
+        verify(userService, times(1)).promoteToAdmin("user1@example.com");
+    }
+
+    @Test
+    void promoteToAdmin_NullEmail_ThrowsBadRequest() {
+        PromoteRequest promoteRequest = new PromoteRequest(null);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            adminController.promoteToAdmin(promoteRequest);
+        });
+
+        assertEquals(400, exception.getStatusCode().value());
+        assertEquals("Email is required", exception.getReason());
+        verify(userService, never()).promoteToAdmin(anyString());
+    }
+
+    @Test
+    void promoteToAdmin_InvalidEmail_ThrowsBadRequest() {
+        PromoteRequest promoteRequest = new PromoteRequest("invalid-email");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            adminController.promoteToAdmin(promoteRequest);
+        });
+
+        assertEquals(400, exception.getStatusCode().value());
+        assertEquals("Invalid email", exception.getReason());
+        verify(userService, never()).promoteToAdmin(anyString());
+    }
+
+    @Test
+    void demoteToUser_SuccessfulDemotion_ReturnsOk() {
+        DemoteRequest demoteRequest = new DemoteRequest("admin@example.com");
+        User demotedUser = new User(3L, "admin@example.com", "username", "password", "Admin", "User", LocalDateTime.MAX, Role.USER);
+        when(userService.demoteToUser(demoteRequest.getEmail())).thenReturn(demotedUser);
+
+        ResponseEntity<ApiResponse> response = adminController.demoteToUser(demoteRequest);
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals("admin@example.com has been demoted to regular user", response.getBody().getMessage());
+        verify(userService, times(1)).demoteToUser("admin@example.com");
+    }
+
+    @Test
+    void demoteToUser_NullEmail_ThrowsBadRequest() {
+        DemoteRequest demoteRequest = new DemoteRequest(null);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            adminController.demoteToUser(demoteRequest);
+        });
+
+        assertEquals(400, exception.getStatusCode().value());
+        assertEquals("Email is required", exception.getReason());
+        verify(userService, never()).demoteToUser(anyString());
+    }
+
+    @Test
+    void demoteToUser_InvalidEmail_ThrowsBadRequest() {
+        DemoteRequest demoteRequest = new DemoteRequest("invalid-email");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            adminController.demoteToUser(demoteRequest);
+        });
+
+        assertEquals(400, exception.getStatusCode().value());
+        assertEquals("Invalid email", exception.getReason());
+        verify(userService, never()).demoteToUser(anyString());
+    }
 }

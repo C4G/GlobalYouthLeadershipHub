@@ -109,4 +109,47 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Verification of User failed");
     }
+
+    @Override
+    public User promoteToAdmin(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with email: " + email);
+        }
+
+        User userToPromote = optionalUser.get();
+        if (userToPromote.getRole() == Role.ADMIN) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is already an admin");
+        }
+
+        userToPromote.setRole(Role.ADMIN);
+        User updatedUser = userRepository.save(userToPromote);
+
+        if (updatedUser.getRole().equals(Role.ADMIN)) {
+            return updatedUser;
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Promotion to admin failed");
+    }
+
+    @Override
+    public User demoteToUser(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with email: " + email);
+        }
+
+        User userToDemote = optionalUser.get();
+        if (userToDemote.getRole() == Role.USER) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is already a regular user");
+        }
+
+        userToDemote.setRole(Role.USER);
+        User updatedUser = userRepository.save(userToDemote);
+
+        if (updatedUser.getRole().equals(Role.USER)) {
+            return updatedUser;
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Demotion to user failed");
+    }
+
 }
