@@ -1,5 +1,6 @@
 package com.legacyinternational.globalyouthleadership.service.project;
 
+import com.legacyinternational.globalyouthleadership.service.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,8 +19,9 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "project_owner")
-    private String projectOwner;
+    @ManyToOne
+    @JoinColumn(name = "project_owner", referencedColumnName = "email", nullable = false)
+    private User projectOwner;
 
     @Column(nullable = false, name = "name")
     private String name;
