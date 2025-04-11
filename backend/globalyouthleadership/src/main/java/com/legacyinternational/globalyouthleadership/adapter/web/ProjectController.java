@@ -2,6 +2,7 @@ package com.legacyinternational.globalyouthleadership.adapter.web;
 
 import com.legacyinternational.globalyouthleadership.adapter.web.models.*;
 import com.legacyinternational.globalyouthleadership.infrastructure.repositories.PostImageRepository;
+import com.legacyinternational.globalyouthleadership.infrastructure.repositories.UserRepository;
 import com.legacyinternational.globalyouthleadership.service.post.PostImage;
 import com.legacyinternational.globalyouthleadership.service.project.PostServiceImpl;
 import com.legacyinternational.globalyouthleadership.service.project.Project;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,12 +31,14 @@ public class ProjectController {
     private final ProjectServiceImpl projectService;
     private final PostServiceImpl postService;
     private final PostImageRepository postImageRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ProjectController(ProjectServiceImpl projectService, PostServiceImpl postService, PostImageRepository postImageRepository) {
+    public ProjectController(ProjectServiceImpl projectService, PostServiceImpl postService, PostImageRepository postImageRepository, UserRepository userRepository) {
         this.projectService = projectService;
         this.postService = postService;
         this.postImageRepository = postImageRepository;
+        this.userRepository = userRepository;
     }
 
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
@@ -53,15 +55,15 @@ public class ProjectController {
                 .build();
         try {
             ProjectRequest.validateInput(projectRequest);
-            String fullName = ((User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal()).getFullName();
-            String email = principal.getName();
-            projectRequest.setProjectOwner(email);
+            User user = userRepository.findByEmail(principal.getName()).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+
+            projectRequest.setProjectOwner(user.getEmail());
 
             Project project = projectService.createProject(projectRequest);
             ProjectResponse projectResponse = ProjectResponse.builder()
                     .id(project.getId())
                     .name(project.getName())
-                    .projectOwner(fullName)
+                    .projectOwner(project.getProjectOwner().getFullName())
                     .description(project.getDescription())
                     .projectImageUrl(String.format("/projects/%s/image", project.getId()))
                     .createdDate(String.valueOf(project.getCreatedAt()))

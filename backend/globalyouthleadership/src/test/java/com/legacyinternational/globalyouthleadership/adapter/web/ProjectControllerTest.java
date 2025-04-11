@@ -2,8 +2,12 @@ package com.legacyinternational.globalyouthleadership.adapter.web;
 
 import com.legacyinternational.globalyouthleadership.adapter.web.models.ProjectRequest;
 import com.legacyinternational.globalyouthleadership.adapter.web.models.ProjectResponse;
+import com.legacyinternational.globalyouthleadership.infrastructure.repositories.PostImageRepository;
+import com.legacyinternational.globalyouthleadership.infrastructure.repositories.UserRepository;
+import com.legacyinternational.globalyouthleadership.service.project.PostServiceImpl;
 import com.legacyinternational.globalyouthleadership.service.project.Project;
 import com.legacyinternational.globalyouthleadership.service.project.ProjectServiceImpl;
+import com.legacyinternational.globalyouthleadership.service.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +29,17 @@ public class ProjectControllerTest {
     private ProjectServiceImpl projectService;
     private ProjectController controller;
     private Principal mockPrincipal;
+    private PostServiceImpl postService;
+    private PostImageRepository postImageService;
+    private UserRepository userRepository;
 
     @BeforeEach
     void setup() {
         projectService = mock(ProjectServiceImpl.class);
-        controller = new ProjectController(projectService);
+        postService = mock(PostServiceImpl.class);
+        postImageService = mock(PostImageRepository.class);
+        userRepository = mock(UserRepository.class);
+        controller = new ProjectController(projectService, postService, postImageService, userRepository);
         mockPrincipal = () -> "testuser@example.com";
     }
 
@@ -41,13 +51,14 @@ public class ProjectControllerTest {
         mockProject.setId(1L);
         mockProject.setName("Test Project");
         mockProject.setDescription("A cool project");
-        mockProject.setProjectOwner("testuser@example.com");
+        mockProject.setProjectOwner(User.builder().email("testuser@example.com").build());
         mockProject.setCreatedBy("testuser@example.com");
         mockProject.setCreatedAt(LocalDateTime.now());
         mockProject.setUpdatedBy("testuser@example.com");
         mockProject.setUpdatedAt(LocalDateTime.now());
 
         when(projectService.createProject(any())).thenReturn(mockProject);
+        when(userRepository.findByEmail(eq("testuser@example.com"))).thenReturn(Optional.of(User.builder().email("testuser@example.com").build()));
 
         ResponseEntity<ProjectResponse> response = controller.createProject("Test Project", "A cool project", file, mockPrincipal);
 
@@ -104,7 +115,7 @@ public class ProjectControllerTest {
         project.setId(1L);
         project.setName("Test Project");
         project.setDescription("A test");
-        project.setProjectOwner("testuser@example.com");
+        project.setProjectOwner(User.builder().email("testuser@example.com").build());
         project.setCreatedBy("testuser@example.com");
         project.setCreatedAt(LocalDateTime.now());
         project.setUpdatedBy("testuser@example.com");
@@ -133,7 +144,7 @@ public class ProjectControllerTest {
         Project p1 = new Project();
         p1.setId(1L);
         p1.setName("Proj1");
-        p1.setProjectOwner("testuser@example.com");
+        p1.setProjectOwner(User.builder().email("testuser@example.com").build());
         p1.setCreatedAt(LocalDateTime.now());
         p1.setCreatedBy("admin");
         p1.setUpdatedAt(LocalDateTime.now());

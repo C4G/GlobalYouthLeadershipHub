@@ -2,6 +2,8 @@ package com.legacyinternational.globalyouthleadership.service.project;
 
 import com.legacyinternational.globalyouthleadership.adapter.web.models.ProjectRequest;
 import com.legacyinternational.globalyouthleadership.infrastructure.repositories.ProjectRepository;
+import com.legacyinternational.globalyouthleadership.infrastructure.repositories.UserRepository;
+import com.legacyinternational.globalyouthleadership.service.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
@@ -21,16 +23,20 @@ public class ProjectServiceImplTest {
 
     private ProjectRepository projectRepository;
     private ProjectServiceImpl projectService;
+    private UserRepository userRepository;
 
     @BeforeEach
     void setup() {
         projectRepository = mock(ProjectRepository.class);
-        projectService = new ProjectServiceImpl(projectRepository);
+        userRepository = mock(UserRepository.class);
+        projectService = new ProjectServiceImpl(projectRepository, userRepository);
     }
 
     @Test
     void testCreateProjectSuccess() throws IOException {
         MockMultipartFile file = new MockMultipartFile("file", "test.jpg", "image/jpeg", "data".getBytes());
+
+        when(userRepository.findByEmail(eq("user@example.com"))).thenReturn(Optional.of(User.builder().email("user@example.com").build()));
 
         ProjectRequest request = ProjectRequest.builder()
                 .name("Test Project")
@@ -43,7 +49,7 @@ public class ProjectServiceImplTest {
                 .id(1L)
                 .name(request.getName())
                 .description(request.getDescription())
-                .projectOwner(request.getProjectOwner())
+                .projectOwner(User.builder().email(request.getProjectOwner()).build())
                 .fileName(file.getOriginalFilename())
                 .fileType(file.getContentType())
                 .fileData(file.getBytes())
@@ -58,7 +64,7 @@ public class ProjectServiceImplTest {
         Project result = projectService.createProject(request);
 
         assertThat(result.getName()).isEqualTo("Test Project");
-        assertThat(result.getProjectOwner()).isEqualTo("user@example.com");
+        assertThat(result.getProjectOwner().getEmail()).isEqualTo("user@example.com");
         verify(projectRepository).save(any(Project.class));
     }
 
