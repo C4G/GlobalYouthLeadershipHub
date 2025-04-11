@@ -19,6 +19,7 @@ const ProjectsPage = () => {
     <Container>
       <Sidebar isLandingPage={true} setModalOpen={setModalOpen} />
       <main className={styles.mainContent}>
+        <h1 className={styles.header}>Project Dashboard</h1>
         {isModalOpen && (
           <CreateProject
             onClose={handleCloseModal}
