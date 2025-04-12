@@ -7,7 +7,6 @@ import NavIcon from "@/components/icons/NavIcon";
 import CloseIcon from "@/components/icons/CloseIcon";
 import HomeIcon from "@/components/icons/HomeIcon";
 import CreateProjectIcon from "@/components/icons/CreateProjectIcon";
-import CreatePostIcon from "@/components/icons/CreatePostIcon";
 import MyPageIcon from "@/components/icons/MyPageIcon";
 import LogoutIcon from "@/components/icons/LogoutIcon";
 import { useJWTToken, useRemoveJWTToken } from "@/hooks/auth";
@@ -38,6 +37,7 @@ const Sidebar = ({ setModalOpen, isLandingPage = false }) => {
 
       <nav>
         <ul className={`${styles.navList} ${isOpen ? styles.open : ""}`}>
+
           <li>
             <button
               onClick={() => navigate("/landing")}
@@ -46,7 +46,8 @@ const Sidebar = ({ setModalOpen, isLandingPage = false }) => {
               <HomeIcon /> Home
             </button>
           </li>
-          {isLandingPage ? (
+
+          {isLandingPage && (
             <li>
               <button
                 onClick={() => {
@@ -58,7 +59,8 @@ const Sidebar = ({ setModalOpen, isLandingPage = false }) => {
                 <CreateProjectIcon /> Create Project
               </button>
             </li>
-          ) : null}
+          )}
+
           <li>
             <button
               onClick={() => navigate("/project")}
@@ -67,6 +69,7 @@ const Sidebar = ({ setModalOpen, isLandingPage = false }) => {
               <MyPageIcon /> My Page
             </button>
           </li>
+
           {adminAccess && (
             <li>
               <button
@@ -78,6 +81,7 @@ const Sidebar = ({ setModalOpen, isLandingPage = false }) => {
               </button>
             </li>
           )}
+
           <li>
             <button className={styles.navListButton} onClick={handleLogout}>
               <LogoutIcon /> Logout
