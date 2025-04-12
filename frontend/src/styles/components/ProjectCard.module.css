@@ -12,7 +12,6 @@
   .projectCard {
     width: calc(50% - 10px);
   }
-
 }
 
 .projectHeader {
@@ -116,7 +115,6 @@
 .projectUpdatedAt {
   margin-top: auto;
   width: 80%;
-  padding: 0% 10%;
+  padding: 2% 10%;
   font-size: 16px;
-  text-align: left;
 }
