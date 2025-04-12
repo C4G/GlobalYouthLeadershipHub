@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
@@ -7,49 +8,58 @@ import Container from "@/components/Container";
 import styles from "@/styles/pages/PostsPage.module.css";
 import CreatePostIcon from "@/components/icons/CreatePostIcon";
 
-const PostsPage = () => {
-  const location = useLocation();
-  const projectName = location.state.name;
+const PostsPageHeader = ({ projectName, handleOpenModal, isModalOpen, handleCloseModal, handleCreatePost }) => {
+  return (
+    <div className={styles.headerPostsRow}>
+      <h2 className={styles.headerPostsTitle}>{projectName}</h2>
+      <div className={styles.actionPostsRow}>
+        <button
+          onClick={handleOpenModal}
+          className={styles.createPostButton}
+        >
+          <CreatePostIcon /> Create Post
+        </button>
+      </div>
+      {isModalOpen && (
+        <CreatePost
+          onClose={handleCloseModal}
+          onCreate={handleCreatePost}
+        />
+      )}
+    </div>
+  )
+}
 
+const PostsPage = () => {
   // TODO - to revise once API is up
+  const { state } = useLocation();
+  const projectName = state?.name ?? "Untitled Project Name";
   const { projectId } = useParams();
   console.log("pId", projectId);
 
-  const [posts, setPosts] = useState([]);
+  // Handle Modal Logic
   const [isModalOpen, setModalOpen] = useState(false);
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+  const handleOpenModal = () => setModalOpen(true)
+  const handleCloseModal = () => setModalOpen(false);
 
+  // Handle Posts Logic
+  // TODO - to revise once API is up
+  const [posts, setPosts] = useState([]);
   const handleCreatePost = (newPost) => {
     setPosts((prev) => [...prev, newPost]);
   };
 
   return (
     <Container>
-      <Sidebar setModalOpen={setModalOpen} />
+      <Sidebar />
       <main className={styles.mainContent}>
-        <div className={styles.headerRow}>
-          {/* TODO - to enable once API is wire up */}
-          {isModalOpen && (
-            <CreatePost
-              onClose={handleCloseModal}
-              onCreate={handleCreatePost}
-            />
-          )}
-          <div className={styles.actionRow}>
-            <button
-              onClick={() => {
-                setModalOpen(true);
-              }}
-              className={styles.navListButton}
-            >
-              <CreatePostIcon /> Create Post
-            </button>
-          </div>
-
-          <h2>{projectName}</h2>
-        </div>
+        <PostsPageHeader
+          projectName={projectName}
+          handleOpenModal={handleOpenModal}
+          isModalOpen={isModalOpen}
+          handleCloseModal={handleCloseModal}
+          handleCreatePost={handleCreatePost}
+        />
         <PostList posts={posts} />
       </main>
     </Container>
