@@ -2,19 +2,11 @@
   display: flex;
   flex-flow: column;
   width: 100%;
-  height: 100%;
+  min-height: auto;
   border-radius: 10px;
   box-sizing: border-box;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
-}
-
-.clickableCard {
-  cursor: pointer;
-}
-
-.staticCard {
-  cursor: default;
 }
 
 .postHeader {
@@ -77,59 +69,4 @@
   max-width: 80%;
   max-height: 300px;
   border-radius: 8px;
-}
-
-.postFooter {
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.reactions {
-  font-size: 16px;
-}
-
-.reactionsSvg {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.reactionsSvg svg {
-  width: 20px;
-  height: 20px;
-}
-
-.postStats {
-  margin-left: 10px;
-  font-size: 16px;
-  color: gray;
-}
-
-.actions {
-  display: flex;
-  gap: 10px;
-}
-
-.actionButton {
-  display: flex;
-  column-gap: 5px;
-  align-items: center;
-  border: none;
-  background: none;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.actionButton:hover {
-  transform: translate(1px, -1px);
-  background-color: hsl(210, 17%, 95%);
-  border-radius: 15px;
-}
-
-.liked {
-  color: silver;
-  background-color: rgb(247, 244, 239);
-  border-radius: 15px;
 }

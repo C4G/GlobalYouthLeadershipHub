@@ -1,13 +1,68 @@
 .mainContent {
-    flex-grow: 1;
-    display: flex;
-    flex-flow: column;
-    padding: 20px;
-    row-gap: 10px;
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column;
+  padding: 20px;
+  row-gap: 10px;
+}
+
+.postFooter {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.reactions {
+  font-size: 16px;
+}
+
+.reactionsSvg {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.reactionsSvg svg {
+  width: 20px;
+  height: 20px;
+}
+
+.postStats {
+  margin-left: 10px;
+  font-size: 16px;
+  color: gray;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.actionButton {
+  display: flex;
+  column-gap: 5px;
+  align-items: center;
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.actionButton:hover {
+  transform: translate(1px, -1px);
+  background-color: hsl(210, 17%, 95%);
+  border-radius: 15px;
+}
+
+.liked {
+  color: silver;
+  background-color: rgb(247, 244, 239);
+  border-radius: 15px;
+}
+
+@media (max-width: 767px) {
+  .mainContent {
+    width: 90%;
   }
-  
-  @media (max-width: 767px) {
-    .mainContent {
-      width: 90%;
-    }
-  }
+}

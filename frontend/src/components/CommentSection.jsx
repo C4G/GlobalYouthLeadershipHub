@@ -1,4 +1,4 @@
-// CommentSection.jsx
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import styles from "@/styles/components/CommentSection.module.css";
 
