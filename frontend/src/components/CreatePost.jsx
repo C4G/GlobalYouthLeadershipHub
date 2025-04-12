@@ -1,103 +1,115 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import styles from "@/styles/components/CreatePost.module.css"
-import { useMutation } from "@tanstack/react-query"
+// import { useMutation } from "@tanstack/react-query"
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB (in bytes)
 
 const CreatePost = ({ onClose, onCreate }) => {
-    const [postName, setPostName] = useState("");
-    const [postText, setPostText] = useState("");
-    const [image, setImage] = useState(null);
-  
-    const [error, setError] = useState("");
+  const [postTitle, setPostTitle] = useState("");
+  const [postDesc, setPostDesc] = useState("");
+  // handle the actual file for upload
+  const [postImage, setPostImage] = useState(null);
+  // handle the file for image preview on frontend
+  const [postImagePreview, setPostImagePreview] = useState(null);
+  const [error, setError] = useState("");
 
   // TODO - retain this for API integration
-  //   const [openForm, setOpenForm] = useState(false)
   //   const mutation = useMutation({
   //     mutationFn: async () => { },
   //     onSuccess: () => setOpenForm(prev => !prev),
   //     onError: () => { }
   // })
 
-    const handleImageChange = (event) => {
-      const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB (in bytes)
+  const handlePostImageChange = (event) => {
 
-        // TODO - to decide on whether to do some file and size validation
-        const file = event.target.files[0];
-        if (file) {
-          const newImageURL = URL.createObjectURL(file)
-          setImage(newImageURL);
-    
-          // This is to prevent memory leaks
-          return () => URL.revokeObjectURL(newImageURL);
-        }
-      };
+    const postImgFile = event.target.files[0];
+    console.log('p', postImgFile)
 
-      // TODO - limit image size
-      // if (file.size > MAX_FILE_SIZE) {
-      //   setError("File Size is above 10MB")
-      //   return
-      // }
-    
-      const handleSubmitPost = () => {
-        if (postName.trim() === "") {
-          setError("Please enter a post name");
-          return;
-        }
-    
-        if (postText.trim() === "") {
-          setError("Please enter post content");
-          return;
-        }
-    
-        // TODO - to decided whether to make it optional
-        if (!image) {
-          setError("Please upload an image");
-          return;
-        }
-    
-        setError("")
-    
-        const postData = {
-          id: Date.now(),
-          userId: 1,
-          name: postName,
-          description: postText,
-          weblinkLink: image
-        }
-    
-        onCreate(postData);
-        onClose();
-      };
+    if (!postImgFile) {
+      setError("No file selected.");
+      return;
+    }
+
+    if (postImgFile.size > MAX_FILE_SIZE) {
+      setError("File size exceeds 10MB")
+      return
+    }
+
+    // store post image file for upload
+    setPostImage(postImgFile)
+
+    // create a blob so that it can be used to preview the postImg
+    const newPostPreviewImageURL = URL.createObjectURL(postImgFile)
+    setPostImagePreview(newPostPreviewImageURL);
+
+    // This is to prevent memory leaks
+    return () => URL.revokeObjectURL(newPostPreviewImageURL);
+  };
+
+
+  const handleSubmitPost = () => {
+    if (postTitle.trim() === "") {
+      setError("Please enter a post title");
+      return;
+    }
+
+    if (postDesc.trim() === "") {
+      setError("Please enter post description");
+      return;
+    }
+
+    if (postImage && postImage.MAX_FILE_SIZE) {
+      setError("Selected post image exceeds 10MB.");
+      return;
+    }
+
+    setError("")
+
+    // TODO - to update with API integration
+    const postData = {
+      id: 1,
+      userId: 1,
+      postTitle: postTitle,
+      description: postDesc,
+      weblinkLink: postImage
+    }
+
+    onCreate(postData);
+    onClose();
+  };
 
   return (
     <div className={styles.modalOverlay}>
+
       <div className={styles.modal}>
-        <h2>Create a Post</h2>
+        <h2 className={styles.modalTitle}>Create a Post</h2>
 
         <input
           type="text"
-          className={styles.inputField}
-          placeholder="Enter post title"
-          value={postName}
-          onChange={(e) => setPostName(e.target.value)}
+          className={styles.inputPostTitleField}
+          placeholder="Enter title of a post"
+          value={postTitle}
+          onChange={(e) => setPostTitle(e.target.value)}
         />
 
         <textarea
-          className={styles.textInput}
-          placeholder="What’s on your mind? Share updates, milestones, challenges, or anything else about your project."
-          value={postText}
-          onChange={(e) => setPostText(e.target.value)}
+          className={styles.textPostDescInput}
+          placeholder="What’s on your mind? Share updates, milestones, challenges, or anything else about your project"
+          value={postDesc}
+          onChange={(e) => setPostDesc(e.target.value)}
         />
 
         <label className={styles.fileInputLabel}>
-          <input type="file" accept="image/*" onChange={handleImageChange} />
+          <input type="file" accept="image/*" onChange={handlePostImageChange} />
         </label>
 
         <label className={styles.fileSizeLabel}>
           <p>File size should not exceed 10MB</p>
         </label>
 
-        {image && (
-          <img src={image} alt="Preview" className={styles.previewImage} />
+        {postImagePreview && (
+          <img src={postImagePreview} alt="Preview" className={styles.previewImage} />
         )}
 
         {error && (

@@ -4,7 +4,7 @@ const CreatePostIcon = () => (
     width="40"
     height="40"
     fill="none"
-    viewBox="0 0 24 24"
+    viewBox="0 0 20 25"
   >
     <path
       fill="none"
