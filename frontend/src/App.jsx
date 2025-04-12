@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "@/pages/LoginPage";
 import SignUpPage from "@/pages/SignUpPage";
 import SignUpSuccessPage from "@/pages/SignUpSuccessPage";
@@ -20,53 +20,50 @@ function App() {
   const isLoggedIn = Boolean(jwtToken?.token)
 
   return (
-    <Router>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={isLoggedIn ? <Navigate to="/landing" replace /> : <LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/signup-success" element={<SignUpSuccessPage />} />
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={isLoggedIn ? <Navigate to="/landing" replace /> : <LoginPage />} />
+      <Route path="/signup" element={<SignUpPage />} />
+      <Route path="/signup-success" element={<SignUpSuccessPage />} />
 
-        {/* Login Routes */}
-        <Route path="/landing" element={
-          <ProtectedRoutes>
-            <ProjectsPage />
-          </ProtectedRoutes>}
-        />
+      {/* Login Routes */}
+      <Route path="/landing" element={
+        <ProtectedRoutes>
+          <ProjectsPage />
+        </ProtectedRoutes>}
+      />
 
-        <Route path="/project" element={
-          <ProtectedRoutes>
-            <MyProjectPage />
-          </ProtectedRoutes>}
-        />
+      <Route path="/project" element={
+        <ProtectedRoutes>
+          <MyProjectPage />
+        </ProtectedRoutes>}
+      />
 
-        <Route path="/projects/:projectId/posts" element={
-          <ProtectedRoutes>
-            <PostsPage />
-          </ProtectedRoutes>}
-        />
+      <Route path="/projects/:projectId/posts" element={
+        <ProtectedRoutes>
+          <PostsPage />
+        </ProtectedRoutes>}
+      />
 
-        <Route path="/projects/:projectId/posts/:postId" element={
-          <ProtectedRoutes>
-            <PostPage />
-          </ProtectedRoutes>}
-        />
+      <Route path="/projects/:projectId/posts/:postId" element={
+        <ProtectedRoutes>
+          <PostPage />
+        </ProtectedRoutes>}
+      />
 
-        {/* Admin Route */}
-        <Route path="/admin" element={
-          <ProtectedAdminRoute>
-            <AdminPortalPage />
-          </ProtectedAdminRoute>
-        } />
+      {/* Admin Route */}
+      <Route path="/admin" element={
+        <ProtectedAdminRoute>
+          <AdminPortalPage />
+        </ProtectedAdminRoute>
+      } />
 
-        <>
-          {/* Area for future teams working on this project to display their team homepage */}
-          {/* Please keep this route. It's fine if the link isn't displayed on any page, but kindly don't remove it permanently. Thanks!*/}
-          <Route path="/team-homepage-spr25" element={<TeamHomepageSpr25 />} />
-        </>
-
-      </Routes>
-    </Router>
+      <>
+        {/* Area for future teams working on this project to display their team homepage */}
+        {/* Please keep this route. It's fine if the link isn't displayed on any page, but kindly don't remove it permanently. Thanks!*/}
+        <Route path="/team-homepage-spr25" element={<TeamHomepageSpr25 />} />
+      </>
+    </Routes>
   );
 }
 

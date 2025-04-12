@@ -1,3 +1,4 @@
+import { BrowserRouter } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import { StrictMode } from 'react';
@@ -11,10 +12,12 @@ import Fallback from "@/components/Fallback";
 createRoot(document.getElementById("root")).render(
     <StrictMode>
         <QueryClientProvider client={queryClient}>
-            <ErrorBoundary fallback={<Fallback />}>
-                <App />
-            </ErrorBoundary>
-            {ENV === 'local' && <ReactQueryDevtools initialIsOpen={true} />}
+            <BrowserRouter>
+                <ErrorBoundary FallbackComponent={Fallback}>
+                    <App />
+                </ErrorBoundary>
+                {ENV === 'local' && <ReactQueryDevtools initialIsOpen={true} />}
+            </BrowserRouter>
         </QueryClientProvider>
     </StrictMode>
 );
