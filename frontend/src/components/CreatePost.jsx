@@ -22,14 +22,12 @@ const CreatePost = ({ onClose, onCreate }) => {
   // })
 
   const handlePostImageChange = (event) => {
-
     const postImgFile = event.target.files[0];
-    console.log('p', postImgFile)
-
-    if (!postImgFile) {
-      setError("No file selected.");
-      return;
-    }
+    // TODO - to validate the file type
+    // if (!postImgFile) {
+    //   setError("No file selected.");
+    //   return;
+    // }
 
     if (postImgFile.size > MAX_FILE_SIZE) {
       setError("File size exceeds 10MB")
