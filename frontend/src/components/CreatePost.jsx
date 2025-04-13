@@ -93,7 +93,7 @@ const CreatePost = ({ onClose, onCreate }) => {
 
         <textarea
           className={styles.textPostDescInput}
-          placeholder="What’s on your mind? Share updates, milestones, challenges, or anything else about your project"
+          placeholder="Share your journey - updates, milestones, challenges, insights, or anything that could spark connection and inspiration among your fellow alumni."
           value={postDesc}
           onChange={(e) => setPostDesc(e.target.value)}
         />
