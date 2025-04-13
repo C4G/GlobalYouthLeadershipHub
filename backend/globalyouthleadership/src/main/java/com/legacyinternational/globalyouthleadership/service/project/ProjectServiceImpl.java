@@ -1,6 +1,7 @@
 package com.legacyinternational.globalyouthleadership.service.project;
 
 import com.legacyinternational.globalyouthleadership.adapter.web.models.ProjectRequest;
+import com.legacyinternational.globalyouthleadership.infrastructure.repositories.PostRepository;
 import com.legacyinternational.globalyouthleadership.infrastructure.repositories.ProjectRepository;
 import com.legacyinternational.globalyouthleadership.infrastructure.repositories.UserRepository;
 import com.legacyinternational.globalyouthleadership.service.ProjectService;

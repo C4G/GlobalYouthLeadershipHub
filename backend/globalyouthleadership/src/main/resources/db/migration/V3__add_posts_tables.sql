@@ -2,6 +2,7 @@ CREATE TABLE `sustSch`.`posts` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `project_id` INT NOT NULL,
     `author_email` VARCHAR(255) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
     `content` TEXT NOT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `created_by` VARCHAR(255) NOT NULL,
@@ -24,7 +25,6 @@ CREATE TABLE `sustSch`.`post_likes` (
     `post_id` INT NOT NULL,
     `user_email` VARCHAR(255) NOT NULL,
     `liked_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `liked_by` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`post_id`, `user_email`),
     FOREIGN KEY (`post_id`) REFERENCES `sustSch`.`posts`(`id`),
     FOREIGN KEY (`user_email`) REFERENCES `sustSch`.`users`(`email`)

@@ -22,7 +22,4 @@ public class PostLike {
 
     @Column(name = "liked_at", nullable = false, updatable = false)
     private LocalDateTime likedAt;
-
-    @Column(name = "liked_by", nullable = false, updatable = false)
-    private String likedBy;
 }

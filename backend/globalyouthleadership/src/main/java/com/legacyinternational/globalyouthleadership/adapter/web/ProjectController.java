@@ -100,6 +100,7 @@ public class ProjectController {
         if (projectById.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found");
         }
+        List<PostResponse> posts = postService.getPostsByProject(id);
         try {
             Project project = projectById.get();
             return ResponseEntity.ok(ProjectResponse.builder()
@@ -108,6 +109,7 @@ public class ProjectController {
                     .projectOwner(project.getProjectOwner().getFullName())
                     .description(project.getDescription())
                     .projectImageUrl(String.format("/projects/%s/image", project.getId()))
+                    .postCount(posts.size())
                     .createdDate(String.valueOf(project.getCreatedAt()))
                     .createdBy(project.getCreatedBy())
                     .lastModifiedBy(project.getUpdatedBy())
@@ -130,6 +132,7 @@ public class ProjectController {
                     .projectOwner(project.getProjectOwner().getFullName())
                     .description(project.getDescription())
                     .projectImageUrl(String.format("/projects/%s/image", project.getId()))
+                    .postCount(postService.getPostsByProject(project.getId()).size())
                     .createdDate(String.valueOf(project.getCreatedAt()))
                     .createdBy(project.getCreatedBy())
                     .lastModifiedBy(project.getUpdatedBy())
@@ -144,19 +147,41 @@ public class ProjectController {
 
     @PostMapping(value = "/{projectId}/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostResponse> createPost(@PathVariable Long projectId,
+                                                   @RequestParam("title") String title,
                                                    @RequestParam("content") String content,
                                                    @RequestParam(value = "images", required = false) List<MultipartFile> images,
                                                    Principal principal) {
-        return ResponseEntity.ok(postService.createPost(projectId, content, images, principal.getName()));
+        if (Objects.isNull(projectId) || projectId.intValue() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid project id");
+        }
+        if (Objects.isNull(title) || title.trim().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid title");
+        }
+        if (Objects.isNull(content) || content.trim().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid content");
+        }
+        for (MultipartFile image : images) {
+            String type = image.getContentType();
+            if (!List.of("image/jpeg", "image/png").contains(type)) {
+                throw new IllegalArgumentException("Only JPEG and PNG formats are supported");
+            }
+        }
+        return ResponseEntity.ok(postService.createPost(projectId, content, images, title, principal.getName()));
     }
 
     @GetMapping("/{projectId}/posts")
     public ResponseEntity<List<PostResponse>> getPostsByProject(@PathVariable Long projectId) {
+        if (Objects.isNull(projectId) || projectId.intValue() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid project id");
+        }
         return ResponseEntity.ok(postService.getPostsByProject(projectId));
     }
 
     @GetMapping("/{projectId}/posts/{postId}")
     public ResponseEntity<PostDetailResponse> getPostDetails(@PathVariable Long postId) {
+        if (Objects.isNull(postId) || postId.intValue() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid project id");
+        }
         return ResponseEntity.ok(postService.getPostDetails(postId));
     }
 
@@ -176,7 +201,6 @@ public class ProjectController {
         if (projectById.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found");
         }
-        Project project = projectById.get();
 
         List<PostResponse> postsByProject = postService.getPostsByProject(projectId);
         if (postsByProject.isEmpty()) {
@@ -195,6 +219,9 @@ public class ProjectController {
 
     @PostMapping("/{projectId}/posts/{postId}/like")
     public ResponseEntity<ApiResponse> likePost(@PathVariable Long postId, Principal principal) {
+        if (Objects.isNull(postId) || postId.intValue() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid project id");
+        }
         postService.likePost(postId, principal.getName());
         return ResponseEntity.ok(new ApiResponse("Post liked successfully"));
     }
@@ -203,12 +230,19 @@ public class ProjectController {
     public ResponseEntity<ApiResponse> addComment(@PathVariable Long postId,
                                                   @RequestBody CommentRequest request,
                                                   Principal principal) {
+        if (Objects.isNull(postId) || postId.intValue() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid postId id");
+        }
+
         postService.addComment(postId, principal.getName(), request);
         return ResponseEntity.ok(new ApiResponse("Comment added successfully"));
     }
 
     @GetMapping("/{projectId}/posts/{postId}/comments")
     public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long postId) {
+        if (Objects.isNull(postId) || postId.intValue() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid postId id");
+        }
         return ResponseEntity.ok(postService.getComments(postId));
     }
 }

@@ -13,6 +13,7 @@ public class ProjectResponse {
     private String name;
     private String description;
     private String projectImageUrl;
+    private int postCount;
     private String createdBy;
     private String createdDate;
     private String lastModifiedBy;

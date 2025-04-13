@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public interface PostService {
-    PostResponse createPost(Long projectId, String content, List<MultipartFile> images, String authorEmail);
+    PostResponse createPost(Long projectId, String content, List<MultipartFile> images, String title, String authorEmail);
     List<PostResponse> getPostsByProject(Long projectId);
     PostDetailResponse getPostDetails(Long postId);
     void likePost(Long postId, String userEmail);

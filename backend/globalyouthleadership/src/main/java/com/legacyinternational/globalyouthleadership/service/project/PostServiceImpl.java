@@ -44,12 +44,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse createPost(Long projectId, String content, List<MultipartFile> images, String authorEmail) {
+    public PostResponse createPost(Long projectId, String content, List<MultipartFile> images, String title, String authorEmail) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found"));
 
         Post postToCreate = Post.builder()
                 .project(project)
+                .title(title)
                 .content(content)
                 .authorEmail(authorEmail)
                 .createdAt(LocalDateTime.now())
@@ -85,6 +86,7 @@ public class PostServiceImpl implements PostService {
 
         return PostResponse.builder()
                 .id(savedPost.getId())
+                .title(savedPost.getTitle())
                 .content(savedPost.getContent())
                 .authorEmail(savedPost.getAuthorEmail())
                 .createdAt(savedPost.getCreatedAt())
@@ -98,12 +100,14 @@ public class PostServiceImpl implements PostService {
         return postRepository.findAllByProjectIdOrderByCreatedAtDesc(projectId).stream()
                 .map(post -> PostResponse.builder()
                         .id(post.getId())
+                        .title(post.getTitle())
                         .content(post.getContent())
                         .authorEmail(post.getAuthorEmail())
                         .createdAt(post.getCreatedAt())
                         .likeCount((int) postLikeRepository.findAll().stream()
                                 .filter(like -> like.getPostId().equals(post.getId()))
                                 .count())
+                        .commentCount(postCommentRepository.countAllByPostId(post.getId()))
                         .imageUrls(postImageRepository.findByPostId(post.getId()).stream()
                                 .map(image -> String.format("/api/posts/%d/images/%d", post.getId(), image.getId()))
                                 .toList())
@@ -125,13 +129,17 @@ public class PostServiceImpl implements PostService {
         int likeCount = (int) postLikeRepository.findAll().stream()
                 .filter(like -> like.getPostId().equals(postId)).count();
 
+        int commentCount = postCommentRepository.countAllByPostId(post.getId());
+
         return PostDetailResponse.builder()
                 .id(post.getId())
+                .title(post.getTitle())
                 .content(post.getContent())
                 .authorEmail(post.getAuthorEmail())
                 .createdAt(post.getCreatedAt())
                 .imageUrls(imageUrls)
                 .likeCount(likeCount)
+                .commentCount(commentCount)
                 .comments(comments)
                 .build();
     }
@@ -156,8 +164,9 @@ public class PostServiceImpl implements PostService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
         }
 
+        // Already liked, idempotent
         if (postLikeRepository.existsByPostIdAndUserEmail(postId, userEmail)) {
-            return; // Already liked, idempotent
+            return;
         }
 
         PostLike like = new PostLike();
@@ -177,6 +186,9 @@ public class PostServiceImpl implements PostService {
         comment.setUserEmail(userEmail);
         comment.setContent(request.getContent());
         comment.setCreatedAt(LocalDateTime.now());
+        comment.setCreatedBy(userEmail);
+        comment.setUpdatedAt(LocalDateTime.now());
+        comment.setUpdatedBy(userEmail);
 
         if (request.getParentCommentId() != null) {
             PostComment parent = postCommentRepository.findById(request.getParentCommentId())

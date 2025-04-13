@@ -1,9 +1,9 @@
 package com.legacyinternational.globalyouthleadership.adapter.web;
 
-import com.legacyinternational.globalyouthleadership.adapter.web.models.ProjectRequest;
-import com.legacyinternational.globalyouthleadership.adapter.web.models.ProjectResponse;
+import com.legacyinternational.globalyouthleadership.adapter.web.models.*;
 import com.legacyinternational.globalyouthleadership.infrastructure.repositories.PostImageRepository;
 import com.legacyinternational.globalyouthleadership.infrastructure.repositories.UserRepository;
+import com.legacyinternational.globalyouthleadership.service.post.PostImage;
 import com.legacyinternational.globalyouthleadership.service.project.PostServiceImpl;
 import com.legacyinternational.globalyouthleadership.service.project.Project;
 import com.legacyinternational.globalyouthleadership.service.project.ProjectServiceImpl;
@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,16 +31,16 @@ public class ProjectControllerTest {
     private ProjectController controller;
     private Principal mockPrincipal;
     private PostServiceImpl postService;
-    private PostImageRepository postImageService;
+    private PostImageRepository postImageRepository;
     private UserRepository userRepository;
 
     @BeforeEach
     void setup() {
         projectService = mock(ProjectServiceImpl.class);
         postService = mock(PostServiceImpl.class);
-        postImageService = mock(PostImageRepository.class);
+        postImageRepository = mock(PostImageRepository.class);
         userRepository = mock(UserRepository.class);
-        controller = new ProjectController(projectService, postService, postImageService, userRepository);
+        controller = new ProjectController(projectService, postService, postImageRepository, userRepository);
         mockPrincipal = () -> "testuser@example.com";
     }
 
@@ -165,5 +166,148 @@ public class ProjectControllerTest {
             controller.getAllProjects();
         });
         assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Test
+    void createPost_validInput_returnsResponse() {
+        MockMultipartFile file = new MockMultipartFile("image", "test.jpg", "image/jpeg", "data".getBytes());
+        PostResponse response = PostResponse.builder().id(1L).build();
+        when(postService.createPost(1L, "content", List.of(file), "title", "test@example.com")).thenReturn(response);
+
+        ResponseEntity<PostResponse> result = controller.createPost(1L, "title", "content", List.of(file), mockPrincipal);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    void createPost_invalidProjectId_throwsException() {
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> controller.createPost(null, "title", "content", List.of(), mockPrincipal));
+        assertThat(ex.getReason()).contains("Invalid project id");
+    }
+
+    @Test
+    void createPost_invalidTitle_throwsException() {
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> controller.createPost(1L, "  ", "content", List.of(), mockPrincipal));
+        assertThat(ex.getReason()).contains("Invalid title");
+    }
+
+    @Test
+    void createPost_invalidContent_throwsException() {
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> controller.createPost(1L, "title", "", List.of(), mockPrincipal));
+        assertThat(ex.getReason()).contains("Invalid content");
+    }
+
+    @Test
+    void createPost_invalidImageType_throwsException() {
+        MockMultipartFile file = new MockMultipartFile("image", "bad.gif", "image/gif", "data".getBytes());
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> controller.createPost(1L, "title", "content", List.of(file), mockPrincipal));
+        assertThat(ex.getMessage()).contains("Only JPEG and PNG formats are supported");
+    }
+
+    @Test
+    void getPostsByProject_valid_returnsList() {
+        List<PostResponse> posts = List.of(PostResponse.builder().id(1L).build());
+        when(postService.getPostsByProject(1L)).thenReturn(posts);
+        ResponseEntity<List<PostResponse>> result = controller.getPostsByProject(1L);
+        assertThat(result.getBody().size()).isEqualTo(1);
+    }
+
+    @Test
+    void getPostsByProject_invalid_throwsException() {
+        assertThrows(ResponseStatusException.class, () -> controller.getPostsByProject(null));
+    }
+
+    @Test
+    void getPostDetails_valid_returnsDetails() {
+        PostDetailResponse details = PostDetailResponse.builder().id(1L).build();
+        when(postService.getPostDetails(1L)).thenReturn(details);
+        ResponseEntity<PostDetailResponse> result = controller.getPostDetails(1L);
+        assertThat(result.getBody().getId()).isEqualTo(1L);
+    }
+
+    @Test
+    void getPostDetails_invalidId_throwsException() {
+        assertThrows(ResponseStatusException.class, () -> controller.getPostDetails(-1L));
+    }
+
+    @Test
+    void getPostImage_valid_returnsBytes() {
+        Project project = new Project();
+        PostImage image = PostImage.builder()
+                .id(1L)
+                .post(null)
+                .fileName("name.png")
+                .fileType("image/png")
+                .fileData("data".getBytes())
+                .build();
+        when(projectService.getProjectById(1L)).thenReturn(Optional.of(project));
+        when(postService.getPostsByProject(1L)).thenReturn(List.of(PostResponse.builder().id(1L).build()));
+        when(postImageRepository.findById(1L)).thenReturn(Optional.of(image));
+
+        ResponseEntity<byte[]> result = controller.getPostImage(1L, 1L, 1L);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getBody()).isNotNull();
+    }
+
+    @Test
+    void getPostImage_invalidParams_throwException() {
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(null, 1L, 1L));
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, -1L, 1L));
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, -1L));
+    }
+
+    @Test
+    void getPostImage_notFoundProjectOrPostOrImage_throws() {
+        when(projectService.getProjectById(1L)).thenReturn(Optional.empty());
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, 1L));
+
+        when(projectService.getProjectById(1L)).thenReturn(Optional.of(new Project()));
+        when(postService.getPostsByProject(1L)).thenReturn(Collections.emptyList());
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, 1L));
+
+        when(postService.getPostsByProject(1L)).thenReturn(List.of(PostResponse.builder().id(1L).build()));
+        when(postImageRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, 1L));
+    }
+
+    @Test
+    void likePost_valid_returnsSuccess() {
+        ResponseEntity<ApiResponse> result = controller.likePost(1L, mockPrincipal);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        verify(postService).likePost(1L, "testuser@example.com");
+    }
+
+    @Test
+    void likePost_invalidId_throwsException() {
+        assertThrows(ResponseStatusException.class, () -> controller.likePost(null, mockPrincipal));
+    }
+
+    @Test
+    void addComment_valid_success() {
+        CommentRequest request = CommentRequest.builder().content("test").build();
+        ResponseEntity<ApiResponse> result = controller.addComment(1L, request, mockPrincipal);
+        assertThat(result.getBody().getMessage()).contains("Comment added");
+        verify(postService).addComment(1L, "testuser@example.com", request);
+    }
+
+    @Test
+    void addComment_invalidId_throws() {
+        assertThrows(ResponseStatusException.class, () -> controller.addComment(null, new CommentRequest(), mockPrincipal));
+    }
+
+    @Test
+    void getComments_valid_returnsComments() {
+        List<CommentResponse> list = List.of(CommentResponse.builder().id(1L).build());
+        when(postService.getComments(1L)).thenReturn(list);
+        ResponseEntity<List<CommentResponse>> result = controller.getComments(1L);
+        assertThat(result.getBody().size()).isEqualTo(1);
+    }
+
+    @Test
+    void getComments_invalidId_throws() {
+        assertThrows(ResponseStatusException.class, () -> controller.getComments(null));
     }
 }

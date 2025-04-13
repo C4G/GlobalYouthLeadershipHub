@@ -12,10 +12,12 @@ import java.util.List;
 @Builder
 public class PostDetailResponse {
     private Long id;
+    private String title;
     private String content;
     private String authorEmail;
     private LocalDateTime createdAt;
     private List<String> imageUrls;
     private int likeCount;
+    private int commentCount;
     private List<CommentResponse> comments;
 }

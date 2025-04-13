@@ -25,6 +25,9 @@ public class Post {
     @Column(name = "author_email", nullable = false)
     private String authorEmail;
 
+    @Column(name = "title", nullable = false)
+    private String title;
+
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
