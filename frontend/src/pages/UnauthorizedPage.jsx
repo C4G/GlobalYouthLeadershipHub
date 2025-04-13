@@ -13,8 +13,8 @@ const UnauthorizedPage = () => {
 
     return (
         <div className={styles.container}>
-            <h1>Sorry you are not yet verified 🚫</h1>
-            <p>Kindly inform your admin to approve your account 🙇‍♂️</p>
+            <h1>Your account is currently pending verification</h1>
+            <p>Please contact your administrator for approval if this persists after 3-5 days 🙇‍♂️</p>
             <button className={styles.logoutButton} onClick={handleLogout}>
                 Click to return to Login Page
             </button>
