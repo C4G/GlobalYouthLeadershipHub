@@ -30,7 +30,7 @@ const LoginPage = () => {
       </div>
     </div>
     <a href="/team-homepage-spr25" className={styles.homepageLink}>Team Homepage</a>
-    <a href="https://drive.google.com/file/d/1GjxNukWve8xrKWZeyArVAr41asHU_kfX/view?usp=drive_link"
+    <a href="https://gtvault-my.sharepoint.com/:v:/g/personal/mrysavy3_gatech_edu/EXvn5gfyoZlOjmqIRuN9fEkBkf5DzySRUwzRGpeu7-CGXA?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=At0cSM"
         className={styles.homepageLink}
     >
       P6-Demo
