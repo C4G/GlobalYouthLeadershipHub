@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useJWTToken } from "@/hooks/auth"
 import { Navigate } from "react-router-dom"
 
-// eslint-disable-next-line react/prop-types
+
 export const ProtectedRoutes = ({ children }) => {
     const { data: jwtToken, isLoading } = useJWTToken()
 
@@ -15,13 +16,17 @@ export const ProtectedRoutes = ({ children }) => {
         return <Navigate to='/' replace />
     }
 
+    const isVerified = jwtToken?.isVerified === true
+    if (!isVerified) {
+        return <Navigate to='/unauthorized' replace />
+    }
+
     return (
         children
     )
 }
 
 
-// eslint-disable-next-line react/prop-types
 export const ProtectedAdminRoute = ({ children }) => {
     const { data: jwtToken, isLoading } = useJWTToken()
 

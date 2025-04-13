@@ -8,9 +8,9 @@ import AdminPortalPage from "@/pages/AdminPortalPage";
 import MyProjectPage from "@/pages/MyProjectPage";
 import PostsPage from "@/pages/PostsPage";
 import PostPage from "@/pages/PostPage";
+import UnauthorizedPage from "@/pages/UnauthorizedPage";
 import { ProtectedAdminRoute, ProtectedRoutes } from "@/components/ProtectedRoutes";
 import { useJWTToken, useSyncLocalStorage } from "@/hooks/auth";
-
 import "@/styles/App.css";
 
 function App() {
@@ -25,6 +25,8 @@ function App() {
       <Route path="/" element={isLoggedIn ? <Navigate to="/landing" replace /> : <LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/signup-success" element={<SignUpSuccessPage />} />
+      {/* isLoggedIn is needed as to prevent from unverified user from re-accessing the unauthorized page with back button */}
+      <Route path="/unauthorized" element={isLoggedIn ? <UnauthorizedPage /> : <Navigate to="/" replace />} />
 
       {/* Login Routes */}
       <Route path="/landing" element={
