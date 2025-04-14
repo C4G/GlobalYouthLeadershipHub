@@ -57,4 +57,8 @@ public class ProjectServiceImpl implements ProjectService {
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
+
+    public List<Project> getProjectsByCreatedBy(String userEmail) {
+        return projectRepository.findAllByCreatedByOrderByUpdatedAtDesc(userEmail);
+    }
 }

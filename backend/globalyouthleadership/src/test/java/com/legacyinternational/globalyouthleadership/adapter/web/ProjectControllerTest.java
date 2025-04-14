@@ -310,4 +310,61 @@ public class ProjectControllerTest {
     void getComments_invalidId_throws() {
         assertThrows(ResponseStatusException.class, () -> controller.getComments(null));
     }
+
+    @Test
+    void testGetProjectsByCurrentUser_returnsUserProjects() {
+        Project project = new Project();
+        project.setId(1L);
+        project.setName("User Project");
+        project.setDescription("By current user");
+        project.setProjectOwner(User.builder().firstName("Test").lastName("User").build());
+        project.setCreatedAt(LocalDateTime.now());
+        project.setUpdatedAt(LocalDateTime.now());
+        project.setCreatedBy("testuser@example.com");
+        project.setUpdatedBy("testuser@example.com");
+
+        when(projectService.getProjectsByCreatedBy("testuser@example.com"))
+                .thenReturn(List.of(project));
+        when(postService.getPostsByProject(1L))
+                .thenReturn(List.of(PostResponse.builder().id(101L).build()));
+
+        ResponseEntity<List<ProjectResponse>> response = controller.getProjectsByCurrentUser(mockPrincipal);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().size()).isEqualTo(1);
+        assertThat(response.getBody().get(0).getName()).isEqualTo("User Project");
+        assertThat(response.getBody().get(0).getPostCount()).isEqualTo(1);
+    }
+
+    @Test
+    void testGetPostsByCurrentUser_returnsUserPosts() {
+        PostResponse post1 = PostResponse.builder()
+                .id(1L)
+                .title("First Post")
+                .content("First post content")
+                .authorEmail("testuser@example.com")
+                .createdAt(LocalDateTime.now())
+                .likeCount(0)
+                .build();
+
+        PostResponse post2 = PostResponse.builder()
+                .id(2L)
+                .title("Second Post")
+                .content("Second post content")
+                .authorEmail("testuser@example.com")
+                .createdAt(LocalDateTime.now())
+                .likeCount(2)
+                .build();
+
+        when(postService.getPostsByUser("testuser@example.com")).thenReturn(List.of(post1, post2));
+
+        ResponseEntity<List<PostResponse>> response = controller.getPostsByCurrentUser(mockPrincipal);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().size()).isEqualTo(2);
+        assertThat(response.getBody().get(0).getTitle()).isEqualTo("First Post");
+        assertThat(response.getBody().get(1).getTitle()).isEqualTo("Second Post");
+    }
 }

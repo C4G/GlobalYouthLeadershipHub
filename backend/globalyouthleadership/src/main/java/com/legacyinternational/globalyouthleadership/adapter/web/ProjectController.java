@@ -245,4 +245,34 @@ public class ProjectController {
         }
         return ResponseEntity.ok(postService.getComments(postId));
     }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<ProjectResponse>> getProjectsByCurrentUser(Principal principal) {
+        String userEmail = principal.getName();
+        List<Project> userProjects = projectService.getProjectsByCreatedBy(userEmail);
+
+        List<ProjectResponse> projectResponses = userProjects.stream()
+                .map(project -> ProjectResponse.builder()
+                        .id(project.getId())
+                        .name(project.getName())
+                        .projectOwner(project.getProjectOwner().getFullName())
+                        .description(project.getDescription())
+                        .projectImageUrl(String.format("/projects/%s/image", project.getId()))
+                        .postCount(postService.getPostsByProject(project.getId()).size())
+                        .createdDate(String.valueOf(project.getCreatedAt()))
+                        .createdBy(project.getCreatedBy())
+                        .lastModifiedBy(project.getUpdatedBy())
+                        .lastModifiedDate(String.valueOf(project.getUpdatedAt()))
+                        .build())
+                .toList();
+
+        return ResponseEntity.ok(projectResponses);
+    }
+
+    @GetMapping("/user/posts")
+    public ResponseEntity<List<PostResponse>> getPostsByCurrentUser(Principal principal) {
+        String authorEmail = principal.getName();
+        List<PostResponse> userPosts = postService.getPostsByUser(authorEmail);
+        return ResponseEntity.ok(userPosts);
+    }
 }
