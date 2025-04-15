@@ -20,8 +20,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PostServiceImpl implements PostService {
@@ -31,18 +31,20 @@ public class PostServiceImpl implements PostService {
     private final PostLikeRepository postLikeRepository;
     private final PostCommentRepository postCommentRepository;
     private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public PostServiceImpl(PostRepository postRepository,
                            PostImageRepository postImageRepository,
                            PostLikeRepository postLikeRepository,
                            PostCommentRepository postCommentRepository,
-                           ProjectRepository projectRepository) {
+                           ProjectRepository projectRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
         this.postImageRepository = postImageRepository;
         this.postLikeRepository = postLikeRepository;
         this.postCommentRepository = postCommentRepository;
         this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -50,11 +52,16 @@ public class PostServiceImpl implements PostService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found"));
 
+        Optional<User> user = userRepository.findByEmail(authorEmail);
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+        }
+
         Post postToCreate = Post.builder()
                 .project(project)
                 .title(title)
                 .content(content)
-                .authorEmail(authorEmail)
+                .postOwner(user.get())
                 .createdAt(LocalDateTime.now())
                 .createdBy(authorEmail)
                 .updatedAt(LocalDateTime.now())
@@ -90,7 +97,7 @@ public class PostServiceImpl implements PostService {
                 .id(savedPost.getId())
                 .title(savedPost.getTitle())
                 .content(savedPost.getContent())
-                .authorEmail(savedPost.getAuthorEmail())
+                .postOwner(savedPost.getPostOwner().getFullName())
                 .createdAt(savedPost.getCreatedAt())
                 .imageUrls(imageUrls)
                 .likeCount(0)
@@ -104,7 +111,7 @@ public class PostServiceImpl implements PostService {
                         .id(post.getId())
                         .title(post.getTitle())
                         .content(post.getContent())
-                        .authorEmail(post.getAuthorEmail())
+                        .postOwner(post.getPostOwner().getFullName())
                         .createdAt(post.getCreatedAt())
                         .likeCount((int) postLikeRepository.findAll().stream()
                                 .filter(like -> like.getPostId().equals(post.getId()))
@@ -137,7 +144,7 @@ public class PostServiceImpl implements PostService {
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .authorEmail(post.getAuthorEmail())
+                .postOwner(post.getPostOwner().getFullName())
                 .createdAt(post.getCreatedAt())
                 .imageUrls(imageUrls)
                 .likeCount(likeCount)
@@ -153,7 +160,7 @@ public class PostServiceImpl implements PostService {
                 .map(c -> CommentResponse.builder()
                         .id(c.getId())
                         .content(c.getContent())
-                        .userEmail(c.getUserEmail())
+                        .commentOwner(c.getPostOwner().getFullName())
                         .createdAt(c.getCreatedAt())
                         .replies(getNestedComments(allComments, c.getId()))
                         .build())
@@ -183,9 +190,14 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
 
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+        }
+
         PostComment comment = new PostComment();
         comment.setPost(post);
-        comment.setUserEmail(userEmail);
+        comment.setPostOwner(user.get());
         comment.setContent(request.getContent());
         comment.setCreatedAt(LocalDateTime.now());
         comment.setCreatedBy(userEmail);
@@ -208,14 +220,14 @@ public class PostServiceImpl implements PostService {
     }
 
     public List<PostResponse> getPostsByUser(String authorEmail) {
-        List<Post> posts = postRepository.findAllByAuthorEmailOrderByCreatedAtDesc(authorEmail);
+        List<Post> posts = postRepository.findAllByPostOwner_EmailOrderByCreatedAtDesc(authorEmail);
 
         return posts.stream()
                 .map(post -> PostResponse.builder()
                         .id(post.getId())
                         .title(post.getTitle())
                         .content(post.getContent())
-                        .authorEmail(post.getAuthorEmail())
+                        .postOwner(post.getPostOwner().getFullName())
                         .createdAt(post.getCreatedAt())
                         .likeCount((int) postLikeRepository.findAll().stream()
                                 .filter(like -> like.getPostId().equals(post.getId()))

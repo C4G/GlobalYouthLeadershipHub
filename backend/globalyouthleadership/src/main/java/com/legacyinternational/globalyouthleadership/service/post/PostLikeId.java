@@ -1,7 +1,10 @@
 package com.legacyinternational.globalyouthleadership.service.post;
 
+import com.legacyinternational.globalyouthleadership.service.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
 

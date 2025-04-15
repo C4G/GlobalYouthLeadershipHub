@@ -13,7 +13,7 @@ import java.util.List;
 public class CommentResponse {
     private Long id;
     private String content;
-    private String userEmail;
+    private String commentOwner;
     private LocalDateTime createdAt;
     private List<CommentResponse> replies;
 }

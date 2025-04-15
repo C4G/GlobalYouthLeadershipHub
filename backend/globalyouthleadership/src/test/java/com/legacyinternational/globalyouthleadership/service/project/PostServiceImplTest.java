@@ -8,6 +8,7 @@ import com.legacyinternational.globalyouthleadership.infrastructure.repositories
 import com.legacyinternational.globalyouthleadership.service.post.Post;
 import com.legacyinternational.globalyouthleadership.service.post.PostComment;
 import com.legacyinternational.globalyouthleadership.service.post.PostImage;
+import com.legacyinternational.globalyouthleadership.service.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,6 +34,7 @@ public class PostServiceImplTest {
     @Mock private PostRepository postRepository;
     @Mock private PostImageRepository postImageRepository;
     @Mock private PostLikeRepository postLikeRepository;
+    @Mock private UserRepository userRepository;
     @Mock
     private PostCommentRepository postCommentRepository;
 
@@ -42,6 +44,7 @@ public class PostServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(User.builder().firstName("test").lastName("test").email("test@gmail.com").build()));
     }
 
     @Test
@@ -107,7 +110,7 @@ public class PostServiceImplTest {
         post.setId(1L);
         post.setTitle("title");
         post.setContent("c");
-        post.setAuthorEmail("e");
+        post.setPostOwner(User.builder().firstName("test").lastName("test").email("test@gmail.com").build());
         post.setCreatedAt(LocalDateTime.now());
 
         when(postRepository.findAllByProjectIdOrderByCreatedAtDesc(1L)).thenReturn(List.of(post));
@@ -126,7 +129,7 @@ public class PostServiceImplTest {
         post.setId(1L);
         post.setTitle("title");
         post.setContent("c");
-        post.setAuthorEmail("e");
+        post.setPostOwner(User.builder().firstName("test").lastName("test").email("test@gmail.com").build());
         post.setCreatedAt(LocalDateTime.now());
 
         when(postRepository.findById(1L)).thenReturn(Optional.of(post));
@@ -222,7 +225,7 @@ public class PostServiceImplTest {
         comment.setId(1L);
         comment.setContent("hello");
         comment.setCreatedAt(LocalDateTime.now());
-        comment.setUserEmail("a");
+        comment.setPostOwner(User.builder().firstName("test").lastName("test").email("test@gmail.com").build());
 
         when(postCommentRepository.findByPostIdOrderByCreatedAtAsc(1L)).thenReturn(List.of(comment));
 

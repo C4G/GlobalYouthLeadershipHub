@@ -1,5 +1,6 @@
 package com.legacyinternational.globalyouthleadership.service.post;
 
+import com.legacyinternational.globalyouthleadership.service.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 

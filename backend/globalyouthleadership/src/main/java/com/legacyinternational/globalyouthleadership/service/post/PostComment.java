@@ -1,5 +1,6 @@
 package com.legacyinternational.globalyouthleadership.service.post;
 
+import com.legacyinternational.globalyouthleadership.service.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,8 +25,9 @@ public class PostComment {
     @JoinColumn(name = "parent_comment_id")
     private PostComment parentComment;
 
-    @Column(name = "user_email", nullable = false)
-    private String userEmail;
+    @ManyToOne
+    @JoinColumn(name = "user_email", referencedColumnName = "email", nullable = false)
+    private User postOwner;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;

@@ -14,7 +14,7 @@ public class PostResponse {
     private Long id;
     private String title;
     private String content;
-    private String authorEmail;
+    private String postOwner;
     private LocalDateTime createdAt;
     private List<String> imageUrls;
     private int likeCount;

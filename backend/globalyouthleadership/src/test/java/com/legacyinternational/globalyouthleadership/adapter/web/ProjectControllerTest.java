@@ -343,7 +343,7 @@ public class ProjectControllerTest {
                 .id(1L)
                 .title("First Post")
                 .content("First post content")
-                .authorEmail("testuser@example.com")
+                .postOwner("testuser@example.com")
                 .createdAt(LocalDateTime.now())
                 .likeCount(0)
                 .build();
@@ -352,7 +352,7 @@ public class ProjectControllerTest {
                 .id(2L)
                 .title("Second Post")
                 .content("Second post content")
-                .authorEmail("testuser@example.com")
+                .postOwner("testuser@example.com")
                 .createdAt(LocalDateTime.now())
                 .likeCount(2)
                 .build();

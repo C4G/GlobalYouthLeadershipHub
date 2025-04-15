@@ -1,6 +1,7 @@
 package com.legacyinternational.globalyouthleadership.service.post;
 
 import com.legacyinternational.globalyouthleadership.service.project.Project;
+import com.legacyinternational.globalyouthleadership.service.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,8 +23,9 @@ public class Post {
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    @Column(name = "author_email", nullable = false)
-    private String authorEmail;
+    @ManyToOne
+    @JoinColumn(name = "author_email", referencedColumnName = "email", nullable = false)
+    private User postOwner;
 
     @Column(name = "title", nullable = false)
     private String title;
