@@ -1,48 +1,46 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import styles from "@/styles/components/CreatePost.module.css"
-// import { useMutation } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
+import customFetcher from "@/services/api";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB (in bytes)
 
-const CreatePost = ({ onClose, onCreate }) => {
+const CreatePost = ({ projectId, onClose }) => {
   const [postTitle, setPostTitle] = useState("");
   const [postDesc, setPostDesc] = useState("");
   // handle the actual file for upload
-  const [postImage, setPostImage] = useState(null);
+  const [postImages, setPostImages] = useState([]);
   // handle the file for image preview on frontend
-  const [postImagePreview, setPostImagePreview] = useState(null);
+  const [postImagesPreview, setPostImagesPreview] = useState([]);
   const [error, setError] = useState("");
 
-  // TODO - retain this for API integration
-  //   const mutation = useMutation({
-  //     mutationFn: async () => { },
-  //     onSuccess: () => setOpenForm(prev => !prev),
-  //     onError: () => { }
-  // })
+  const mutation = useMutation({
+    mutationFn: async (postFormData) => await customFetcher(`/projects/${projectId}/posts`, "POST", null, postFormData),
+    onSuccess: () => onClose(),
+    onError: (error) => setError(error.message || "Failed to Create Post")
+  })
 
   const handlePostImageChange = (event) => {
-    const postImgFile = event.target.files[0];
-    // TODO - to validate the file type
-    // if (!postImgFile) {
-    //   setError("No file selected.");
-    //   return;
-    // }
+    const postImgFiles = Array.from(event.target.files)
+    const validMimeTypes = ["image/jpeg", "image/png"]
 
-    if (postImgFile.size > MAX_FILE_SIZE) {
-      setError("File size exceeds 10MB")
+    const validPostImgFiles = postImgFiles.filter(file => validMimeTypes.includes(file.type) && file.size <= MAX_FILE_SIZE)
+    if (validPostImgFiles.length != postImgFiles.length) {
+      setError("Files must be JPEG/PNG and under the size of 10MB")
       return
     }
+    // store post image files for upload
+    setPostImages(validPostImgFiles)
 
-    // store post image file for upload
-    setPostImage(postImgFile)
-
-    // create a blob so that it can be used to preview the postImg
-    const newPostPreviewImageURL = URL.createObjectURL(postImgFile)
-    setPostImagePreview(newPostPreviewImageURL);
+    // create blobs so that it can be used to preview the postImgs
+    const previewPostImgURLs = validPostImgFiles.map(imgFile => URL.createObjectURL(imgFile))
+    setPostImagesPreview(previewPostImgURLs)
 
     // This is to prevent memory leaks
-    return () => URL.revokeObjectURL(newPostPreviewImageURL);
+    return (() => {
+      previewPostImgURLs.forEach(url => URL.revokeObjectURL(url))
+    })
   };
 
 
@@ -57,24 +55,32 @@ const CreatePost = ({ onClose, onCreate }) => {
       return;
     }
 
-    if (postImage && postImage.MAX_FILE_SIZE) {
+    // to handle post image that was uploaded
+    if (postImages && postImages.MAX_FILE_SIZE) {
       setError("Selected post image exceeds 10MB.");
       return;
     }
 
     setError("")
 
-    // TODO - to update with API integration
+    const postFormData = new FormData()
     const postData = {
-      id: 1,
-      userId: 1,
-      postTitle: postTitle,
-      description: postDesc,
-      weblinkLink: postImage
+      title: postTitle,
+      content: postDesc,
+      ...(postImages.length > 0 && { images: postImages })
     }
 
-    onCreate(postData);
-    onClose();
+    // console.log('post', postData)
+    Object.
+      entries(postData).
+      forEach(([key, value]) => {
+        if (key === "images" && Array.isArray(value)) {
+          value.forEach(file => postFormData.append(key, file))
+        } else {
+          postFormData.append(key, value)
+        }
+      })
+    mutation.mutate(postFormData)
   };
 
   return (
@@ -99,15 +105,19 @@ const CreatePost = ({ onClose, onCreate }) => {
         />
 
         <label className={styles.fileInputLabel}>
-          <input type="file" accept="image/*" onChange={handlePostImageChange} />
+          <input type="file" accept="image/*" onChange={handlePostImageChange} multiple />
         </label>
 
         <label className={styles.fileSizeLabel}>
-          <p>File size should not exceed 10MB</p>
+          <p>Each file size should not exceed 10MB</p>
         </label>
 
-        {postImagePreview && (
-          <img src={postImagePreview} alt="Preview" className={styles.previewImage} />
+        {postImagesPreview.length > 0 && (
+          <div className={styles.previewImageGrid}>
+            {postImagesPreview.map((src, i) => (
+              <img key={i} src={src} alt={`preview ${i}`} className={styles.previewImage} />
+            ))}
+          </div>
         )}
 
         {error && (

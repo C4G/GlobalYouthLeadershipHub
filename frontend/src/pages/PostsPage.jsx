@@ -7,8 +7,9 @@ import PostList from "@/components/PostList";
 import Container from "@/components/Container";
 import styles from "@/styles/pages/PostsPage.module.css";
 import CreatePostIcon from "@/components/icons/CreatePostIcon";
+import { useGetAllPosts } from "@/hooks/posts";
 
-const PostsPageHeader = ({ projectName, handleOpenModal, isModalOpen, handleCloseModal, handleCreatePost }) => {
+const PostsPageHeader = ({ projectId, projectName, handleOpenModal, isModalOpen, handleCloseModal }) => {
   return (
     <div className={styles.headerPostsRow}>
       <h2 className={styles.headerPostsTitle}>{projectName}</h2>
@@ -22,8 +23,8 @@ const PostsPageHeader = ({ projectName, handleOpenModal, isModalOpen, handleClos
       </div>
       {isModalOpen && (
         <CreatePost
+          projectId={projectId}
           onClose={handleCloseModal}
-          onCreate={handleCreatePost}
         />
       )}
     </div>
@@ -31,22 +32,17 @@ const PostsPageHeader = ({ projectName, handleOpenModal, isModalOpen, handleClos
 }
 
 const PostsPage = () => {
-  // TODO - to revise once API is up
   const { state } = useLocation();
   const projectName = state?.name ?? "Untitled Project Name";
   const { projectId } = useParams();
-  console.log("pId", projectId);
+  const { data: posts, isLoading, refetch: refetchAllPosts } = useGetAllPosts(projectId)
 
   // Handle Modal Logic
   const [isModalOpen, setModalOpen] = useState(false);
   const handleOpenModal = () => setModalOpen(true)
-  const handleCloseModal = () => setModalOpen(false);
-
-  // Handle Posts Logic
-  // TODO - to revise once API is up
-  const [posts, setPosts] = useState([]);
-  const handleCreatePost = (newPost) => {
-    setPosts((prev) => [...prev, newPost]);
+  const handleCloseModal = () => {
+    setModalOpen(false)
+    refetchAllPosts()
   };
 
   return (
@@ -54,13 +50,13 @@ const PostsPage = () => {
       <Sidebar />
       <main className={styles.mainContent}>
         <PostsPageHeader
+          projectId={projectId}
           projectName={projectName}
           handleOpenModal={handleOpenModal}
           isModalOpen={isModalOpen}
           handleCloseModal={handleCloseModal}
-          handleCreatePost={handleCreatePost}
         />
-        <PostList posts={posts} />
+        <PostList posts={posts} isLoading={isLoading} />
       </main>
     </Container>
   );

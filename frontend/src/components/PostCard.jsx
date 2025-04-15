@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "@/styles/components/PostCard.module.css";
-
 import ThrashIcon from "@/components/icons/ThrashIcon";
 import ArrowIcon from "@/components/icons/ArrowIcon";
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
+import { truncateOwnerName, dateStringToLocaleString } from "@/utils/utils"
+import { useGetProjectPostImageById } from "@/hooks/posts";
 
 const PostActionButtons = ({ isFullPage, onLinkToPostsPage, projectId, postId, handleDelete, onLinkToPostPage }) => {
   // navigate to posts page `projects/:projectId/posts`
@@ -39,11 +39,8 @@ const PostActionButtons = ({ isFullPage, onLinkToPostsPage, projectId, postId, h
 const PostCard = ({ post, isFullPage = false }) => {
   const navigate = useNavigate();
   const { projectId } = useParams();
-
-  // TODO - to integrate with comment API
-  // eslint-disable-next-line no-unused-vars
-  const { id, postOwnerName, postTitle, description, weblinkLink, likes, user } = post;
-  const [postImg, setPostImg] = useState(`blob:${weblinkLink}`);
+  const { id, title, content, postOwner, createdAt, imageUrls } = post;
+  const { data: postImageSrc, isLoading: isPostImgLoading } = useGetProjectPostImageById(imageUrls)
 
   // TODO - Remove 1 after API data is ready
   const onLinkToPostsPage = () => {
@@ -62,12 +59,12 @@ const PostCard = ({ post, isFullPage = false }) => {
     <div className={styles.postCard}>
       <div className={styles.postHeader}>
         <div className={styles.avatar} aria-hidden="true">
-          {postOwnerName ?? 'AS'}
+          {truncateOwnerName(postOwner)}
         </div>
 
         <div className={styles.postInfo}>
           <h2 className={styles.postName}>
-            {postTitle ?? "Untitled Post"}
+            {title ?? "Untitled Post"}
           </h2>
         </div>
 
@@ -83,16 +80,26 @@ const PostCard = ({ post, isFullPage = false }) => {
         </div>
       </div>
 
-      <p className={styles.postContent}>{description}</p>
+      <p className={styles.postContent}>{content}</p>
 
       <div className={styles.photoContainer}>
-        <img
-          src={postImg}
-          alt="postImg"
-          className={styles.photo}
-          onError={() => setPostImg("/post_fallback.jpeg")}
-        />
+        {isPostImgLoading ? <div className={styles.loaderSpinner} /> : postImageSrc.map((img, idx) => {
+          return (
+            <img
+              key={idx}
+              src={img}
+              alt={`Post Image ${idx}`}
+              className={styles.photo}
+              // to handle on first render where it might be showing broken image
+              onError={(e) => (e.currentTarget.src = "/post_fallback.jpeg ")}
+            />
+          )
+        })}
       </div>
+
+      <p className={styles.postCreatedAt}>
+        Last Created: {dateStringToLocaleString(createdAt)}
+      </p>
     </div >
   );
 };

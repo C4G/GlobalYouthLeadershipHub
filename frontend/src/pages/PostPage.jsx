@@ -8,6 +8,7 @@ import LikeIcon from "@/components/icons/LikeIcon";
 import ReplyIcon from "@/components/icons/ReplyIcon";
 import CommentSection from "@/components/CommentSection";
 import styles from "@/styles/pages/PostPage.module.css";
+// import { useLikePostByProjectAndPostId } from "@/hooks/comments";
 
 // TODO - Remove after API data is ready
 const dummyPosts = [
@@ -30,9 +31,17 @@ const PostPage = () => {
   const [commentCounts, setCommentCounts] = useState(0);
   const [isReplying, setIsReplying] = useState(false);
 
+  // TODO - to enable once API is up 
+  // const { mutate: likePost, isPending } = useLikePostByProjectAndPostId(projectId, postId)
+
   const handleLikeToggle = () => {
     setLikeCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
     setIsLiked(!isLiked);
+
+    // TODO - to enable once API is up 
+    // if (projectId && postId) {
+    //   likePost()
+    // }
   };
 
   const handleReplyClick = () => {
@@ -71,6 +80,7 @@ const PostPage = () => {
                 }`}
               aria-label="like post"
               onClick={handleLikeToggle}
+            // disabled={isPending}
             >
               <LikeIcon filled={isLiked} /> Like
             </button>
@@ -84,6 +94,9 @@ const PostPage = () => {
           </div>
         </div>
         <CommentSection
+          // TODO - to review when API is up
+          projectId={projectId}
+          postId={postId}
           user={dummyFullPostData.user}
           isReplying={isReplying}
           setIsReplying={setIsReplying}

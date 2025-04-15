@@ -3,7 +3,9 @@ export const truncateOwnerName = (name) => {
         return "AS"
     }
 
-    return name.slice(0, 3).toUpperCase()
+    const initials = name.split(" ").map(word => word[0]).join("")
+
+    return initials.toUpperCase()
 }
 
 export const dateStringToLocaleString = (dateString) => {

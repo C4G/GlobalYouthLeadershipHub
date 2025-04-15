@@ -3,9 +3,7 @@ import Spinner from "@/components/Spinner";
 import EmptyList from "@/components/EmptyList";
 import PostCard from "@/components/PostCard";
 
-
-// TODO - to update once API is up
-const PostList = ({ posts = [], isLoading = false }) => {
+const PostList = ({ posts, isLoading }) => {
     if (isLoading) {
         return (
             <>

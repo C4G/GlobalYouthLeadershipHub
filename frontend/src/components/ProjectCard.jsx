@@ -8,7 +8,7 @@ import ArrowIcon from "@/components/icons/ArrowIcon"
 
 const ProjectCard = ({ project }) => {
     const navigate = useNavigate()
-    const { id, projectOwner, name, description, projectImageUrl, lastModifiedDate, createdDate } = project
+    const { id, projectOwner, name, description, projectImageUrl, lastModifiedDate, createdDate } = project;
     const { data: imageUrl, isLoading: isImageLoading } = useGetProjectImageById(projectImageUrl);
 
     const onLinkToPost = (id) => {
@@ -47,7 +47,7 @@ const ProjectCard = ({ project }) => {
                     <img
                         className={styles.photo}
                         src={imageUrl || "/project_fallback.jpeg"}
-                        // to handle on first render where this it is showing broken image
+                        // to handle on first render where it might be showing broken image
                         onError={(e) => (e.currentTarget.src = "/project_fallback.jpeg")}
                     />
                 }
