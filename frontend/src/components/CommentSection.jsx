@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import styles from "@/styles/components/CommentSection.module.css";
+// import { useGetCommentsByProjectAndPostId, useAddCommentByProjectAndPostId } from "@/hooks/comments";
 
 const CommentSection = ({
+  projectId,
+  postId,
   user,
   isReplying,
   setIsReplying,
@@ -10,6 +13,12 @@ const CommentSection = ({
 }) => {
   const [comments, setComments] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  console.log('CommentSection projectId', projectId)
+  console.log('CommentSection postId', postId)
+
+  // TODO - to enable when API is up
+  // const { data: comments, isLoading } = useGetCommentsByProjectAndPostId(projectId, postId)
+  // const { mutate: addComment } = useAddCommentByProjectAndPostId(projectId, postId)
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -25,6 +34,18 @@ const CommentSection = ({
       setIsReplying(false);
       setCommentCounts((prev) => prev + 1);
     }
+
+    // TODO - to enable when API is up
+    // if (e.key === "Enter" && inputValue.trim() !== "") {
+    //   const newCommentData = { content: inputValue }
+    //   addComment(newCommentData, {
+    //     onSuccess: () => {
+    //       setInputValue("");
+    //       setIsReplying(false);
+    //       setCommentCounts((prev) => prev + 1);
+    //     }
+    //   })
+    // }
   };
 
   return (
