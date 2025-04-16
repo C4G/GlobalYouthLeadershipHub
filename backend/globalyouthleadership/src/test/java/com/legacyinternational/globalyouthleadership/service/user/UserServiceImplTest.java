@@ -28,7 +28,7 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userServiceImpl;
 
-    private LocalDateTime dateOfBirth = LocalDateTime.now();
+    private final LocalDateTime dateOfBirth = LocalDateTime.now();
 
     @BeforeEach
     void setUp() {
@@ -177,9 +177,7 @@ class UserServiceImplTest {
     void verifyUser_UserNotFound_ThrowsBadRequest() {
         when(userRepository.findByEmail("notfound@example.com")).thenReturn(Optional.empty());
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userServiceImpl.verifyUser("notfound@example.com");
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.verifyUser("notfound@example.com"));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("User not found with email: notfound@example.com", exception.getReason());
@@ -192,9 +190,7 @@ class UserServiceImplTest {
         User existingUser = User.builder().id(1L).email("user@example.com").firstName("User").lastName("One").role(Role.USER).dateOfBirth(LocalDateTime.MAX).build();
         when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(existingUser));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userServiceImpl.verifyUser("user@example.com");
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.verifyUser("user@example.com"));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("User is not pending review", exception.getReason());
@@ -210,9 +206,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail("fail@example.com")).thenReturn(Optional.of(pendingUser));
         when(userRepository.save(any(User.class))).thenReturn(failedUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userServiceImpl.verifyUser("fail@example.com");
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.verifyUser("fail@example.com"));
 
         assertEquals(500, exception.getStatusCode().value());
         assertEquals("Verification of User failed", exception.getReason());
@@ -245,9 +239,7 @@ class UserServiceImplTest {
         String email = "notfound@example.com";
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userServiceImpl.resetPasswordToDefault(email);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.resetPasswordToDefault(email));
 
         assertEquals(404, exception.getStatusCode().value());
         assertEquals("User not found", exception.getReason());
@@ -286,9 +278,7 @@ class UserServiceImplTest {
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userServiceImpl.resetPassword(email, currentPassword, newPassword);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.resetPassword(email, currentPassword, newPassword));
 
         assertEquals(404, exception.getStatusCode().value());
         assertEquals("User not found", exception.getReason());
@@ -308,9 +298,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(currentPassword, "encodedOldPassword")).thenReturn(false);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userServiceImpl.resetPassword(email, currentPassword, newPassword);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.resetPassword(email, currentPassword, newPassword));
 
         assertEquals(401, exception.getStatusCode().value());
         assertEquals("Invalid current password", exception.getReason());
@@ -330,9 +318,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(currentPassword, "encodedOldPassword")).thenReturn(true);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userServiceImpl.resetPassword(email, currentPassword, newPassword);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.resetPassword(email, currentPassword, newPassword));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("New password cannot be empty", exception.getReason());

@@ -67,9 +67,7 @@ class UserControllerTest {
         doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request"))
                 .when(userService).resetPassword(email, currentPassword, newPassword);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userController.resetPassword(request, principal);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userController.resetPassword(request, principal));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Invalid request", exception.getReason());

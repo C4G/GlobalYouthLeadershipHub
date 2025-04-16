@@ -101,9 +101,7 @@ class AdminControllerTest {
     void verifyUser_NullEmail_ThrowsBadRequest() {
         VerifyRequest verifyRequest = new VerifyRequest(null);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            adminController.verifyUser(verifyRequest);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> adminController.verifyUser(verifyRequest));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Email is required", exception.getReason());
@@ -114,9 +112,7 @@ class AdminControllerTest {
     void verifyUser_EmptyEmail_ThrowsBadRequest() {
         VerifyRequest verifyRequest = new VerifyRequest("");
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            adminController.verifyUser(verifyRequest);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> adminController.verifyUser(verifyRequest));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Email is required", exception.getReason());
@@ -127,9 +123,7 @@ class AdminControllerTest {
     void verifyUser_InvalidEmail_ThrowsBadRequest() {
         VerifyRequest verifyRequest = new VerifyRequest("invalid-email");
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            adminController.verifyUser(verifyRequest);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> adminController.verifyUser(verifyRequest));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Invalid email", exception.getReason());
@@ -153,9 +147,7 @@ class AdminControllerTest {
     void promoteToAdmin_NullEmail_ThrowsBadRequest() {
         PromoteRequest promoteRequest = new PromoteRequest(null);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            adminController.promoteToAdmin(promoteRequest);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> adminController.promoteToAdmin(promoteRequest));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Email is required", exception.getReason());
@@ -166,9 +158,7 @@ class AdminControllerTest {
     void promoteToAdmin_InvalidEmail_ThrowsBadRequest() {
         PromoteRequest promoteRequest = new PromoteRequest("invalid-email");
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            adminController.promoteToAdmin(promoteRequest);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> adminController.promoteToAdmin(promoteRequest));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Invalid email", exception.getReason());
@@ -192,9 +182,7 @@ class AdminControllerTest {
     void demoteToUser_NullEmail_ThrowsBadRequest() {
         DemoteRequest demoteRequest = new DemoteRequest(null);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            adminController.demoteToUser(demoteRequest);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> adminController.demoteToUser(demoteRequest));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Email is required", exception.getReason());
@@ -205,9 +193,7 @@ class AdminControllerTest {
     void demoteToUser_InvalidEmail_ThrowsBadRequest() {
         DemoteRequest demoteRequest = new DemoteRequest("invalid-email");
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            adminController.demoteToUser(demoteRequest);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> adminController.demoteToUser(demoteRequest));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Invalid email", exception.getReason());
@@ -233,9 +219,7 @@ class AdminControllerTest {
     void resetPasswordByAdmin_NullEmail_ThrowsBadRequest() {
         PasswordResetByAdminRequest resetRequest = new PasswordResetByAdminRequest(null);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            adminController.resetPasswordToDefault(resetRequest);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> adminController.resetPasswordToDefault(resetRequest));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Invalid email", exception.getReason());
@@ -246,9 +230,7 @@ class AdminControllerTest {
     void resetPasswordByAdmin_EmptyEmail_ThrowsBadRequest() {
         PasswordResetByAdminRequest resetRequest = new PasswordResetByAdminRequest("");
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            adminController.resetPasswordToDefault(resetRequest);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> adminController.resetPasswordToDefault(resetRequest));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Invalid email", exception.getReason());
@@ -259,9 +241,7 @@ class AdminControllerTest {
     void resetPasswordByAdmin_InvalidEmail_ThrowsBadRequest() {
         PasswordResetByAdminRequest resetRequest = new PasswordResetByAdminRequest("invalid-email");
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            adminController.resetPasswordToDefault(resetRequest);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> adminController.resetPasswordToDefault(resetRequest));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Invalid email", exception.getReason());
