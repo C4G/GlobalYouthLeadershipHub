@@ -1,35 +1,36 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
 import CreatePost from "@/components/CreatePost";
 import PostList from "@/components/PostList";
 import Container from "@/components/Container";
 import styles from "@/styles/pages/PostsPage.module.css";
 import CreatePostIcon from "@/components/icons/CreatePostIcon";
-import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
+// import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import { useGetAllPosts } from "@/hooks/posts";
 
 const PostsPageHeader = ({ projectId, projectName, handleOpenModal, isModalOpen, handleCloseModal }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <div className={styles.headerPostsRow}>
-
-      <div className={styles.actionPostsRow}>
-      <button
+      {/* TODO - to fix the stacking */}
+      {/* <div className={styles.actionPostsRow}> */}
+      {/* <button
           onClick={() => navigate('/landing')}
           className={styles.backToProjectsButton}
         >
           <ArrowLeftIcon /> Back to All Projects
-        </button>
-        <button
-          onClick={handleOpenModal}
-          className={styles.createPostButton}
-        >
-          <CreatePostIcon /> Create Post
-        </button>
-      </div>
+        </button> */}
+      <button
+        onClick={handleOpenModal}
+        className={styles.createPostButton}
+      >
+        <CreatePostIcon /> Create Post
+      </button>
+      {/* </div> */}
       <h2 className={styles.headerPostsTitle}>{projectName}</h2>
+
       {isModalOpen && (
         <CreatePost
           projectId={projectId}

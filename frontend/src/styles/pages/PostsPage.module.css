@@ -9,36 +9,29 @@
 .headerPostsRow {
   position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
-  height: auto;
+  height: 60px;
   width: 100%;
   border-bottom: 2px solid #ccc;
-  row-gap: 10px;
-  padding: 10px 0;
 }
 
 .headerPostsTitle {
-  position: static;
+  position: absolute;
   left: 50%;
-  transform: none;
-  text-align: center;
-  width: 100%;
+  transform: translateX(-50%);
   margin: 0;
   border: none;
   text-decoration: none;
   box-shadow: none;
 }
 
-.actionPostsRow {
-  width: 100%;
+.actionRow {
   display: flex;
   justify-content: flex-end;
 }
 
-.createPostButton,
-.backToProjectsButton {
+.createPostButton {
   width: 160px;
   cursor: pointer;
   background-color: #fff;
@@ -49,12 +42,7 @@
   font-size: 14px;
 }
 
-.backToProjectsButton {
-  width: 220px;
-}
-
-.createPostButton:hover,
-.backToProjectsButton:hover {
+.createPostButton:hover {
   background-color: #f8f9fa;
   border-radius: 15px;
 }
