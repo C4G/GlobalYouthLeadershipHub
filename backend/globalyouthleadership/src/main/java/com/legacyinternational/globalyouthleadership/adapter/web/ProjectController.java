@@ -228,6 +228,15 @@ public class ProjectController {
         return ResponseEntity.ok(new ApiResponse("Post liked successfully"));
     }
 
+    @PostMapping("/{projectId}/posts/{postId}/unlike")
+    public ResponseEntity<ApiResponse> unlikePost(@PathVariable Long postId, Principal principal) {
+        if (Objects.isNull(postId) || postId.intValue() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid project id");
+        }
+        postService.unlikePost(postId, principal.getName());
+        return ResponseEntity.ok(new ApiResponse("Post unliked successfully"));
+    }
+
     @PostMapping("/{projectId}/posts/{postId}/comments")
     public ResponseEntity<ApiResponse> addComment(@PathVariable Long postId,
                                                   @RequestBody CommentRequest request,

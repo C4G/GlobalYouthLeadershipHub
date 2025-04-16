@@ -376,4 +376,28 @@ public class ProjectControllerTest {
         assertThat(response.getBody().get(0).getTitle()).isEqualTo("First Post");
         assertThat(response.getBody().get(1).getTitle()).isEqualTo("Second Post");
     }
+
+    @Test
+    void unlikePost_valid_returnsSuccess() {
+        ResponseEntity<ApiResponse> result = controller.unlikePost(1L, mockPrincipal);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getBody().getMessage()).isEqualTo("Post unliked successfully");
+        verify(postService).unlikePost(1L, "testuser@example.com");
+    }
+
+    @Test
+    void unlikePost_nullId_throwsException() {
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> controller.unlikePost(null, mockPrincipal));
+        assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(ex.getReason()).contains("Invalid project id");
+    }
+
+    @Test
+    void unlikePost_negativeId_throwsException() {
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> controller.unlikePost(-10L, mockPrincipal));
+        assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(ex.getReason()).contains("Invalid project id");
+    }
 }

@@ -8,12 +8,14 @@ import com.legacyinternational.globalyouthleadership.infrastructure.repositories
 import com.legacyinternational.globalyouthleadership.service.post.Post;
 import com.legacyinternational.globalyouthleadership.service.post.PostComment;
 import com.legacyinternational.globalyouthleadership.service.post.PostImage;
+import com.legacyinternational.globalyouthleadership.service.post.PostLike;
 import com.legacyinternational.globalyouthleadership.service.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,6 +27,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -231,5 +235,60 @@ public class PostServiceImplTest {
 
         List<CommentResponse> result = postService.getComments(1L);
         assertThat(result.size()).isEqualTo(1);
+    }
+
+    @Test
+    void unlikePost_postNotFound_throwsNotFound() {
+        Long postId = 42L;
+        String userEmail = "testuser@example.com";
+        when(postRepository.existsById(postId)).thenReturn(false);
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () ->
+                postService.unlikePost(postId, userEmail));
+
+        assertEquals("Post not found", ex.getReason());
+    }
+
+    @Test
+    void unlikePost_postNotLiked_throwsBadRequest() {
+        Long postId = 42L;
+        String userEmail = "testuser@example.com";
+        when(postRepository.existsById(postId)).thenReturn(true);
+        when(postLikeRepository.existsByPostIdAndUserEmail(postId, userEmail)).thenReturn(false);
+
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () ->
+                postService.unlikePost(postId, userEmail));
+
+        assertEquals("Post is not liked by User", ex.getReason());
+    }
+
+    @Test
+    void unlikePost_postLiked_deletesLikeEntry() {
+        Long postId = 42L;
+        String userEmail = "testuser@example.com";
+        PostLike like = PostLike.builder().postId(postId).userEmail(userEmail).build();
+
+        when(postRepository.existsById(postId)).thenReturn(true);
+        when(postLikeRepository.existsByPostIdAndUserEmail(postId, userEmail)).thenReturn(true);
+        when(postLikeRepository.getPostLikeByPostIdAndUserEmail(postId, userEmail))
+                .thenReturn(Optional.of(like));
+
+        postService.unlikePost(postId, userEmail);
+
+        verify(postLikeRepository).delete(like);
+    }
+
+    @Test
+    void unlikePost_likeExistsButEntryEmpty_nothingDeleted() {
+        Long postId = 42L;
+        String userEmail = "testuser@example.com";
+        when(postRepository.existsById(postId)).thenReturn(true);
+        when(postLikeRepository.existsByPostIdAndUserEmail(postId, userEmail)).thenReturn(true);
+        when(postLikeRepository.getPostLikeByPostIdAndUserEmail(postId, userEmail)).thenReturn(Optional.empty());
+
+        postService.unlikePost(postId, userEmail);
+
+        // Should not call delete
+        verify(postLikeRepository, never()).delete(any());
     }
 }

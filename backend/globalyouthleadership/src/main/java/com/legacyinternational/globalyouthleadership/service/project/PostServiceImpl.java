@@ -13,6 +13,7 @@ import com.legacyinternational.globalyouthleadership.service.post.PostLike;
 import com.legacyinternational.globalyouthleadership.service.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -183,6 +184,20 @@ public class PostServiceImpl implements PostService {
         like.setUserEmail(userEmail);
         like.setLikedAt(LocalDateTime.now());
         postLikeRepository.save(like);
+    }
+
+    @Override
+    public void unlikePost(Long postId, String userEmail) {
+        if (!postRepository.existsById(postId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
+        }
+
+        if (postLikeRepository.existsByPostIdAndUserEmail(postId, userEmail)) {
+            Optional<PostLike> likeEntry = postLikeRepository.getPostLikeByPostIdAndUserEmail(postId, userEmail);
+            likeEntry.ifPresent(postLikeRepository::delete);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post is not liked by User");
+        }
     }
 
     @Override
