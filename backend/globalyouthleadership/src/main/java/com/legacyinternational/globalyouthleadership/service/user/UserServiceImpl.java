@@ -152,4 +152,44 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Demotion to user failed");
     }
 
+    @Override
+    public User resetPasswordToDefault(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddyyyy");
+        String datePart = user.getDateOfBirth().format(formatter);
+        String defaultPassword = user.getFirstName() + user.getLastName() + datePart;
+
+        user.setPassword(passwordEncoder.encode(defaultPassword));
+
+        try {
+            return userRepository.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to reset password to default", e);
+        }
+    }
+
+    @Override
+    public User resetPassword(String email, String currentPassword, String newPassword) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid current password");
+        }
+
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password cannot be empty");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        try {
+            return userRepository.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to reset password", e);
+        }
+    }
+
 }

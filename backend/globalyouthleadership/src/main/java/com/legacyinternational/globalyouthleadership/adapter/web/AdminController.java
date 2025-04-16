@@ -109,4 +109,20 @@ public class AdminController {
                 .build());
     }
 
+    @PostMapping("/users/reset-password")
+    public ResponseEntity<ApiResponse> resetPasswordToDefault(
+            @RequestBody PasswordResetByAdminRequest request) {
+
+        if (!EmailValidator.getInstance().isValid(request.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
+        }
+
+        User updatedUser = userService.resetPasswordToDefault(request.getEmail());
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .message(updatedUser.getEmail() + "'s password reset to default successfully")
+                        .build()
+        );
+    }
+
 }
