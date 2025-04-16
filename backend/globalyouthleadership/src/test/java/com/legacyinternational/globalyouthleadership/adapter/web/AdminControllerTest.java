@@ -213,4 +213,58 @@ class AdminControllerTest {
         assertEquals("Invalid email", exception.getReason());
         verify(userService, never()).demoteToUser(anyString());
     }
+
+    @Test
+    void resetPasswordByAdmin_SuccessfulReset_ReturnsOk() {
+        String email = "test@example.com";
+        PasswordResetByAdminRequest resetRequest = new PasswordResetByAdminRequest(email);
+        User mockUser = User.builder().email(email).build();
+
+        when(userService.resetPasswordToDefault(email)).thenReturn(mockUser);
+
+        ResponseEntity<ApiResponse> response = adminController.resetPasswordToDefault(resetRequest);
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(email + "'s password reset to default successfully", response.getBody().getMessage());
+        verify(userService, times(1)).resetPasswordToDefault(email);
+    }
+
+    @Test
+    void resetPasswordByAdmin_NullEmail_ThrowsBadRequest() {
+        PasswordResetByAdminRequest resetRequest = new PasswordResetByAdminRequest(null);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            adminController.resetPasswordToDefault(resetRequest);
+        });
+
+        assertEquals(400, exception.getStatusCode().value());
+        assertEquals("Invalid email", exception.getReason());
+        verify(userService, never()).resetPasswordToDefault(anyString());
+    }
+
+    @Test
+    void resetPasswordByAdmin_EmptyEmail_ThrowsBadRequest() {
+        PasswordResetByAdminRequest resetRequest = new PasswordResetByAdminRequest("");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            adminController.resetPasswordToDefault(resetRequest);
+        });
+
+        assertEquals(400, exception.getStatusCode().value());
+        assertEquals("Invalid email", exception.getReason());
+        verify(userService, never()).resetPasswordToDefault(anyString());
+    }
+
+    @Test
+    void resetPasswordByAdmin_InvalidEmail_ThrowsBadRequest() {
+        PasswordResetByAdminRequest resetRequest = new PasswordResetByAdminRequest("invalid-email");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            adminController.resetPasswordToDefault(resetRequest);
+        });
+
+        assertEquals(400, exception.getStatusCode().value());
+        assertEquals("Invalid email", exception.getReason());
+        verify(userService, never()).resetPasswordToDefault(anyString());
+    }
 }
