@@ -13,7 +13,7 @@ const PostActionButtons = ({ isFullPage, onLinkToPostsPage, projectId, postId, h
     return (
       <button
         className={styles.arrowButton}
-        onClick={() => onLinkToPostsPage()}>
+        onClick={() => onLinkToPostsPage(projectId)}>
         <ArrowLeftIcon />
       </button>
     )
@@ -36,71 +36,73 @@ const PostActionButtons = ({ isFullPage, onLinkToPostsPage, projectId, postId, h
   )
 }
 
-const PostCard = ({ post, isFullPage = false }) => {
+const PostCard = ({ post, isFullPage = false, children }) => {
   const navigate = useNavigate();
   const { projectId } = useParams();
-  const { id, title, content, postOwner, createdAt, imageUrls } = post;
+  const { id: postId, title, content, postOwner, createdAt, imageUrls } = post;
   const { data: postImageSrc, isLoading: isPostImgLoading } = useGetProjectPostImageById(imageUrls)
-
-  // TODO - Remove 1 after API data is ready
-  const onLinkToPostsPage = () => {
-    navigate(`/projects/${projectId}/posts`);
-  };
 
   const handleDelete = (postId) => {
     console.log("post deleted", postId);
   };
 
-  const onLinkToPostPage = (projectId, postId) => {
+  const onLinkToPostPage = () => {
     navigate(`/projects/${projectId}/posts/${postId}`);
   };
 
+  const onLinkToPostsPage = () => {
+    navigate(`/projects/${projectId}/posts`);
+  };
+
   return (
-    <div className={styles.postCard}>
-      <div className={styles.postHeader}>
-        <div className={styles.avatar} aria-hidden="true">
-          {truncateOwnerName(postOwner)}
-        </div>
+    <>
+      <div className={styles.postCard}>
+        <div className={styles.postHeader}>
+          <div className={styles.avatar} aria-hidden="true">
+            {truncateOwnerName(postOwner)}
+          </div>
 
-        <div className={styles.postInfo}>
-          <h2 className={styles.postName}>
-            {title ?? "Untitled Post"}
-          </h2>
-        </div>
+          <div className={styles.postInfo}>
+            <h2 className={styles.postName}>
+              {title ?? "Untitled Post"}
+            </h2>
+          </div>
 
-        <div className={styles.postActionButtons}>
-          <PostActionButtons
-            isFullPage={isFullPage}
-            postId={id}
-            projectId={projectId}
-            onLinkToPostsPage={onLinkToPostsPage}
-            handleDelete={handleDelete}
-            onLinkToPostPage={onLinkToPostPage}
-          />
-        </div>
-      </div>
-
-      <p className={styles.postContent}>{content}</p>
-
-      <div className={styles.photoContainer}>
-        {isPostImgLoading ? <div className={styles.loaderSpinner} /> : postImageSrc.map((img, idx) => {
-          return (
-            <img
-              key={idx}
-              src={img}
-              alt={`Post Image ${idx}`}
-              className={styles.photo}
-              // to handle on first render where it might be showing broken image
-              onError={(e) => (e.currentTarget.src = "/post_fallback.jpeg ")}
+          <div className={styles.postActionButtons}>
+            <PostActionButtons
+              isFullPage={isFullPage}
+              postId={postId}
+              projectId={projectId}
+              handleDelete={handleDelete}
+              onLinkToPostPage={onLinkToPostPage}
+              onLinkToPostsPage={onLinkToPostsPage}
             />
-          )
-        })}
-      </div>
+          </div>
+        </div>
 
-      <p className={styles.postCreatedAt}>
-        Last Created: {dateStringToLocaleString(createdAt)}
-      </p>
-    </div >
+        <p className={styles.postContent}>{content}</p>
+
+        <div className={styles.photoContainer}>
+          {isPostImgLoading ? <div className={styles.loaderSpinner} /> : postImageSrc.map((img, idx) => {
+            return (
+              <img
+                key={idx}
+                src={img}
+                alt={`Post Image ${idx}`}
+                className={styles.photo}
+                // to handle on first render where it might be showing broken image
+                onError={(e) => (e.currentTarget.src = "/post_fallback.jpeg ")}
+              />
+            )
+          })}
+        </div>
+
+        <p className={styles.postCreatedAt}>
+          Last Created: {dateStringToLocaleString(createdAt)}
+        </p>
+      </div >
+      {isFullPage && children}
+    </>
   );
 };
 

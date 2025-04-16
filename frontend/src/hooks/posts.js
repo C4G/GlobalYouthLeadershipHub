@@ -1,5 +1,5 @@
 import customFetcher from "@/services/api"
-import { useQueries, useQuery } from "@tanstack/react-query"
+import { useQueries, useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"
 
 export const useGetAllPosts = (projectId) => {
@@ -49,7 +49,18 @@ export const useGetProjectPostImageById = (postImagePaths) => {
 export const useGetProjectPostById = (projectId, postId) => {
     return useQuery({
         queryKey: ["projectPost", postId],
-        queryFn: ({ signal }) => customFetcher(`/api/projects/${projectId}/posts/${postId}`, "GET", signal),
-        enabled: !!(projectId && postId)
+        queryFn: ({ signal }) => customFetcher(`/projects/${projectId}/posts/${postId}`, "GET", signal),
+        enabled: !!(projectId && postId),
+    })
+}
+
+export const useLikePostByProjectAndPostId = (projectId, postId) => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: () => customFetcher(`/projects/${projectId}/posts/${postId}/like`, "POST"),
+        onSuccess: () => {
+            queryClient.invalidateQueries(["projectPost", postId])
+            queryClient.invalidateQueries(["projectPosts", projectId])
+        }
     })
 }

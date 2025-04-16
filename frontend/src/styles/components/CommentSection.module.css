@@ -1,11 +1,11 @@
 .commentSection {
+  width: 100%;
   margin-top: 10px;
   display: flex;
   flex-direction: column;
 }
 
 .commentInput {
-  width: 100%;
   padding: 8px;
   margin-top: 10px;
   border: 1px solid #ccc;
@@ -18,45 +18,4 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.comment {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 10px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-  max-width: 100%;
-}
-
-.profilePic {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-
-.commentContent {
-  width: 100%;
-}
-
-.userName {
-  display: inline-block;
-  font-weight: bold;
-  margin: 0;
-  font-size: 14px;
-}
-
-span {
-  font-size: 14px;
-  margin-left: 10px;
-}
-
-.commentText {
-  margin: 5px 0 0;
-  font-size: 14px;
-  color: #333;
-  word-wrap: break-word;
-  text-align: justify;
 }

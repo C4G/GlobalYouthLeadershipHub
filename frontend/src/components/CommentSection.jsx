@@ -1,79 +1,64 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import Spinner from "@/components/Spinner";
+import Comment from "@/components/Comment";
+import { useGetCommentsByProjectAndPostId, useAddCommentByProjectAndPostId } from "@/hooks/comments";
+
 import styles from "@/styles/components/CommentSection.module.css";
-// import { useGetCommentsByProjectAndPostId, useAddCommentByProjectAndPostId } from "@/hooks/comments";
 
-const CommentSection = ({
-  projectId,
-  postId,
-  user,
-  isReplying,
-  setIsReplying,
-  setCommentCounts,
-}) => {
-  const [comments, setComments] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-  console.log('CommentSection projectId', projectId)
-  console.log('CommentSection postId', postId)
+const CommentSection = ({ projectId, postId, isReplyPost, setIsReplyPost }) => {
+  const [inputComment, setInputComment] = useState("");
 
-  // TODO - to enable when API is up
-  // const { data: comments, isLoading } = useGetCommentsByProjectAndPostId(projectId, postId)
-  // const { mutate: addComment } = useAddCommentByProjectAndPostId(projectId, postId)
+  const { data: comments, isLoading } = useGetCommentsByProjectAndPostId(projectId, postId)
+  const { mutate: addComment } = useAddCommentByProjectAndPostId(projectId, postId)
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+  const onInputCommentChange = (e) => {
+    setInputComment(e.target.value);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && inputValue.trim() !== "") {
-      setComments((prevComments) => [
-        ...prevComments,
-        { id: prevComments.length, text: inputValue, user },
-      ]);
-      setInputValue("");
-      setIsReplying(false);
-      setCommentCounts((prev) => prev + 1);
+  const handleSubmitComment = (e) => {
+    if (e.key === "Enter" && inputComment.trim() !== "") {
+      const commentData = { content: inputComment }
+      addComment(
+        commentData, {
+        onSuccess: () => {
+          setInputComment("");
+          setIsReplyPost(false);
+        }
+      })
     }
-
-    // TODO - to enable when API is up
-    // if (e.key === "Enter" && inputValue.trim() !== "") {
-    //   const newCommentData = { content: inputValue }
-    //   addComment(newCommentData, {
-    //     onSuccess: () => {
-    //       setInputValue("");
-    //       setIsReplying(false);
-    //       setCommentCounts((prev) => prev + 1);
-    //     }
-    //   })
-    // }
   };
+
+  if (isLoading) {
+    return (
+      <Spinner text={"Fetching comments..."} />
+    )
+  }
 
   return (
     <div className={styles.commentSection}>
-      {isReplying && (
+      {isReplyPost && (
         <input
           type="text"
           className={styles.commentInput}
           placeholder="Add a comment..."
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
+          value={inputComment}
+          onChange={onInputCommentChange}
+          onKeyDown={handleSubmitComment}
         />
       )}
-      <div className={styles.commentsList}>
-        {comments.map((comment) => (
-          <div key={comment.id} className={styles.comment}>
-            <div className={styles.profilePic}>
-              {comment.user?.name?.slice(0, 2).toUpperCase() || "ME"}
-            </div>
 
-            <div className={styles.commentContent}>
-              <p className={styles.userName}>{comment.user?.name || "ME"}</p>
-              <span>says:</span>
-              <p className={styles.commentText}>{comment.text}</p>
-            </div>
-          </div>
-        ))}
+      <div className={styles.commentsList}>
+        {comments.map(comment => {
+          return (
+            <Comment
+              key={comment.id}
+              projectId={projectId}
+              postId={postId}
+              comment={comment}
+            />
+          )
+        })}
       </div>
     </div>
   );
