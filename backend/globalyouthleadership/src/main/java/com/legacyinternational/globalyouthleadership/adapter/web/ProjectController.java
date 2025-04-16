@@ -95,12 +95,12 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectResponse> getProjectById(@PathVariable Long id) {
+    public ResponseEntity<ProjectResponse> getProjectById(@PathVariable Long id, Principal principal) {
         Optional<Project> projectById = projectService.getProjectById(id);
         if (projectById.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found");
         }
-        List<PostResponse> posts = postService.getPostsByProject(id);
+        List<PostResponse> posts = postService.getPostsByProject(id, principal.getName());
         try {
             Project project = projectById.get();
             return ResponseEntity.ok(ProjectResponse.builder()
@@ -121,7 +121,7 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectResponse>> getAllProjects() {
+    public ResponseEntity<List<ProjectResponse>> getAllProjects(Principal principal) {
         try {
             List<Project> allProjects = projectService.getAllProjects();
             List<ProjectResponse> projectResponses = allProjects.stream()
@@ -132,7 +132,7 @@ public class ProjectController {
                     .projectOwner(project.getProjectOwner().getFullName())
                     .description(project.getDescription())
                     .projectImageUrl(String.format("/projects/%s/image", project.getId()))
-                    .postCount(postService.getPostsByProject(project.getId()).size())
+                    .postCount(postService.getPostsByProject(project.getId(), principal.getName()).size())
                     .createdDate(String.valueOf(project.getCreatedAt()))
                     .createdBy(project.getCreatedBy())
                     .lastModifiedBy(project.getUpdatedBy())
@@ -172,23 +172,23 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}/posts")
-    public ResponseEntity<List<PostResponse>> getPostsByProject(@PathVariable Long projectId) {
+    public ResponseEntity<List<PostResponse>> getPostsByProject(@PathVariable Long projectId, Principal principal) {
         if (Objects.isNull(projectId) || projectId.intValue() < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid project id");
         }
-        return ResponseEntity.ok(postService.getPostsByProject(projectId));
+        return ResponseEntity.ok(postService.getPostsByProject(projectId, principal.getName()));
     }
 
     @GetMapping("/{projectId}/posts/{postId}")
-    public ResponseEntity<PostDetailResponse> getPostDetails(@PathVariable Long projectId, @PathVariable Long postId) {
+    public ResponseEntity<PostDetailResponse> getPostDetails(@PathVariable Long projectId, @PathVariable Long postId, Principal principal) {
         if (Objects.isNull(postId) || postId.intValue() < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid project id");
         }
-        return ResponseEntity.ok(postService.getPostDetails(projectId, postId));
+        return ResponseEntity.ok(postService.getPostDetails(projectId, postId, principal.getName()));
     }
 
     @GetMapping("/{projectId}/posts/{postId}/images/{imageId}")
-    public ResponseEntity<byte[]> getPostImage(@PathVariable Long projectId, @PathVariable Long postId, @PathVariable Long imageId) {
+    public ResponseEntity<byte[]> getPostImage(@PathVariable Long projectId, @PathVariable Long postId, @PathVariable Long imageId, Principal principal) {
         if (Objects.isNull(projectId) || projectId.intValue() < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid project id");
         }
@@ -204,7 +204,7 @@ public class ProjectController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found");
         }
 
-        List<PostResponse> postsByProject = postService.getPostsByProject(projectId);
+        List<PostResponse> postsByProject = postService.getPostsByProject(projectId, principal.getName());
         if (postsByProject.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
         }
@@ -269,7 +269,7 @@ public class ProjectController {
                         .projectOwner(project.getProjectOwner().getFullName())
                         .description(project.getDescription())
                         .projectImageUrl(String.format("/projects/%s/image", project.getId()))
-                        .postCount(postService.getPostsByProject(project.getId()).size())
+                        .postCount(postService.getPostsByProject(project.getId(), principal.getName()).size())
                         .createdDate(String.valueOf(project.getCreatedAt()))
                         .createdBy(project.getCreatedBy())
                         .lastModifiedBy(project.getUpdatedBy())

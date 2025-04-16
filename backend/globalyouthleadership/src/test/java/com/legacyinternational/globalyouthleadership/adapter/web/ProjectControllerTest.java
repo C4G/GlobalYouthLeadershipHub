@@ -124,7 +124,7 @@ public class ProjectControllerTest {
 
         when(projectService.getProjectById(1L)).thenReturn(Optional.of(project));
 
-        ResponseEntity<ProjectResponse> response = controller.getProjectById(1L);
+        ResponseEntity<ProjectResponse> response = controller.getProjectById(1L, mockPrincipal);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
@@ -135,7 +135,7 @@ public class ProjectControllerTest {
     void testGetProjectByIdNotFound() {
         when(projectService.getProjectById(404L)).thenReturn(Optional.empty());
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            controller.getProjectById(404L);
+            controller.getProjectById(404L, mockPrincipal);
         });
         assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -153,7 +153,7 @@ public class ProjectControllerTest {
 
         when(projectService.getAllProjects()).thenReturn(List.of(p1));
 
-        ResponseEntity<List<ProjectResponse>> response = controller.getAllProjects();
+        ResponseEntity<List<ProjectResponse>> response = controller.getAllProjects(mockPrincipal);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().size()).isEqualTo(1);
@@ -163,7 +163,7 @@ public class ProjectControllerTest {
     void testGetAllProjectsFailure() {
         when(projectService.getAllProjects()).thenThrow(new RuntimeException("fail"));
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> {
-            controller.getAllProjects();
+            controller.getAllProjects(mockPrincipal);
         });
         assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -219,27 +219,27 @@ public class ProjectControllerTest {
     @Test
     void getPostsByProject_valid_returnsList() {
         List<PostResponse> posts = List.of(PostResponse.builder().id(1L).build());
-        when(postService.getPostsByProject(1L)).thenReturn(posts);
-        ResponseEntity<List<PostResponse>> result = controller.getPostsByProject(1L);
+        when(postService.getPostsByProject(1L, mockPrincipal.getName())).thenReturn(posts);
+        ResponseEntity<List<PostResponse>> result = controller.getPostsByProject(1L, mockPrincipal);
         assertThat(result.getBody().size()).isEqualTo(1);
     }
 
     @Test
     void getPostsByProject_invalid_throwsException() {
-        assertThrows(ResponseStatusException.class, () -> controller.getPostsByProject(null));
+        assertThrows(ResponseStatusException.class, () -> controller.getPostsByProject(null, mockPrincipal));
     }
 
     @Test
     void getPostDetails_valid_returnsDetails() {
         PostDetailResponse details = PostDetailResponse.builder().id(1L).build();
-        when(postService.getPostDetails(1L,1L)).thenReturn(details);
-        ResponseEntity<PostDetailResponse> result = controller.getPostDetails(1L,1L);
+        when(postService.getPostDetails(1L,1L, mockPrincipal.getName())).thenReturn(details);
+        ResponseEntity<PostDetailResponse> result = controller.getPostDetails(1L,1L, mockPrincipal);
         assertThat(result.getBody().getId()).isEqualTo(1L);
     }
 
     @Test
     void getPostDetails_invalidId_throwsException() {
-        assertThrows(ResponseStatusException.class, () -> controller.getPostDetails(1L,-1L));
+        assertThrows(ResponseStatusException.class, () -> controller.getPostDetails(1L,-1L, mockPrincipal));
     }
 
     @Test
@@ -253,33 +253,33 @@ public class ProjectControllerTest {
                 .fileData("data".getBytes())
                 .build();
         when(projectService.getProjectById(1L)).thenReturn(Optional.of(project));
-        when(postService.getPostsByProject(1L)).thenReturn(List.of(PostResponse.builder().id(1L).build()));
+        when(postService.getPostsByProject(1L, mockPrincipal.getName())).thenReturn(List.of(PostResponse.builder().id(1L).build()));
         when(postImageRepository.findById(1L)).thenReturn(Optional.of(image));
 
-        ResponseEntity<byte[]> result = controller.getPostImage(1L, 1L, 1L);
+        ResponseEntity<byte[]> result = controller.getPostImage(1L, 1L, 1L, mockPrincipal);
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(result.getBody()).isNotNull();
     }
 
     @Test
     void getPostImage_invalidParams_throwException() {
-        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(null, 1L, 1L));
-        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, -1L, 1L));
-        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, -1L));
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(null, 1L, 1L, mockPrincipal));
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, -1L, 1L, mockPrincipal));
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, -1L, mockPrincipal));
     }
 
     @Test
     void getPostImage_notFoundProjectOrPostOrImage_throws() {
         when(projectService.getProjectById(1L)).thenReturn(Optional.empty());
-        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, 1L));
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, 1L, mockPrincipal));
 
         when(projectService.getProjectById(1L)).thenReturn(Optional.of(new Project()));
-        when(postService.getPostsByProject(1L)).thenReturn(Collections.emptyList());
-        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, 1L));
+        when(postService.getPostsByProject(1L, mockPrincipal.getName())).thenReturn(Collections.emptyList());
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, 1L, mockPrincipal));
 
-        when(postService.getPostsByProject(1L)).thenReturn(List.of(PostResponse.builder().id(1L).build()));
+        when(postService.getPostsByProject(1L, mockPrincipal.getName())).thenReturn(List.of(PostResponse.builder().id(1L).build()));
         when(postImageRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, 1L));
+        assertThrows(ResponseStatusException.class, () -> controller.getPostImage(1L, 1L, 1L, mockPrincipal));
     }
 
     @Test
@@ -334,7 +334,7 @@ public class ProjectControllerTest {
 
         when(projectService.getProjectsByCreatedBy("testuser@example.com"))
                 .thenReturn(List.of(project));
-        when(postService.getPostsByProject(1L))
+        when(postService.getPostsByProject(1L, mockPrincipal.getName()))
                 .thenReturn(List.of(PostResponse.builder().id(101L).build()));
 
         ResponseEntity<List<ProjectResponse>> response = controller.getProjectsByCurrentUser(mockPrincipal);

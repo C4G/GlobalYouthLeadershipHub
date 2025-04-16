@@ -15,6 +15,7 @@ public class PostResponse {
     private String title;
     private String content;
     private String postOwner;
+    private boolean isLikedByLoggedInUser;
     private LocalDateTime createdAt;
     private List<String> imageUrls;
     private int likeCount;

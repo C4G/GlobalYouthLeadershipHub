@@ -122,7 +122,7 @@ public class PostServiceImplTest {
         when(postCommentRepository.countAllByPostId(1L)).thenReturn(0);
         when(postImageRepository.findByPostId(1L)).thenReturn(Collections.emptyList());
 
-        List<PostResponse> result = postService.getPostsByProject(1L);
+        List<PostResponse> result = postService.getPostsByProject(1L, "test1@gmail.com");
 
         assertThat(result.size()).isEqualTo(1);
     }
@@ -140,12 +140,17 @@ public class PostServiceImplTest {
         when(postImageRepository.findByPostId(1L)).thenReturn(Collections.emptyList());
         when(postCommentRepository.findByPostIdOrderByCreatedAtAsc(1L)).thenReturn(Collections.emptyList());
         when(postLikeRepository.findAll()).thenReturn(Collections.emptyList());
+        when(postLikeRepository.getPostLikeByPostIdAndUserEmail(eq(1L), eq("test1@gmail.com"))).thenReturn(Optional.empty());
         when(postCommentRepository.countAllByPostId(1L)).thenReturn(0);
 
-        PostDetailResponse detail = postService.getPostDetails(1L,1L);
+        PostDetailResponse detail = postService.getPostDetails(1L,1L, "test1@gmail.com");
 
         assertThat(detail).isNotNull();
         assertThat(detail.getId()).isEqualTo(1L);
+        assertThat(detail.getTitle()).isEqualTo("title");
+        assertThat(detail.getContent()).isEqualTo("c");
+        assertThat(detail.getPostOwner()).isEqualTo("test test");
+        assertThat(detail.isLikedByLoggedInUser()).isFalse();
     }
 
     @Test
@@ -290,5 +295,59 @@ public class PostServiceImplTest {
 
         // Should not call delete
         verify(postLikeRepository, never()).delete(any());
+    }
+
+    @Test
+    void getPostsByUser_returnsMappedPosts() {
+        String authorEmail = "test@gmail.com";
+        Long postId = 1L;
+        Long projectId = 99L;
+
+        User author = User.builder().firstName("Test").lastName("User").email(authorEmail).build();
+        Project project = new Project(); project.setId(projectId);
+
+        Post post = Post.builder()
+                .id(postId)
+                .title("Post Title")
+                .content("Post Content")
+                .postOwner(author)
+                .project(project)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        PostLike like = PostLike.builder().postId(postId).userEmail(authorEmail).build();
+
+        PostImage image = PostImage.builder().id(10L).post(post).build();
+
+        when(postRepository.findAllByPostOwner_EmailOrderByCreatedAtDesc(authorEmail)).thenReturn(List.of(post));
+        when(postLikeRepository.existsByPostIdAndUserEmail(postId, authorEmail)).thenReturn(true);
+        when(postLikeRepository.findAll()).thenReturn(List.of(like));
+        when(postCommentRepository.countAllByPostId(postId)).thenReturn(2);
+        when(postImageRepository.findByPostId(postId)).thenReturn(List.of(image));
+
+        List<PostResponse> result = postService.getPostsByUser(authorEmail);
+
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(1);
+        PostResponse response = result.get(0);
+        assertThat(response.getId()).isEqualTo(postId);
+        assertThat(response.getTitle()).isEqualTo("Post Title");
+        assertThat(response.getContent()).isEqualTo("Post Content");
+        assertThat(response.getPostOwner()).isEqualTo("Test User");
+        assertThat(response.isLikedByLoggedInUser()).isTrue();
+        assertThat(response.getLikeCount()).isEqualTo(1);
+        assertThat(response.getCommentCount()).isEqualTo(2);
+        assertThat(response.getImageUrls().get(0)).isEqualTo("/projects/99/posts/1/images/10");
+    }
+
+    @Test
+    void getPostsByUser_noPosts_returnsEmptyList() {
+        when(postRepository.findAllByPostOwner_EmailOrderByCreatedAtDesc("nobody@gmail.com"))
+                .thenReturn(Collections.emptyList());
+
+        List<PostResponse> result = postService.getPostsByUser("nobody@gmail.com");
+
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(0);
     }
 }

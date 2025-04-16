@@ -99,6 +99,7 @@ public class PostServiceImpl implements PostService {
                 .title(savedPost.getTitle())
                 .content(savedPost.getContent())
                 .postOwner(savedPost.getPostOwner().getFullName())
+                .isLikedByLoggedInUser(false)
                 .createdAt(savedPost.getCreatedAt())
                 .imageUrls(imageUrls)
                 .likeCount(0)
@@ -106,13 +107,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponse> getPostsByProject(Long projectId) {
+    public List<PostResponse> getPostsByProject(Long projectId, String userEmail) {
         return postRepository.findAllByProjectIdOrderByCreatedAtDesc(projectId).stream()
                 .map(post -> PostResponse.builder()
                         .id(post.getId())
                         .title(post.getTitle())
                         .content(post.getContent())
                         .postOwner(post.getPostOwner().getFullName())
+                        .isLikedByLoggedInUser(postLikeRepository.existsByPostIdAndUserEmail(post.getId(), userEmail))
                         .createdAt(post.getCreatedAt())
                         .likeCount((int) postLikeRepository.findAll().stream()
                                 .filter(like -> like.getPostId().equals(post.getId()))
@@ -126,7 +128,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDetailResponse getPostDetails(Long projectId, Long postId) {
+    public PostDetailResponse getPostDetails(Long projectId, Long postId, String userEmail) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
 
@@ -141,11 +143,14 @@ public class PostServiceImpl implements PostService {
 
         int commentCount = postCommentRepository.countAllByPostId(post.getId());
 
+        boolean likedByLoggedInUser = postLikeRepository.existsByPostIdAndUserEmail(post.getId(), userEmail);
+
         return PostDetailResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .postOwner(post.getPostOwner().getFullName())
+                .isLikedByLoggedInUser(likedByLoggedInUser)
                 .createdAt(post.getCreatedAt())
                 .imageUrls(imageUrls)
                 .likeCount(likeCount)
@@ -243,6 +248,7 @@ public class PostServiceImpl implements PostService {
                         .title(post.getTitle())
                         .content(post.getContent())
                         .postOwner(post.getPostOwner().getFullName())
+                        .isLikedByLoggedInUser(postLikeRepository.existsByPostIdAndUserEmail(post.getId(), authorEmail))
                         .createdAt(post.getCreatedAt())
                         .likeCount((int) postLikeRepository.findAll().stream()
                                 .filter(like -> like.getPostId().equals(post.getId()))
