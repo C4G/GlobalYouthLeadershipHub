@@ -13,7 +13,7 @@ import java.util.List;
 public interface PostService {
     PostResponse createPost(Long projectId, String content, List<MultipartFile> images, String title, String authorEmail);
     List<PostResponse> getPostsByProject(Long projectId);
-    PostDetailResponse getPostDetails(Long postId);
+    PostDetailResponse getPostDetails(Long projectId, Long postId);
     void likePost(Long postId, String userEmail);
     void addComment(Long postId, String userEmail, CommentRequest request);
     List<CommentResponse> getComments(Long postId);

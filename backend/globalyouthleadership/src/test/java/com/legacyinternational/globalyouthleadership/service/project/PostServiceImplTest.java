@@ -138,7 +138,7 @@ public class PostServiceImplTest {
         when(postLikeRepository.findAll()).thenReturn(Collections.emptyList());
         when(postCommentRepository.countAllByPostId(1L)).thenReturn(0);
 
-        PostDetailResponse detail = postService.getPostDetails(1L);
+        PostDetailResponse detail = postService.getPostDetails(1L,1L);
 
         assertThat(detail).isNotNull();
         assertThat(detail.getId()).isEqualTo(1L);

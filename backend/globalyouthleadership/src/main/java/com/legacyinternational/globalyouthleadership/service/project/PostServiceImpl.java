@@ -118,19 +118,19 @@ public class PostServiceImpl implements PostService {
                                 .count())
                         .commentCount(postCommentRepository.countAllByPostId(post.getId()))
                         .imageUrls(postImageRepository.findByPostId(post.getId()).stream()
-                                .map(image -> String.format("/api/posts/%d/images/%d", post.getId(), image.getId()))
+                                .map(image -> String.format("/api/projects/%d/posts/%d/images/%d", projectId, post.getId(), image.getId()))
                                 .toList())
                         .build())
                 .toList();
     }
 
     @Override
-    public PostDetailResponse getPostDetails(Long postId) {
+    public PostDetailResponse getPostDetails(Long projectId, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
 
         List<String> imageUrls = postImageRepository.findByPostId(postId).stream()
-                .map(image -> String.format("/api/posts/%d/images/%d", postId, image.getId()))
+                .map(image -> String.format("/api/projects/%d/posts/%d/images/%d", projectId, postId, image.getId()))
                 .toList();
 
         List<CommentResponse> comments = getNestedComments(postCommentRepository.findByPostIdOrderByCreatedAtAsc(postId), null);
@@ -234,7 +234,7 @@ public class PostServiceImpl implements PostService {
                                 .count())
                         .commentCount(postCommentRepository.countAllByPostId(post.getId()))
                         .imageUrls(postImageRepository.findByPostId(post.getId()).stream()
-                                .map(image -> String.format("/api/project/%d/posts/%d/images/%d", post.getProject().getId(), post.getId(), image.getId()))
+                                .map(image -> String.format("/api/projects/%d/posts/%d/images/%d", post.getProject().getId(), post.getId(), image.getId()))
                                 .toList())
                         .build())
                 .toList();

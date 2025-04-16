@@ -160,10 +160,12 @@ public class ProjectController {
         if (Objects.isNull(content) || content.trim().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid content");
         }
-        for (MultipartFile image : images) {
-            String type = image.getContentType();
-            if (!List.of("image/jpeg", "image/png").contains(type)) {
-                throw new IllegalArgumentException("Only JPEG and PNG formats are supported");
+        if (images != null && !images.isEmpty()) {
+            for (MultipartFile image : images) {
+                String type = image.getContentType();
+                if (!List.of("image/jpeg", "image/png").contains(type)) {
+                    throw new IllegalArgumentException("Only JPEG and PNG formats are supported");
+                }
             }
         }
         return ResponseEntity.ok(postService.createPost(projectId, content, images, title, principal.getName()));
@@ -178,11 +180,11 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}/posts/{postId}")
-    public ResponseEntity<PostDetailResponse> getPostDetails(@PathVariable Long postId) {
+    public ResponseEntity<PostDetailResponse> getPostDetails(@PathVariable Long projectId, @PathVariable Long postId) {
         if (Objects.isNull(postId) || postId.intValue() < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid project id");
         }
-        return ResponseEntity.ok(postService.getPostDetails(postId));
+        return ResponseEntity.ok(postService.getPostDetails(projectId, postId));
     }
 
     @GetMapping("/{projectId}/posts/{postId}/images/{imageId}")

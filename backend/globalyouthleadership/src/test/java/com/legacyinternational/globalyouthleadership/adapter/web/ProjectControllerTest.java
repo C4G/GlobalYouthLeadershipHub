@@ -200,6 +200,15 @@ public class ProjectControllerTest {
     }
 
     @Test
+    void createPost_noImage() {
+        PostResponse response = PostResponse.builder().id(1L).build();
+        when(postService.createPost(1L, "content", null, "title", "test@example.com")).thenReturn(response);
+
+        ResponseEntity<PostResponse> result = controller.createPost(1L, "title", "content", null, mockPrincipal);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
     void createPost_invalidImageType_throwsException() {
         MockMultipartFile file = new MockMultipartFile("image", "bad.gif", "image/gif", "data".getBytes());
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
@@ -223,14 +232,14 @@ public class ProjectControllerTest {
     @Test
     void getPostDetails_valid_returnsDetails() {
         PostDetailResponse details = PostDetailResponse.builder().id(1L).build();
-        when(postService.getPostDetails(1L)).thenReturn(details);
-        ResponseEntity<PostDetailResponse> result = controller.getPostDetails(1L);
+        when(postService.getPostDetails(1L,1L)).thenReturn(details);
+        ResponseEntity<PostDetailResponse> result = controller.getPostDetails(1L,1L);
         assertThat(result.getBody().getId()).isEqualTo(1L);
     }
 
     @Test
     void getPostDetails_invalidId_throwsException() {
-        assertThrows(ResponseStatusException.class, () -> controller.getPostDetails(-1L));
+        assertThrows(ResponseStatusException.class, () -> controller.getPostDetails(1L,-1L));
     }
 
     @Test
