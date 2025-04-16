@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -163,6 +164,7 @@ public class PostServiceImpl implements PostService {
         return allComments.stream()
                 .filter(c -> (c.getParentComment() == null && parentId == null)
                         || (c.getParentComment() != null && c.getParentComment().getId().equals(parentId)))
+                .sorted(Comparator.comparing(PostComment::getCreatedAt).reversed())
                 .map(c -> CommentResponse.builder()
                         .id(c.getId())
                         .content(c.getContent())
