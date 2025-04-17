@@ -27,6 +27,7 @@ const MyProjectPage = () => {
                 ) : (
                     <ProjectList projects={myProjects} isLoading={isLoading} />
                 )} */}
+                <h1>This is still under development. Sorry about it.</h1>
             </main>
         </Container>
     );

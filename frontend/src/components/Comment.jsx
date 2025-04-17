@@ -44,7 +44,7 @@ const Comment = ({ projectId, postId, comment }) => {
           </div>
 
           <div className={styles.commentContent}>
-            <p className={styles.commentOwnerName}>{truncateOwnerName(comment.commentOwner) ?? "AS"}</p>
+            <p className={styles.commentOwnerName}>{comment.commentOwner ?? "Anonymous User"}</p>
             <span>says:</span>
             <p className={styles.commentText}>{comment.content}</p>
             <button onClick={handleReplyComment} className={styles.replyCommentButton}>
