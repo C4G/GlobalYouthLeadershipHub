@@ -9,7 +9,7 @@ A centralized, user-friendly platform for alumni of the On-Demand Youth Leadersh
 - [Project Description](#project-description)
 - [Architecture Diagram & Description](#architecture-diagram--description)
 - [Data Flow for Key User Stories](#data-flow-for-key-user-stories)
-- [Hosting](#recommended-free-hosting)
+- [Hosting](#hosting)
 - [Application Installation](#application-installation)
 - [Authentication & Authorization](#authentication--authorization)
 - [Database Backup](#database-backup)
@@ -77,7 +77,7 @@ The frontend communicates with the backend via RESTful API calls. The backend ha
 
 ---
 
-## Application Installation/Setup
+## Application Installation
 
 **Prerequisites:**
 - Node.js (for frontend)
