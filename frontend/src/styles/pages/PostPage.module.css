@@ -55,12 +55,6 @@
   border-radius: 15px;
 }
 
-.liked {
-  color: silver;
-  background-color: rgb(247, 244, 239);
-  border-radius: 15px;
-}
-
 @media (max-width: 767px) {
   .mainContent {
     width: 90%;
