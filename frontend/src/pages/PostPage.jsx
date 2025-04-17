@@ -31,10 +31,9 @@ const PostActionsSection = ({ isLiked, likeCount, commentCount, handleLikeToggle
 
       <div className={styles.actions}>
         <button
-          className={`${styles.actionButton} ${isLiked ? styles.liked : ""}`}
+          className={styles.actionButton}
           aria-label="like post"
           onClick={handleLikeToggle}
-        // disabled={isPending}
         >
           <LikeIcon filled={isLiked} /> Like
         </button>
@@ -46,7 +45,7 @@ const PostActionsSection = ({ isLiked, likeCount, commentCount, handleLikeToggle
           <ReplyIcon /> Reply
         </button>
       </div>
-    </div>
+    </div >
   )
 }
 
@@ -54,19 +53,15 @@ const PostPage = () => {
   const queryClient = useQueryClient()
   const { projectId, postId } = useParams();
   const { data: post, isLoading } = useGetProjectPostById(projectId, postId)
-
-  // TODO - to fix on the backend 
-  const [isLiked, setIsLiked] = useState(false);
-  const { mutate: likePostFunc, } = useLikePostByProjectAndPostId(projectId, postId)
+  const { mutate: likePostFunc } = useLikePostByProjectAndPostId(projectId, postId)
 
   const [isReplyPost, setIsReplyPost] = useState(false);
 
-  // TODO - to fix on the backend 
   const handleLikeToggle = () => {
-    setIsLiked(prev => !prev)
-    likePostFunc(null, {
+    const isCurrentlyLike = post?.likedByLoggedInUser
+    const endpoint = !isCurrentlyLike ? 'like' : 'unlike'
+    likePostFunc(endpoint, {
       onSuccess: () => queryClient.invalidateQueries(["projectPost", postId]),
-      onError: () => setIsLiked(prev => !prev)
     })
   };
 
@@ -82,7 +77,7 @@ const PostPage = () => {
           <Spinner text={"Fetching post..."} /> :
           <PostCard isFullPage={true} post={post}>
             <PostActionsSection
-              isLiked={isLiked}
+              isLiked={post.likedByLoggedInUser}
               likeCount={post.likeCount}
               commentCount={post.commentCount}
               handleLikeToggle={handleLikeToggle}

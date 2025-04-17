@@ -57,7 +57,7 @@ export const useGetProjectPostById = (projectId, postId) => {
 export const useLikePostByProjectAndPostId = (projectId, postId) => {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: () => customFetcher(`/projects/${projectId}/posts/${postId}/like`, "POST"),
+        mutationFn: (endpoint) => customFetcher(`/projects/${projectId}/posts/${postId}/${endpoint}`, "POST"),
         onSuccess: () => {
             queryClient.invalidateQueries(["projectPost", postId])
             queryClient.invalidateQueries(["projectPosts", projectId])
