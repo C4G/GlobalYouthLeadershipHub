@@ -3,7 +3,7 @@ import Spinner from "@/components/Spinner";
 import EmptyList from "@/components/EmptyList";
 import PostCard from "@/components/PostCard";
 
-const PostList = ({ posts, isLoading, projectName = "" }) => {
+const PostList = ({ posts, isLoading, projectName}) => {
     if (isLoading) {
         return (
             <>

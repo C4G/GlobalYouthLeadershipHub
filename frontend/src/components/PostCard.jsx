@@ -36,7 +36,7 @@ const PostActionButtons = ({ isFullPage, onLinkToPostsPage, projectId, postId, h
   )
 }
 
-const PostCard = ({ post, projectName = "", isFullPage = false, children }) => {
+const PostCard = ({ post, projectName, isFullPage = false, children }) => {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const { id: postId, title, content, postOwner, createdAt, imageUrls } = post;
