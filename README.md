@@ -42,8 +42,7 @@ The Global Youth Leadership Sustainability Hub addresses the need for a dynamic,
 ## Architecture Diagram & Description
 
 **Architecture Diagram:**
-TODO: Replace with actual image done by Jun Siang
-![Architecture Diagram Placeholder](architecture-diagram.jpg)
+![Architecture Diagram Placeholder](/assets/Legacy_International_Architecture.png)
 
 **Architecture Overview:**
 
@@ -58,55 +57,60 @@ The frontend communicates with the backend via RESTful API calls. The backend ha
 
 ## Data Flow for Key User Stories
 
-| User Story                         | Frontend File(s)                      | Backend Endpoint(s)          | Database Table(s)           |
-|------------------------------------|---------------------------------------|------------------------------|-----------------------------|
-| Register as a user                 | `LoginPage.jsx`                       | `/api/auth/register`         | `sustSch.users`             |
-| Admin login                        | `LoginPage.jsx`                       | `/api/auth/login`            | `sustSch.users`             |
-| Verify user as admin               | `AdminPortalPage.jsx`                 | `/api/admin/users/verify`    | `sustSch.users`             |
-| User login (after verification)    | `LoginPage.jsx`                       | `/api/auth/login`            | `sustSch.users`             |
-| Create a project from landing page | `ProjectsPage.jsx, CreateProject.jsx` | `/api/projects`              | `sustSch.projects`          |
-| Create a post from project page    | `CreatePost.jsx`                      | `/api/projects/{projectId}/posts` | `sustSch.posts`, `sustSch.projects`, `sustSch.post_images`         |
-| Create a comment from post page    | `Comment.jsx`                         | `/api/projects/{projectId}/posts/{postId}/comments` | `sustSch.posts`, `sustSch.projects`, `sustSch.post_images`, `sustSch.post_comments`          |
+| User Story                         | Frontend File(s)                      | Backend Endpoint(s)                               | Database Table(s)                                                                   |
+| ---------------------------------- | ------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Register as a user                 | `LoginPage.jsx`                       | `/api/auth/register`                              | `sustSch.users`                                                                     |
+| Admin login                        | `LoginPage.jsx`                       | `/api/auth/login`                                 | `sustSch.users`                                                                     |
+| Verify user as admin               | `AdminPortalPage.jsx`                 | `/api/admin/users/verify`                         | `sustSch.users`                                                                     |
+| User login (after verification)    | `LoginPage.jsx`                       | `/api/auth/login`                                 | `sustSch.users`                                                                     |
+| Create a project from landing page | `ProjectsPage.jsx, CreateProject.jsx` | `/api/projects`                                   | `sustSch.projects`                                                                  |
+| Create a post from project page    | `CreatePost.jsx`                      | `/api/projects/:projectId/posts`                  | `sustSch.posts`, `sustSch.projects`, `sustSch.post_images`                          |
+| Create a comment from post page    | `Comment.jsx`                         | `/api/projects/:projectId/posts/:postId/comments` | `sustSch.posts`, `sustSch.projects`, `sustSch.post_images`, `sustSch.post_comments` |
 
 ---
 
 ## Hosting
 
 - **Database:** TODO: To confirm database on deployment
-- **Website:** Managed by C4G of Georgia Institute of Technology at no cost as of Fall 2025 TODO: Update with more details if available
+- **Website:** Managed by C4G of Georgia Institute of Technology at no cost as of Fall 2025 (TODO: Update with more details if available)
 
 ---
 
 ## Application Installation
 
 **Prerequisites:**
+
 - Node.js (for frontend)
 - Java 17+ (for backend)
 - Git
-- *Recommended IntelliJ Idea provided by GaTech
-- TODO: Add recommendations such as Insomnia/Postman etc
+- \*Recommended IntelliJ Idea provided by GaTech
+- API Development Client (i.e. Postman or Insomnia)
 
 **Steps:**
 
 1. **Clone the repository:**
-```
-git clone https://github.gatech.edu/cs-6150-computing-for-good/Global-Youth-Leadership-Sustainability-Hub.git
-cd Global-Youth-Leadership-Sustainability-Hub
-```
+
+   ```sh
+   git clone https://github.gatech.edu/cs-6150-computing-for-good/Global-Youth-Leadership-Sustainability-Hub.git
+   cd Global-Youth-Leadership-Sustainability-Hub
+   ```
 
 2. **Frontend Setup:**
-```
-cd frontend
-npm install
-npm start
-```
+
+   ```sh
+   cd frontend
+   npm install
+   npm start
+   ```
 
 3. **Run docker to set up backend and database:**
-- TODO: Add steps to set up
+
+   - TODO: Add steps to set up
 
 4. **Accessing the app:**
-- Frontend: `http://localhost:3000`
-- Backend: `http://localhost:8080`
+
+   - Frontend: `http://localhost:3000`
+   - Backend: `http://localhost:8080`
 
 ---
 
@@ -124,7 +128,9 @@ npm start
 ---
 
 ## Database Backup
+
 TODO: We need a backup file and more details on this
+
 - **Backup File:** `backup.sql` (provided in the `/db-backups` directory)
 - **Restore:** mysql
 
@@ -133,6 +139,7 @@ TODO: We need a backup file and more details on this
 ## Partner Statement
 
 TODO: Review and modify according to whether partner adopt our app
+
 > Partner understands the basics of the developer documentation and is aware of the open-source deployment and transition plan.
 
 ---
@@ -148,16 +155,19 @@ TODO: Review and modify according to whether partner adopt our app
 ## Deliverable Screenshots & Known Liabilities
 
 ### Lighthouse Metrics
+
 TODO: Replace with the actual screenshots
 ![Lighthouse Metrics](lighthouse-metrics.jpg)
 
 ### Form Factor Analysis
+
 TODO: Add the detailed form factor analysis done by Aaron
-| Device                | Screenshot Placeholder                   |
-|-----------------------|------------------------------------------|
-| Mobile - Portrait     | ![Mobile Portrait](mobile-portrait.jpg)  |
-| Mobile - Landscape    | ![Mobile Landscape](mobile-landscape.jpg)|
-| Desktop               | ![Desktop](desktop.jpg)                  |
+
+| Device             | Screenshot Placeholder                            |
+| ------------------ | ------------------------------------------------- |
+| Mobile - Portrait  | ![Mobile Portrait](/assets/mobile-portrait.jpg)   |
+| Mobile - Landscape | ![Mobile Landscape](/assets/mobile-landscape.jpg) |
+| Desktop            | ![Desktop](/assets/desktop.jpg)                   |
 
 **Known Liabilities:**
 
@@ -177,4 +187,4 @@ TODO: Add the detailed form factor analysis done by Aaron
 
 ---
 
-*For further questions or support, please refer to the Team Homepage or contact the Instructional Team of C4G.*
+_For further questions or support, please refer to the Team Homepage or contact the Instructional Team of C4G._
