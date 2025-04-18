@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo} from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import styles from "@/styles/components/SignUpForm.module.css";
@@ -26,12 +26,6 @@ const SignUpForm = () => {
     if (!month || !year) return 31;
     return new Date(Number(year), Number(month), 0).getDate();
   }, [month, year]);
-
-  useEffect(() => {
-    if (day && Number(day) > daysInMonth) {
-      setDay(String(daysInMonth));
-    }
-  }, [day, daysInMonth]);
 
   const dayOptions = Array.from({ length: daysInMonth }, (_, i) => i + 1);
   const yearOptions = Array.from(
@@ -74,7 +68,9 @@ const SignUpForm = () => {
   };
 
   const handleDayChange = (e) => {
-    setDay(e.target.value);
+    const selectedDay = Number(e.target.value);
+    const maxDay = daysInMonth;
+    setDay(String(Math.min(selectedDay, maxDay)));
   };
   const handleMonthChange = (e) => {
     setMonth(e.target.value);
