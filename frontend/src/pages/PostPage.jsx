@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
 import PostCard from "@/components/PostCard";
@@ -57,6 +57,9 @@ const PostPage = () => {
 
   const [isReplyPost, setIsReplyPost] = useState(false);
 
+  const { state } = useLocation();
+  const projectName = state?.name ?? "Untitled Project";  
+
   const handleLikeToggle = () => {
     const isCurrentlyLike = post?.likedByLoggedInUser
     const endpoint = !isCurrentlyLike ? 'like' : 'unlike'
@@ -75,7 +78,7 @@ const PostPage = () => {
       <main className={styles.mainContent}>
         {isLoading || !post ?
           <Spinner text={"Fetching post..."} /> :
-          <PostCard isFullPage={true} post={post}>
+          <PostCard isFullPage={true} post={post} projectName={projectName}>
             <PostActionsSection
               isLiked={post.likedByLoggedInUser}
               likeCount={post.likeCount}

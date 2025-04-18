@@ -3,7 +3,7 @@ import Spinner from "@/components/Spinner";
 import EmptyList from "@/components/EmptyList";
 import PostCard from "@/components/PostCard";
 
-const PostList = ({ posts, isLoading }) => {
+const PostList = ({ posts, isLoading, projectName = "" }) => {
     if (isLoading) {
         return (
             <>
@@ -17,7 +17,7 @@ const PostList = ({ posts, isLoading }) => {
             {posts.length === 0 && <EmptyList text={"No Posts Found"} />}
             {posts.map(post => {
                 return (
-                    <PostCard key={post.id} post={post} />
+                    <PostCard key={post.id} post={post} projectName={projectName}/>
                 )
             })}
         </>
