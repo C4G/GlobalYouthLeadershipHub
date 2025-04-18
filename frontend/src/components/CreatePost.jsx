@@ -69,8 +69,7 @@ const CreatePost = ({ projectId, onClose }) => {
       content: postDesc,
       ...(postImages.length > 0 && { images: postImages })
     }
-
-    // console.log('post', postData)
+    
     Object.
       entries(postData).
       forEach(([key, value]) => {
