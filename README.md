@@ -156,18 +156,22 @@ TODO: Review and modify according to whether partner adopt our app
 
 ### Lighthouse Metrics
 
-TODO: Replace with the actual screenshots
-![Lighthouse Metrics](lighthouse-metrics.jpg)
+| Device             | Screenshot Placeholder                                              |
+| ------------------ | ------------------------------------------------------------------- |
+| Mobile - Portrait  | ![Mobile Portrait](/assets/Lighthouse_Scores_Mobile_Portrait.png)   |
+| Mobile - Landscape | ![Mobile Landscape](/assets/Lighthouse_Scores_Mobile_Landscape.png) |
+| Desktop            | ![Desktop](/assets/Lighthouse_Scores_Desktop.png)                   |
 
 ### Form Factor Analysis
 
-TODO: Add the detailed form factor analysis done by Aaron
-
-| Device             | Screenshot Placeholder                            |
-| ------------------ | ------------------------------------------------- |
-| Mobile - Portrait  | ![Mobile Portrait](/assets/mobile-portrait.jpg)   |
-| Mobile - Landscape | ![Mobile Landscape](/assets/mobile-landscape.jpg) |
-| Desktop            | ![Desktop](/assets/desktop.jpg)                   |
+| Device  | Page          | Screenshot Placeholder                                       |
+| ------- | ------------- | ------------------------------------------------------------ |
+| Mobile  | Projects Page | ![Mobile Projects Page](/assets/Projects_Page_Mobile.png)    |
+| Mobile  | Posts Page    | ![Mobile Posts Page](/assets/Posts_Page_Mobile.png)          |
+| Mobile  | Post Page     | ![Mobile Post Page](/assets/Post_Page_Mobile.png)            |
+| Desktop | Projects Page | ![Desktop Projects Page ](/assets/Projects_Page_Desktop.png) |
+| Desktop | Posts Page    | ![Desktop Posts Page](/assets/Posts_Page_Desktop.png)        |
+| Desktop | Post Page     | ![Desktop Post Page](/assets/Post_Page_Desktop.png)          |
 
 **Known Liabilities:**
 
