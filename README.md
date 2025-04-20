@@ -48,7 +48,7 @@ The Global Youth Leadership Sustainability Hub addresses the need for a dynamic,
 
 - **Frontend:** JavaScript, React, CSS3
 - **Backend:** Java Spring Boot REST API
-- **Database:** MySQL TODO: To confirm database on deployment
+- **Database:** MySQL
 - **Hosting:** Open-source, managed by C4G of Georgia Institute of Technology at no cost as of Fall 2025
 
 The frontend communicates with the backend via RESTful API calls. The backend handles authentication, authorization, data storage, and business logic. All sensitive operations (e.g., user verification, project creation) require proper authentication.
@@ -71,7 +71,7 @@ The frontend communicates with the backend via RESTful API calls. The backend ha
 
 ## Hosting
 
-- **Database:** TODO: To confirm database on deployment
+- **Database:** MySQL
 - **Website:** Managed by C4G of Georgia Institute of Technology at no cost as of Fall 2025 (TODO: Update with more details if available)
 
 ---
@@ -104,8 +104,11 @@ The frontend communicates with the backend via RESTful API calls. The backend ha
    ```
 
 3. **Run docker to set up backend and database:**
+   We have used docker compose to leverage multi-container deployment and also makefile to make deployment relatively simple
 
-   - TODO: Add steps to set up
+   ```sh
+   make api-setup
+   ```
 
 4. **Accessing the app:**
 
@@ -129,7 +132,7 @@ The frontend communicates with the backend via RESTful API calls. The backend ha
 
 ## Database Backup
 
-TODO: We need a backup file and more details on this
+TODO: We need a backup file and more details on this closer to the handover
 
 - **Backup File:** `backup.sql` (provided in the `/db-backups` directory)
 - **Restore:** mysql
@@ -138,9 +141,7 @@ TODO: We need a backup file and more details on this
 
 ## Partner Statement
 
-TODO: Review and modify according to whether partner adopt our app
-
-> Partner understands the basics of the developer documentation and is aware of the open-source deployment and transition plan.
+- The partner (the mentor in this case) understands the documentation and will adopt the application for its usage.
 
 ---
 
