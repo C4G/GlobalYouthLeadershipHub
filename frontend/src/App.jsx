@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "@/pages/LoginPage";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
 import SignUpPage from "@/pages/SignUpPage";
 import SignUpSuccessPage from "@/pages/SignUpSuccessPage";
 import TeamHomepageSpr25 from "@/pages/team/TeamHomepageSpr25";
@@ -25,6 +26,7 @@ function App() {
       <Route path="/" element={isLoggedIn ? <Navigate to="/landing" replace /> : <LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/signup-success" element={<SignUpSuccessPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       {/* isLoggedIn is needed as to prevent from unverified user from re-accessing the unauthorized page with back button */}
       <Route path="/unauthorized" element={isLoggedIn ? <UnauthorizedPage /> : <Navigate to="/" replace />} />
 

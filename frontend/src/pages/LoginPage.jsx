@@ -8,29 +8,36 @@ const LoginPage = () => {
 
   return (
     <div>
-    <div className={styles.container}>
-      {/* Logo Section */}
-      <div className={styles.leftSection}>
-        <Logo />
-      </div>
+      <div className={styles.container}>
+        {/* Logo Section */}
+        <div className={styles.leftSection}>
+          <Logo />
+        </div>
 
-      {/* Form Section */}
-      <div className={styles.rightSection}>
-        <div className={styles.formContainer}>
-          <LoginForm />
-          <hr />
-          <button
-            type="button"
-            className={styles.createAccountBtn}
-            onClick={() => navigate("/signup")}
-          >
-            REGISTER ACCOUNT
-          </button>
+        {/* Form Section */}
+        <div className={styles.rightSection}>
+          <div className={styles.formContainer}>
+            <LoginForm />
+            <button
+              type="button"
+              className={styles.forgotPasswordBtn}
+              onClick={() => navigate('/forgot-password')}
+            >
+              Forgotten Password?
+            </button>
+            <hr />
+            <button
+              type="button"
+              className={styles.createAccountBtn}
+              onClick={() => navigate("/signup")}
+            >
+              REGISTER ACCOUNT
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    {/* For the team taking over, you can put the team homepage here */}
-    {/* <a href="/team-homepage-spr25" className={styles.homepageLink}>Team Homepage</a> */}
+      {/* For the team taking over, you can put the team homepage here */}
+      {/* <a href="/team-homepage-spr25" className={styles.homepageLink}>Team Homepage</a> */}
     </div>
   );
 };
