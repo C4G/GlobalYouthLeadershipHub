@@ -13,4 +13,6 @@ public interface UserService {
     User verifyUser(String email);
     User promoteToAdmin(String email);
     User demoteToUser(String email);
+    User resetPasswordToDefault(String email);
+    User resetPassword(String email, String currentPassword, String newPassword);
 }

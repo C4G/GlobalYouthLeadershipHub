@@ -28,7 +28,7 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userServiceImpl;
 
-    private LocalDateTime dateOfBirth = LocalDateTime.now();
+    private final LocalDateTime dateOfBirth = LocalDateTime.now();
 
     @BeforeEach
     void setUp() {
@@ -177,9 +177,7 @@ class UserServiceImplTest {
     void verifyUser_UserNotFound_ThrowsBadRequest() {
         when(userRepository.findByEmail("notfound@example.com")).thenReturn(Optional.empty());
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userServiceImpl.verifyUser("notfound@example.com");
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.verifyUser("notfound@example.com"));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("User not found with email: notfound@example.com", exception.getReason());
@@ -192,9 +190,7 @@ class UserServiceImplTest {
         User existingUser = User.builder().id(1L).email("user@example.com").firstName("User").lastName("One").role(Role.USER).dateOfBirth(LocalDateTime.MAX).build();
         when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(existingUser));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userServiceImpl.verifyUser("user@example.com");
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.verifyUser("user@example.com"));
 
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("User is not pending review", exception.getReason());
@@ -210,9 +206,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail("fail@example.com")).thenReturn(Optional.of(pendingUser));
         when(userRepository.save(any(User.class))).thenReturn(failedUser);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userServiceImpl.verifyUser("fail@example.com");
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.verifyUser("fail@example.com"));
 
         assertEquals(500, exception.getStatusCode().value());
         assertEquals("Verification of User failed", exception.getReason());
@@ -220,4 +214,117 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).save(pendingUser);
     }
 
+    @Test
+    void resetPasswordToDefault_SuccessfulReset_ReturnsUpdatedUser() {
+        String email = "test@example.com";
+        LocalDateTime dob = LocalDateTime.of(1990, 5, 20, 0, 0);
+        User user = User.builder().id(1L).email(email).firstName("John").lastName("Doe").dateOfBirth(dob).password("oldPassword").build();
+        String expectedPassword = "JohnDoe05201990";
+        String encodedPassword = "encodedPassword";
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(expectedPassword)).thenReturn(encodedPassword);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        User result = userServiceImpl.resetPasswordToDefault(email);
+
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(passwordEncoder, times(1)).encode(expectedPassword);
+        verify(userRepository, times(1)).save(user);
+        assertEquals(user, result);
+    }
+
+    @Test
+    void resetPasswordToDefault_UserNotFound_ThrowsNotFound() {
+        String email = "notfound@example.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.resetPasswordToDefault(email));
+
+        assertEquals(404, exception.getStatusCode().value());
+        assertEquals("User not found", exception.getReason());
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(passwordEncoder, never()).encode(anyString());
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void resetPassword_SuccessfulReset_ReturnsUpdatedUser() {
+        String email = "test@example.com";
+        User user = User.builder().id(1L).email(email).password("encodedOldPassword").build();
+        String currentPassword = "oldPassword";
+        String newPassword = "newPassword";
+        String encodedNewPassword = "encodedNewPassword";
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(currentPassword, "encodedOldPassword")).thenReturn(true);
+        when(passwordEncoder.encode(newPassword)).thenReturn(encodedNewPassword);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        User result = userServiceImpl.resetPassword(email, currentPassword, newPassword);
+
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(passwordEncoder, times(1)).matches(currentPassword, "encodedOldPassword");
+        verify(passwordEncoder, times(1)).encode(newPassword);
+        verify(userRepository, times(1)).save(user);
+        assertEquals(user, result);
+    }
+
+    @Test
+    void resetPassword_UserNotFound_ThrowsNotFound() {
+        String email = "notfound@example.com";
+        String currentPassword = "oldPassword";
+        String newPassword = "newPassword";
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.resetPassword(email, currentPassword, newPassword));
+
+        assertEquals(404, exception.getStatusCode().value());
+        assertEquals("User not found", exception.getReason());
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(passwordEncoder, never()).matches(anyString(), anyString());
+        verify(passwordEncoder, never()).encode(anyString());
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void resetPassword_InvalidCurrentPassword_ThrowsUnauthorized() {
+        String email = "test@example.com";
+        User user = User.builder().id(1L).email(email).password("encodedOldPassword").build();
+        String currentPassword = "wrongPassword";
+        String newPassword = "newPassword";
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(currentPassword, "encodedOldPassword")).thenReturn(false);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.resetPassword(email, currentPassword, newPassword));
+
+        assertEquals(401, exception.getStatusCode().value());
+        assertEquals("Invalid current password", exception.getReason());
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(passwordEncoder, times(1)).matches(currentPassword, "encodedOldPassword");
+        verify(passwordEncoder, never()).encode(anyString());
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void resetPassword_EmptyNewPassword_ThrowsBadRequest() {
+        String email = "test@example.com";
+        User user = User.builder().id(1L).email(email).password("encodedOldPassword").build();
+        String currentPassword = "oldPassword";
+        String newPassword = "   ";
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(currentPassword, "encodedOldPassword")).thenReturn(true);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userServiceImpl.resetPassword(email, currentPassword, newPassword));
+
+        assertEquals(400, exception.getStatusCode().value());
+        assertEquals("New password cannot be empty", exception.getReason());
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(passwordEncoder, times(1)).matches(currentPassword, "encodedOldPassword");
+        verify(passwordEncoder, never()).encode(anyString());
+        verify(userRepository, never()).save(any(User.class));
+    }
 }
