@@ -30,6 +30,25 @@
 }
 
 /* Buttons */
+.forgotPasswordBtn {
+  display: flex;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.forgotPasswordBtn {
+  background: none;
+  color: #007bff;
+  border: none;
+  margin: 0.7rem auto;
+}
+
+.forgotPasswordBtn:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
 .createAccountBtn {
   width: 100%;
   padding: 12px;
@@ -43,7 +62,7 @@
   background: rgba(241, 205, 12, 1);
   color: #000;
   border: none;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .createAccountBtn:hover {
@@ -52,8 +71,8 @@
 
 hr {
   width: 80%;
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border: 1px solid #ccc;
 }
 
