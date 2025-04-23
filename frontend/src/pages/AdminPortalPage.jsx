@@ -1,39 +1,26 @@
 import Container from "@/components/Container";
-import PendingUsersList from "@/components/PendingUsersList";
-import SelectedPendingUser from "@/components/SelectedPendingUser";
+import ResetPassword from "@/components/ResetPassword";
 import Sidebar from "@/components/Sidebar"
-import queryClient from "@/libs/queryClient";
+import TabSwitcher from "@/components/TabSwitcher";
+import UserVerification from "@/components/UserVerification";
+
 import styles from "@/styles/pages/AdminPortalPage.module.css";
 
-import { useState } from "react";
-
 const AdminPortalPage = () => {
-    const [selectedUser, setSelectedUser] = useState(null)
+    const TABS_HEADER = ["User Verification", "Reset Password"]
 
-    const refetchUnverifiedUsers = () => {
-        queryClient.invalidateQueries(["unverifiedUsers"])
-        setSelectedUser(null)
-    }
-
-    const handleSelect = (user) => {
-        setSelectedUser(user)
-    }
 
     return (
         <Container>
             <Sidebar />
             <main className={styles.mainContent}>
-                <div className={styles.header}>
-                    <h1>User Verification Panel</h1>
-                </div>
-                <div className={styles.dashboard}>
-                    <div className={styles.card}>
-                        <PendingUsersList onSelect={handleSelect} />
-                    </div>
-                    <div className={styles.card} >
-                        <SelectedPendingUser user={selectedUser} refetchUnverifiedUsers={refetchUnverifiedUsers} />
-                    </div>
-                </div>
+                <TabSwitcher
+                    tabs={TABS_HEADER}
+                    renderContent={(tab) => {
+                        if (tab === TABS_HEADER[0]) return <UserVerification />
+                        if (tab === TABS_HEADER[1]) return <ResetPassword />
+                    }}
+                />
             </main >
         </Container>
     )

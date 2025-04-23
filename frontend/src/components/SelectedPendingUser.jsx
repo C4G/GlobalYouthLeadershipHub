@@ -15,11 +15,9 @@ const SelectedPendingUser = ({ user, refetchUnverifiedUsers }) => {
 
     if (user === null) {
         return (
-            <>
-                <h2 className={styles.selectUser}>
-                    Please select a pending user to verify :D
-                </h2>
-            </>
+            <h3 className={styles.selectUser}>
+                Please select a pending user to verify
+            </h3>
         )
     }
 
