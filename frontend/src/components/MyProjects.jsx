@@ -9,7 +9,7 @@ const MyProjects = () => {
 
     if (isLoading) {
         return (
-            <div className={styles.myProjectsList}>
+            <div className={styles.myProjectsSpinner}>
                 <Spinner text={"Fetching all projects..."} />
             </div>
         )
