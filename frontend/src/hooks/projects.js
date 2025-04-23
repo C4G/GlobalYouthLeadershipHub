@@ -35,17 +35,9 @@ export const useGetProjectImageById = (imagePath) => {
     return query
 }
 
-export const useGetProjectById = (projectId) => {
+export const useGetProjectsByUser = () => {
     return useQuery({
-        queryKey: ['project', projectId],
-        queryFn: () => { }
-    })
-}
-
-export const useGetProjectByUserId = (userId) => {
-    return useQuery({
-        enabled: Boolean(userId),
-        queryKey: ['projectByUserId', userId],
-        queryFn: () => { },
+        queryKey: ['userProjects'],
+        queryFn: ({ signal }) => customFetcher('/projects/user', "GET", signal)
     })
 }

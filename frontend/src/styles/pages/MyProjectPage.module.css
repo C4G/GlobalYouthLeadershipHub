@@ -1,29 +1,12 @@
 .mainContent {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  padding: 20px;
-  row-gap: 10px;
-}
-
-.underConstruction {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-  font-size: 1.2rem;
-  max-width: 600px;
+  padding: 2rem;
+  flex-grow: 1;
 }
 
 @media (max-width: 767px) {
   .mainContent {
     width: 90%;
-  }
-
-  .underConstruction {
-    font-size: 1rem;
-    padding: 10px;
   }
 }
