@@ -1,12 +1,12 @@
+/* eslint-disable react/prop-types */
 import styles from "@/styles/components/Pagination.module.css";
 
-export default function Pagination({
+const Pagination = ({
   totalItems,
   itemsPerPage = 10,
   currentPage,
   onPageChange,
-}) {
-
+}) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   if (totalPages <= 1) return null;
 
@@ -18,9 +18,7 @@ export default function Pagination({
         {pages.map((page) => (
           <li key={page} className={styles.pageItem}>
             <button
-              className={`${styles.pageButton} ${
-                page === currentPage ? styles.active : ""
-              }`}
+              className={`${styles.pageButton} ${page === currentPage ? styles.active : ""}`}
               onClick={() => onPageChange(page)}
             >
               {page}
@@ -31,3 +29,5 @@ export default function Pagination({
     </nav>
   );
 }
+
+export default Pagination;
