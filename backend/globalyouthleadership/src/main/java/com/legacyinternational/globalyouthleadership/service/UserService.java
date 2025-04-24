@@ -15,4 +15,5 @@ public interface UserService {
     User demoteToUser(String email);
     User resetPasswordToDefault(String email);
     User resetPassword(String email, String currentPassword, String newPassword);
+    User requestPasswordReset(String email);
 }

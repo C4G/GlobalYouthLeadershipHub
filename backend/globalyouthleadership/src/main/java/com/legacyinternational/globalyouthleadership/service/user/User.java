@@ -50,13 +50,19 @@ public class User implements UserDetails {
     @Column(nullable = false, name = "role")
     private Role role;
 
-    public User(String email, String password, String firstName, String lastName, LocalDateTime dateOfBirth, Role role) {
+    @Setter
+    @Getter
+    @Column(nullable = false, name = "reset_required")
+    private boolean resetRequired = false;
+
+    public User(String email, String password, String firstName, String lastName, LocalDateTime dateOfBirth, Role role, boolean resetRequired) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.role = role;
+        this.resetRequired = resetRequired;
     }
 
     @Override

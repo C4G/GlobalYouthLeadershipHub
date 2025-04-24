@@ -52,7 +52,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                     , "firstName"
                     , "lastName"
                     , LocalDateTime.parse("1990-05-20T00:00:00Z", ISO_FORMAT)
-                    , Role.ADMIN);
+                    , Role.ADMIN
+                    , false);
             userRepository.save(admin);
             System.out.println("Admin user created: admin / admin123");
         }
@@ -162,6 +163,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         String defaultPassword = user.getFirstName() + user.getLastName() + datePart;
 
         user.setPassword(passwordEncoder.encode(defaultPassword));
+        user.setResetRequired(false);
 
         try {
             return userRepository.save(user);
@@ -184,6 +186,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetRequired(false);
 
         try {
             return userRepository.save(user);
@@ -192,4 +195,17 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
     }
 
+    @Override
+    public User requestPasswordReset(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        user.setResetRequired(true);
+
+        try {
+            return userRepository.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to mark user for password reset", e);
+        }
+    }
 }
