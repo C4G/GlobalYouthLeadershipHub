@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(FRONTEND_ASSETS).permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/request-password-reset").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/projects/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
