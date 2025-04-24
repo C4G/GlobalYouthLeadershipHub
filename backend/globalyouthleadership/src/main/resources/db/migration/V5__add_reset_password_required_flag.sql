@@ -1,0 +1,1 @@
+ALTER TABLE `sustSch`.`users` ADD COLUMN `reset_required` BOOLEAN DEFAULT FALSE;

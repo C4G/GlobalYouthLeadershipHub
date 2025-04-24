@@ -35,4 +35,16 @@ public class UserController {
                         .build()
         );
     }
+
+    @PostMapping("/request-password-reset")
+    public ResponseEntity<ApiResponse> requestPasswordReset(@RequestBody PasswordResetRequest request) {
+        User updatedUser = userService.requestPasswordReset(request.getEmail());
+
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .message("Password reset requested for " + updatedUser.getEmail())
+                        .build()
+        );
+    }
+
 }

@@ -109,7 +109,7 @@ public class AdminController {
                 .build());
     }
 
-    @PostMapping("/users/reset-password")
+    @PostMapping("/reset-users-password")
     public ResponseEntity<ApiResponse> resetPasswordToDefault(
             @RequestBody PasswordResetByAdminRequest request) {
 

@@ -33,9 +33,9 @@ class AdminControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         mockUsers = List.of(
-                new User(1L, "user1@example.com", "username", "password", "User", "One", LocalDateTime.MAX, Role.USER),
-                new User(2L, "user2@example.com", "username", "password", "User", "Two", LocalDateTime.MAX, Role.PENDING_REVIEW),
-                new User(3L, "admin@example.com", "username", "password", "Admin", "User", LocalDateTime.MAX, Role.ADMIN)
+                new User(1L, "user1@example.com", "username", "password", "User", "One", LocalDateTime.MAX, Role.USER, false),
+                new User(2L, "user2@example.com", "username", "password", "User", "Two", LocalDateTime.MAX, Role.PENDING_REVIEW, false),
+                new User(3L, "admin@example.com", "username", "password", "Admin", "User", LocalDateTime.MAX, Role.ADMIN, false)
         );
     }
 
@@ -133,7 +133,7 @@ class AdminControllerTest {
     @Test
     void promoteToAdmin_SuccessfulPromotion_ReturnsOk() {
         PromoteRequest promoteRequest = new PromoteRequest("user1@example.com");
-        User promotedUser = new User(1L, "user1@example.com", "username", "password", "User", "One", LocalDateTime.MAX, Role.ADMIN);
+        User promotedUser = new User(1L, "user1@example.com", "username", "password", "User", "One", LocalDateTime.MAX, Role.ADMIN, false);
         when(userService.promoteToAdmin(promoteRequest.getEmail())).thenReturn(promotedUser);
 
         ResponseEntity<ApiResponse> response = adminController.promoteToAdmin(promoteRequest);
@@ -168,7 +168,7 @@ class AdminControllerTest {
     @Test
     void demoteToUser_SuccessfulDemotion_ReturnsOk() {
         DemoteRequest demoteRequest = new DemoteRequest("admin@example.com");
-        User demotedUser = new User(3L, "admin@example.com", "username", "password", "Admin", "User", LocalDateTime.MAX, Role.USER);
+        User demotedUser = new User(3L, "admin@example.com", "username", "password", "Admin", "User", LocalDateTime.MAX, Role.USER, false);
         when(userService.demoteToUser(demoteRequest.getEmail())).thenReturn(demotedUser);
 
         ResponseEntity<ApiResponse> response = adminController.demoteToUser(demoteRequest);

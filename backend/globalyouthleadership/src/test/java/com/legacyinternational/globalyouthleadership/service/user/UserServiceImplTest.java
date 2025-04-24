@@ -104,7 +104,7 @@ class UserServiceImplTest {
         RegisterRequest request = new RegisterRequest("test@example.com", "StrongPassword123!", "John", "Doe", dateOfBirth);
         when(userRepository.existsByEmail(request.getEmail())).thenReturn(false);
         when(passwordEncoder.encode(request.getPassword())).thenReturn("hashedPassword123");
-        User user = new User(request.getEmail(), request.getPassword(), request.getFirstName(), request.getLastName(), request.getDateOfBirth(), Role.PENDING_REVIEW);
+        User user = new User(request.getEmail(), request.getPassword(), request.getFirstName(), request.getLastName(), request.getDateOfBirth(), Role.PENDING_REVIEW, false);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         User expectedUser = userServiceImpl.registerUser(request);
@@ -326,5 +326,53 @@ class UserServiceImplTest {
         verify(passwordEncoder, times(1)).matches(currentPassword, "encodedOldPassword");
         verify(passwordEncoder, never()).encode(anyString());
         verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void requestPasswordReset_UserExists_ReturnsUpdatedUser() {
+        String email = "test@example.com";
+        User user = User.builder().id(1L).email(email).resetRequired(false).build();
+        User updatedUser = User.builder().id(1L).email(email).resetRequired(true).build();
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
+
+        User result = userServiceImpl.requestPasswordReset(email);
+
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(userRepository, times(1)).save(user);
+        assertTrue(result.isResetRequired());
+        assertEquals(email, result.getEmail());
+    }
+
+    @Test
+    void requestPasswordReset_UserNotFound_ThrowsNotFound() {
+        String email = "notfound@example.com";
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
+                userServiceImpl.requestPasswordReset(email));
+
+        assertEquals(404, exception.getStatusCode().value());
+        assertEquals("User not found", exception.getReason());
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void requestPasswordReset_SaveFails_ThrowsRuntimeException() {
+        String email = "test@example.com";
+        User user = User.builder().id(1L).email(email).resetRequired(false).build();
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).thenThrow(new RuntimeException("DB error"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () ->
+                userServiceImpl.requestPasswordReset(email));
+
+        assertEquals("Unable to mark user for password reset", exception.getMessage());
+        verify(userRepository, times(1)).findByEmail(email);
+        verify(userRepository, times(1)).save(user);
     }
 }
