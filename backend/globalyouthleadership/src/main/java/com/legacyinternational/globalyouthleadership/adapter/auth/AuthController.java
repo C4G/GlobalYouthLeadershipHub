@@ -76,7 +76,7 @@ public class AuthController {
     }
 
     @PostMapping("/request-password-reset")
-    public ResponseEntity<ApiResponse> requestPasswordReset(@RequestBody PasswordResetRequest request) {
+    public ResponseEntity<?> requestPasswordReset(@RequestBody PasswordResetRequest request) {
         User updatedUser = userServiceImpl.requestPasswordReset(request.getEmail());
 
         return ResponseEntity.ok(
