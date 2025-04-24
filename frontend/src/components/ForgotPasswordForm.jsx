@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
+import customFetcher from "@/services/api";
 import styles from "@/styles/components/ForgotPasswordForm.module.css"
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 const Modal = ({ children }) => {
@@ -16,6 +18,22 @@ const ForgotPasswordForm = () => {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
 
+    const { mutate, isPending, } = useMutation({
+        mutationFn: async (resetEmail) => {
+            return await customFetcher("/auth/request-password-reset", "POST", null, resetEmail)
+        },
+        onSuccess: (data) => {
+            setEmail("")
+            setError("")
+            setShowModal(false)
+            alert(`${data.message}\nAdmin will contact you once your password has been reset`)
+        },
+        onError: (error) => {
+            setShowModal(false)
+            setError(error.message || "Login failed")
+        }
+    })
+
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
         setError("");
@@ -28,12 +46,11 @@ const ForgotPasswordForm = () => {
 
     const [showModal, setShowModal] = useState(false)
 
-    // TODO - to integrate with API
     const handleConfirmReset = () => {
-        setShowModal(false)
+        const resetEmail = { email }
+        mutate(resetEmail)
     }
 
-    // TODO - to integrate with API
     const handleCancelReset = () => {
         setShowModal(false)
     }
@@ -54,8 +71,12 @@ const ForgotPasswordForm = () => {
                     />
                 </div>
                 {error && <p className={styles.errorMessage}>{error}</p>}
-                <button type="submit" className={styles.resetBtn}>
-                    Reset Password
+                <button
+                    type="submit"
+                    className={styles.resetBtn}
+                    disabled={isPending}
+                >
+                    {isPending ? "Sending" : "Reset Password"}
                 </button>
             </form>
 
@@ -65,7 +86,7 @@ const ForgotPasswordForm = () => {
                         <p>Are you sure you want to reset your password?</p>
                         <div className={styles.modalActions}>
                             <button onClick={handleConfirmReset} className={styles.confirmBtn}>
-                                Yes, Reset
+                                {isPending ? "Processing..." : "Yes, Reset"}
                             </button>
                             <button onClick={handleCancelReset} className={styles.cancelBtn}>
                                 Cancel

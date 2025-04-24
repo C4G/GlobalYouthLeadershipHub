@@ -5,8 +5,9 @@ const customFetcher = async (path, method, signal = null, data, raw = false) => 
     const parsedUserJwtToken = getJWTToken()
     const bearerToken = parsedUserJwtToken?.token || ""
 
-    const requiredAuth = !path.startsWith('/auth')
-    if (requiredAuth && !bearerToken) {
+    const noRequiredAuth = ['/auth'].some(publicPath => path.startsWith(publicPath))
+    // path that is not part of whitelisted paths and requires token
+    if (!noRequiredAuth && !bearerToken) {
         throw new Error("Authentication token is missing");
     }
 
