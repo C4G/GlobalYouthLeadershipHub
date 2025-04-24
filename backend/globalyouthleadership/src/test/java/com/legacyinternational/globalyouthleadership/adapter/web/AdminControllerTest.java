@@ -33,7 +33,7 @@ class AdminControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         mockUsers = List.of(
-                new User(1L, "user1@example.com", "username", "password", "User", "One", LocalDateTime.MAX, Role.USER, false),
+                new User(1L, "user1@example.com", "username", "password", "User", "One", LocalDateTime.MAX, Role.USER, true),
                 new User(2L, "user2@example.com", "username", "password", "User", "Two", LocalDateTime.MAX, Role.PENDING_REVIEW, false),
                 new User(3L, "admin@example.com", "username", "password", "Admin", "User", LocalDateTime.MAX, Role.ADMIN, false)
         );
@@ -246,5 +246,23 @@ class AdminControllerTest {
         assertEquals(400, exception.getStatusCode().value());
         assertEquals("Invalid email", exception.getReason());
         verify(userService, never()).resetPasswordToDefault(anyString());
+    }
+
+    @Test
+    void getUsersRequiringPasswordReset_ShouldReturnUsersWithResetFlagTrue() {
+        // Arrange
+        when(userService.getUsersRequiringPasswordReset()).thenReturn(mockUsers.stream().filter(User::isResetRequired).toList());
+
+        // Act
+        ResponseEntity<List<UserResponse>> response = adminController.getUsersRequiringPasswordReset();
+
+        // Assert
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().size());
+        assertEquals("user1@example.com", response.getBody().get(0).getEmail());
+
+        // Verify interaction
+        verify(userService, times(1)).getUsersRequiringPasswordReset();
     }
 }
