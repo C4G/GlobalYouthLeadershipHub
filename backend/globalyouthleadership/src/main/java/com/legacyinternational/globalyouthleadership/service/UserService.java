@@ -16,4 +16,6 @@ public interface UserService {
     User resetPasswordToDefault(String email);
     User resetPassword(String email, String currentPassword, String newPassword);
     User requestPasswordReset(String email);
+    List<User> getUsersRequiringPasswordReset();
+
 }

@@ -208,4 +208,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             throw new RuntimeException("Unable to mark user for password reset", e);
         }
     }
+
+    public List<User> getUsersRequiringPasswordReset() {
+        return userRepository.findByResetRequiredTrue();
+    }
 }

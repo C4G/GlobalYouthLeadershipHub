@@ -125,4 +125,13 @@ public class AdminController {
         );
     }
 
+    @GetMapping("/users/reset-required")
+    public ResponseEntity<List<UserResponse>> getUsersRequiringPasswordReset() {
+        List<User> usersNeedingReset = userService.getUsersRequiringPasswordReset();
+        List<UserResponse> userList = usersNeedingReset.stream()
+                .map(UserResponse::fromUser)
+                .toList();
+        return ResponseEntity.ok(userList);
+    }
+
 }
