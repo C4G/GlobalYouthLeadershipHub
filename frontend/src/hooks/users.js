@@ -15,3 +15,10 @@ export const useVerifyPendingUser = () => {
         mutationFn: ({ email }) => customFetcher("/admin/users/verify", "POST", null, { email })
     })
 }
+
+export const useGetListOfResetUsers = () => {
+    return useQuery({
+        queryKey: ["resetUsers"],
+        queryFn: ({ signal }) => customFetcher("/admin/users/reset-required", "GET", signal)
+    })
+}
