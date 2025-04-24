@@ -1,5 +1,7 @@
 package com.legacyinternational.globalyouthleadership.adapter.auth;
 
+import com.legacyinternational.globalyouthleadership.adapter.web.PasswordResetRequest;
+import com.legacyinternational.globalyouthleadership.adapter.web.models.ApiResponse;
 import com.legacyinternational.globalyouthleadership.service.authentication.JwtUtil;
 import com.legacyinternational.globalyouthleadership.service.user.User;
 import com.legacyinternational.globalyouthleadership.service.user.UserServiceImpl;
@@ -71,5 +73,16 @@ public class AuthController {
             //TODO: Clean up this generic error message
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
         }
+    }
+
+    @PostMapping("/request-password-reset")
+    public ResponseEntity<ApiResponse> requestPasswordReset(@RequestBody PasswordResetRequest request) {
+        User updatedUser = userServiceImpl.requestPasswordReset(request.getEmail());
+
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .message("Password reset requested for " + updatedUser.getEmail())
+                        .build()
+        );
     }
 }
