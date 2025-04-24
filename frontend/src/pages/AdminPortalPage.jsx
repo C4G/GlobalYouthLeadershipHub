@@ -9,7 +9,6 @@ import styles from "@/styles/pages/AdminPortalPage.module.css";
 const AdminPortalPage = () => {
     const TABS_HEADER = ["User Verification", "Reset Password"]
 
-
     return (
         <Container>
             <Sidebar />

@@ -39,7 +39,6 @@ const LoginForm = () => {
         mutation.mutate(loginCredentials)
     };
 
-
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
         setError("");
