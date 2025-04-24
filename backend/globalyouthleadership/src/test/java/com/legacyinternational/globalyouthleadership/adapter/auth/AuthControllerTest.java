@@ -51,7 +51,7 @@ class AuthControllerTest {
         String email = "admin@gmail.com";
         String password = "admin123";
         String jwtToken = "mocked-jwt-token";
-        User user = new User(email, password, "firstName", "lastName", dateOfBirth, Role.ADMIN);
+        User user = new User(email, password, "firstName", "lastName", dateOfBirth, Role.ADMIN, false);
 
 
         // Mock behavior
