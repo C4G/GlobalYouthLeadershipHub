@@ -16,7 +16,7 @@ const ResetPassword = () => {
         mutationFn: (email) => customFetcher("/admin/reset-users-password", "POST", null, { email }),
         onMutate: (email) => setResettingUser(email),
         onSuccess: (data) => {
-            alert(`${data.message}\nDefault Password will be First Name + Last Name + MMDDYYYY`);
+            alert(`${data.message}\nDefault Password will be Last Name + MMDDYYYY in lowercaps (e.g. doe12312000)`);
             setResettingUser(null);
             refetch()
         },
@@ -32,7 +32,7 @@ const ResetPassword = () => {
 
     if (isLoading) return (
         <div className={styles.resetPasswordSpinner}>
-            <Spinner text={"Fetching all resets users..."} />
+            <Spinner text={"Fetching all users that requested password reset..."} />
         </div>
     )
 
