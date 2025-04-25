@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-
 import PostCard from "@/components/PostCard";
 import Sidebar from "@/components/Sidebar";
 import Container from "@/components/Container";
@@ -13,8 +12,7 @@ import Spinner from "@/components/Spinner";
 import CommentSection from "@/components/CommentSection";
 import { useGetProjectPostById, useLikePostByProjectAndPostId } from "@/hooks/posts";
 
-
-import styles from "@/styles/pages/PostPage.module.css";
+import styles from "./PostPage.module.css";
 
 const PostActionsSection = ({ isLiked, likeCount, commentCount, handleLikeToggle, handleReplyPost }) => {
   return (
@@ -58,7 +56,7 @@ const PostPage = () => {
   const [isReplyPost, setIsReplyPost] = useState(false);
 
   const { state } = useLocation();
-  const projectName = state?.name ?? "Untitled Project";  
+  const projectName = state?.name ?? "Untitled Project";
 
   const handleLikeToggle = () => {
     const isCurrentlyLike = post?.likedByLoggedInUser

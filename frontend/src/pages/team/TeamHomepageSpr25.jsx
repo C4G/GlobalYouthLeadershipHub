@@ -1,4 +1,4 @@
-import styles from "@/styles/pages/team/TeamHomepageSpr25.module.css";
+import styles from "./TeamHomepageSpr25.module.css";
 
 const TeamHomepageSpr25 = () => {
   return (
@@ -101,7 +101,7 @@ const TeamHomepageSpr25 = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-             https://legacyintl.c4g.dev/
+            https://legacyintl.c4g.dev/
           </a>
         </p>
 

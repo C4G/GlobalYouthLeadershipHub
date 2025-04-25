@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import styles from "@/styles/pages/LoginPage.module.css";
 import Logo from "@/components/Logo";
 import LoginForm from "@/components/LoginForm";
+
+import styles from "./LoginPage.module.css";
 
 const LoginPage = () => {
   const navigate = useNavigate();

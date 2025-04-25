@@ -4,7 +4,7 @@ import Sidebar from "@/components/Sidebar"
 import TabSwitcher from "@/components/TabSwitcher";
 import UserVerification from "@/components/UserVerification";
 
-import styles from "@/styles/pages/AdminPortalPage.module.css";
+import styles from "./AdminPortalPage.module.css";
 
 const AdminPortalPage = () => {
     const TABS_HEADER = ["User Verification", "Reset Password"]

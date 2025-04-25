@@ -1,0 +1,66 @@
+.mainContent {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column;
+  padding: 20px;
+  row-gap: 10px;
+}
+
+.headerPostsRow {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: auto;
+  width: 100%;
+  border-bottom: 2px solid #ccc;
+  row-gap: 10px;
+  padding: 10px 0;
+}
+
+.headerPostsTitle {
+  position: static;
+  left: 50%;
+  transform: none;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  border: none;
+  text-decoration: none;
+  box-shadow: none;
+}
+
+.actionPostsRow {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.createPostButton,
+.backToProjectsButton {
+  width: 160px;
+  cursor: pointer;
+  background-color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+  font-size: 14px;
+}
+
+.backToProjectsButton {
+  width: 220px;
+}
+
+.createPostButton:hover,
+.backToProjectsButton:hover {
+  background-color: #f8f9fa;
+  border-radius: 15px;
+}
+
+@media (max-width: 767px) {
+  .mainContent {
+    width: 90%;
+  }
+}

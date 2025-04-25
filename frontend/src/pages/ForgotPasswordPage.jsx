@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom"
 import ForgotPasswordForm from "@/components/ForgotPasswordForm"
 import Logo from "@/components/Logo"
-import styles from "@/styles/pages/ForgotPasswordPage.module.css"
+
+import styles from "./ForgotPasswordPage.module.css"
 
 const ForgotPasswordPage = () => {
     const navigate = useNavigate()

@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import styles from "@/styles/pages/SignUpSuccessPage.module.css";
 import Logo from "@/components/Logo";
+import styles from "./SignUpSuccessPage.module.css";
 
 const SignUpSuccessPage = () => {
   const location = useLocation();

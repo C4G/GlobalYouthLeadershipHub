@@ -4,7 +4,7 @@ import TabSwitcher from "@/components/TabSwitcher";
 import MyProjects from "@/components/MyProjects";
 import ChangePasswordForm from "@/components/ChangePasswordForm";
 
-import styles from "@/styles/pages/MyProjectPage.module.css"
+import styles from "./MyProjectPage.module.css"
 
 const MyProjectPage = () => {
     const TABS_HEADER = ["My Projects", "Change Password"]

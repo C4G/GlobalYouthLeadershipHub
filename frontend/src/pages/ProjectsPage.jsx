@@ -1,10 +1,11 @@
 import { useState } from "react";
-import styles from "@/styles/pages/ProjectsPage.module.css";
 import Sidebar from "@/components/Sidebar";
 import CreateProject from "@/components/CreateProject";
 import { useGetProjects } from "@/hooks/projects";
 import ProjectList from "@/components/ProjectList";
 import Container from "@/components/Container";
+
+import styles from "./ProjectsPage.module.css";
 
 const ProjectsPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);

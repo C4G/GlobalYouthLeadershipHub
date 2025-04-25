@@ -5,10 +5,11 @@ import Sidebar from "@/components/Sidebar";
 import CreatePost from "@/components/CreatePost";
 import PostList from "@/components/PostList";
 import Container from "@/components/Container";
-import styles from "@/styles/pages/PostsPage.module.css";
 import CreatePostIcon from "@/components/icons/CreatePostIcon";
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import { useGetAllPosts } from "@/hooks/posts";
+
+import styles from "./PostsPage.module.css";
 
 const PostsPageHeader = ({
   projectId,
@@ -70,7 +71,7 @@ const PostsPage = () => {
           isModalOpen={isModalOpen}
           handleCloseModal={handleCloseModal}
         />
-        <PostList posts={posts} isLoading={isLoading} projectName={projectName}/>
+        <PostList posts={posts} isLoading={isLoading} projectName={projectName} />
       </main>
     </Container>
   );

@@ -1,6 +1,6 @@
-import styles from "@/styles/pages/UnauthorizedPage.module.css"
 import { useNavigate } from "react-router-dom"
 import { useRemoveJWTToken } from "@/hooks/auth";
+import styles from "./UnauthorizedPage.module.css"
 
 const UnauthorizedPage = () => {
     const navigate = useNavigate()

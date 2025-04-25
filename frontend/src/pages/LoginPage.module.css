@@ -1,0 +1,137 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Left Section */
+.leftSection {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Right Section - Login Form */
+.rightSection {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.formContainer {
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 350px;
+}
+
+/* Buttons */
+.forgotPasswordBtn {
+  display: flex;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.forgotPasswordBtn {
+  background: none;
+  color: #007bff;
+  border: none;
+  margin: 0.7rem auto;
+}
+
+.forgotPasswordBtn:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.createAccountBtn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.createAccountBtn {
+  background: rgba(241, 205, 12, 1);
+  color: #000;
+  border: none;
+  margin-top: 15px;
+}
+
+.createAccountBtn:hover {
+  background: rgba(241, 205, 12, 0.8);
+}
+
+hr {
+  width: 80%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+
+/* Make buttons and inputs the same width */
+.inputGroup input,
+.createAccountBtn {
+  width: 100%;
+}
+
+.homepageLink {
+  width: 130px;
+  font-weight: bold;
+  position: relative;
+  color: #333;
+  display: block;
+  text-align: center;
+  margin: -50px auto;
+  text-decoration: underline;
+}
+
+.homepageLink:hover {
+  text-decoration: none;
+}
+
+.homepageLink::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 0%;
+  height: 2px;
+  background-color: #000;
+  transition: width 0.3s ease-in-out;
+  transform: translateX(-50%);
+}
+
+.homepageLink:hover::after {
+  width: 130px;
+}
+
+/* Responsive Layout */
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+    /* Centers content better */
+    justify-content: center;
+    column-gap: 5vw;
+  }
+
+  .leftSection {
+    margin-top: 5%;
+    margin-left: 5%;
+    align-self: flex-start;
+    max-width: 60%;
+  }
+
+  .rightSection {
+    max-width: 40%;
+    justify-content: center;
+    margin-right: 50px;
+  }
+}
