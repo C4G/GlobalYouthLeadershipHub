@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddyyyy");
         String datePart = user.getDateOfBirth().format(formatter);
-        String defaultPassword = user.getFirstName() + user.getLastName() + datePart;
+        String defaultPassword = user.getLastName().toLowerCase() + datePart;
 
         user.setPassword(passwordEncoder.encode(defaultPassword));
         user.setResetRequired(false);
