@@ -3,6 +3,8 @@
   flex-flow: column;
   padding: 2rem;
   flex-grow: 1;
+  width: 100%;
+  margin: 0 auto;
 }
 
 @media (max-width: 767px) {

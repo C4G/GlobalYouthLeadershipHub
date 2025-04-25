@@ -7,25 +7,16 @@ import customFetcher from "@/services/api";
 import { useMutation } from "@tanstack/react-query";
 
 const ResetPassword = () => {
-    const [selectedUsers, setSelectedUsers] = useState(new Set());
     const [error, setError] = useState("");
     const [resettingUser, setResettingUser] = useState(null);
-
 
     const { data: resetUsers = [], isLoading, refetch } = useGetListOfResetUsers()
 
     const { mutate } = useMutation({
         mutationFn: (email) => customFetcher("/admin/reset-users-password", "POST", null, { email }),
         onMutate: (email) => setResettingUser(email),
-        onSuccess: (_, email) => {
-            alert(`Password for ${email} has been reset to default`);
-
-            setSelectedUsers((prev) => {
-                const next = new Set(prev);
-                next.delete(email);
-                return next;
-            });
-
+        onSuccess: (data) => {
+            alert(`${data.message}\nDefault Password will be First Name + Last Name + MMDDYYYY`);
             setResettingUser(null);
             refetch()
         },
@@ -35,19 +26,15 @@ const ResetPassword = () => {
         }
     });
 
-    const handleCheckboxToggle = (email) => {
-        setSelectedUsers((prev) => {
-            const next = new Set(prev);
-            next.has(email) ? next.delete(email) : next.add(email);
-            return next;
-        });
-    };
-
     const handleReset = (email) => {
         mutate(email);
     };
 
-    if (isLoading) return <Spinner text={"Fetching all resets users..."} />
+    if (isLoading) return (
+        <div className={styles.resetPasswordSpinner}>
+            <Spinner text={"Fetching all resets users..."} />
+        </div>
+    )
 
     return (
         <>
@@ -62,11 +49,6 @@ const ResetPassword = () => {
                         <li key={user.email} className={styles.userItem}>
                             <div className={styles.userInfo}>
                                 <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedUsers.has(user.email)}
-                                        onChange={() => handleCheckboxToggle(user.email)}
-                                    />
                                     <span>{user.email}</span>
                                 </label>
                             </div>
@@ -76,12 +58,10 @@ const ResetPassword = () => {
                             >
                                 {resettingUser === user.email ? "Resetting..." : "Reset"}
                             </button>
-
                         </li>
                     ))
                     }
                 </ul>
-
             </div>
         </>
     )
