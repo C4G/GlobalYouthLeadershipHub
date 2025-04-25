@@ -16,7 +16,7 @@ const ResetPassword = () => {
         mutationFn: (email) => customFetcher("/admin/reset-users-password", "POST", null, { email }),
         onMutate: (email) => setResettingUser(email),
         onSuccess: (data) => {
-            alert(`${data.message}\nDefault Password will be Last Name + MMDDYYYY in lowercaps (e.g. doe12312000)`);
+            alert(`${data.message}\nDefault Password will be Last Name + MMDDYYYY in lowercase (e.g. doe12312000)`);
             setResettingUser(null);
             refetch()
         },
