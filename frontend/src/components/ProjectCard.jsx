@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom"
-import styles from "@/styles/components/ProjectCard.module.css"
 import { truncateOwnerName, dateStringToLocaleString } from "@/utils/utils"
 import { useGetProjectImageById } from "@/hooks/projects"
 import ThrashIcon from "@/components/icons/ThrashIcon"
 import ArrowIcon from "@/components/icons/ArrowIcon"
+
+import styles from "./ProjectCard.module.css"
 
 const ProjectCard = ({ project }) => {
     const navigate = useNavigate()

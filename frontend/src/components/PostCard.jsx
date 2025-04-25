@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useNavigate, useParams } from "react-router-dom";
-import styles from "@/styles/components/PostCard.module.css";
 import ThrashIcon from "@/components/icons/ThrashIcon";
 import ArrowIcon from "@/components/icons/ArrowIcon";
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import { truncateOwnerName, dateStringToLocaleString } from "@/utils/utils"
 import { useGetProjectPostImageById } from "@/hooks/posts";
+
+import styles from "./PostCard.module.css";
 
 const PostActionButtons = ({ isFullPage, onLinkToPostsPage, projectId, postId, handleDelete, onLinkToPostPage }) => {
   // navigate to posts page `projects/:projectId/posts`
@@ -47,9 +48,9 @@ const PostCard = ({ post, projectName, isFullPage = false, children }) => {
   };
 
   const onLinkToPostPage = () => {
-    navigate(`/projects/${projectId}/posts/${postId}`,{
+    navigate(`/projects/${projectId}/posts/${postId}`, {
       state: { name: projectName },
-    } );
+    });
   };
 
   const onLinkToPostsPage = () => {

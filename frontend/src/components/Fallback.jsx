@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
-import styles from "@/styles/components/Fallback.module.css"
 import { useNavigate } from "react-router-dom";
+
+import styles from "./Fallback.module.css"
 
 const Fallback = ({ resetErrorBoundary }) => {
     const navigate = useNavigate()

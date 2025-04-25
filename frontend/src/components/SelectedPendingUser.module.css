@@ -1,0 +1,47 @@
+.selectUser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.verifySection {
+  flex-basis: 48%;
+  display: flex;
+  flex-direction: column;
+}
+
+.verifySection button {
+  padding: 10px 15px;
+  background-color: rgba(241, 205, 12);
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  /* Push the button to the bottom */
+  width: auto;
+  align-self: center;
+  margin-top: auto;
+}
+
+.verifySection button:hover {
+  background: rgba(241, 205, 12, 0.8);
+}
+
+.successMsg {
+  color: green;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.errorMsg {
+  color: red;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  font-weight: bold;
+}

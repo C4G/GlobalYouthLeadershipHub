@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import styles from "@/styles/components/Pagination.module.css";
+import styles from "./Pagination.module.css";
 
 const Pagination = ({
   totalItems,

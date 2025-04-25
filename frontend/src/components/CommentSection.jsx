@@ -4,7 +4,7 @@ import Spinner from "@/components/Spinner";
 import Comment from "@/components/Comment";
 import { useGetCommentsByProjectAndPostId, useAddCommentByProjectAndPostId } from "@/hooks/comments";
 
-import styles from "@/styles/components/CommentSection.module.css";
+import styles from "./CommentSection.module.css";
 
 const CommentSection = ({ projectId, postId, isReplyPost, setIsReplyPost }) => {
   const [inputComment, setInputComment] = useState("");

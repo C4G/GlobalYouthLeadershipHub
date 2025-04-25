@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import styles from "@/styles/components/CreatePost.module.css"
 import { useMutation } from "@tanstack/react-query"
 import customFetcher from "@/services/api";
+
+import styles from "./CreatePost.module.css"
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB (in bytes)
 
@@ -69,7 +70,7 @@ const CreatePost = ({ projectId, onClose }) => {
       content: postDesc,
       ...(postImages.length > 0 && { images: postImages })
     }
-    
+
     Object.
       entries(postData).
       forEach(([key, value]) => {

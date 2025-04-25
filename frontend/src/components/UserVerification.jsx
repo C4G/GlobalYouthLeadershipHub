@@ -3,7 +3,7 @@ import queryClient from "@/libs/queryClient";
 import PendingUsersList from "@/components/PendingUsersList";
 import SelectedPendingUser from "@/components/SelectedPendingUser";
 
-import styles from "@/styles/components/UserVerification.module.css"
+import styles from "./UserVerification.module.css"
 
 const UserVerification = () => {
     const [selectedUser, setSelectedUser] = useState(null)

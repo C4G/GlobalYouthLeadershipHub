@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useGetListOfResetUsers } from "@/hooks/users"
 import Spinner from "@/components/Spinner"
-
-import styles from "@/styles/components/ResetPassword.module.css"
 import customFetcher from "@/services/api";
 import { useMutation } from "@tanstack/react-query";
+
+import styles from "./ResetPassword.module.css"
 
 const ResetPassword = () => {
     const [error, setError] = useState("");

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import customFetcher from "@/services/api";
 
-import styles from "@/styles/components/ChangePasswordForm.module.css"
+import styles from "./ChangePasswordForm.module.css"
 
 const ChangePasswordForm = () => {
     const [currentPassword, setCurrentPassword] = useState("");

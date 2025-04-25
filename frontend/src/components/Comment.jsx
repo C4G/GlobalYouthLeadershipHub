@@ -3,7 +3,7 @@ import { useState } from "react";
 import { truncateOwnerName } from "@/utils/utils";
 import { useAddCommentByProjectAndPostId } from "@/hooks/comments";
 
-import styles from "@/styles/components/Comment.module.css"
+import styles from "./Comment.module.css"
 
 const Comment = ({ projectId, postId, comment }) => {
   const [inputReplyComment, setInputReplyComment] = useState("");

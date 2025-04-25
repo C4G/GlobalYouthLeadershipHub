@@ -1,0 +1,41 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.pageList {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.pageButton {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ddd;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.pageButton:hover {
+    background: rgba(18, 83, 142, 0.8);
+    color: white;
+}
+
+.pageButton.active {
+    background: rgba(18, 83, 142, 1);
+    color: white;
+}
+
+.pageList:hover .pageButton.active:not(:hover) {
+    background: white;
+    color: #333;
+}
+
+.pageButton.active:hover {
+    background: rgba(18, 83, 142, 1);
+    color: white;
+}

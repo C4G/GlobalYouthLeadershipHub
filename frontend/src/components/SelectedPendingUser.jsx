@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useVerifyPendingUser } from "@/hooks/users"
-import styles from "@/styles/components/SelectedPendingUser.module.css"
+
+import styles from "./SelectedPendingUser.module.css"
 
 const mapStatus = (status) => {
     if (status === "pending_review") {

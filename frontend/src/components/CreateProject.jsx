@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import styles from "@/styles/components/CreateProject.module.css";
 import { useMutation } from "@tanstack/react-query";
 import customFetcher from "@/services/api";
+
+import styles from "./CreateProject.module.css";
 
 const CreateProject = ({ onClose }) => {
   const [projectName, setProjectName] = useState("");

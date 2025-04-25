@@ -2,7 +2,8 @@ import Spinner from "@/components/Spinner";
 import ProjectCard from "@/components/ProjectCard";
 import EmptyList from "@/components/EmptyList";
 import { useGetProjectsByUser } from "@/hooks/projects"
-import styles from "@/styles/components/MyProjects.module.css"
+
+import styles from "./MyProjects.module.css"
 
 const MyProjects = () => {
     const { data: myProjects, isLoading } = useGetProjectsByUser()

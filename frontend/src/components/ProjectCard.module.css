@@ -1,0 +1,121 @@
+.projectCard {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+@media (min-width: 768px) {
+  .projectCard {
+    width: calc(50% - 10px);
+  }
+}
+
+.projectHeader {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  background-color: #ccc;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.projectInfo {
+  flex: 1;
+}
+
+.projectName {
+  max-height: 40px;
+  overflow-y: auto;
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.projectActionButtons {
+  gap: 8px;
+  margin-left: auto;
+  align-items: center;
+}
+
+.arrowButton,
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #888;
+  transition: color 0.2s ease;
+}
+
+.arrowButton:hover,
+.deleteButton:hover {
+  color: #000;
+}
+
+.projectContent {
+  max-height: 100px;
+  overflow-y: auto;
+  width: 80%;
+  padding: 0% 10%;
+  font-size: 16px;
+  text-align: left;
+}
+
+.photoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  max-height: 300px;
+  overflow: hidden;
+}
+
+.photo {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+}
+
+.loaderSpinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ccc;
+  border-bottom-color: #007bff;
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.projectUpdatedAt {
+  margin-top: auto;
+  width: 80%;
+  padding: 2% 10%;
+  font-size: 16px;
+}

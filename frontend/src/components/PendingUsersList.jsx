@@ -1,6 +1,7 @@
 import { useGetUnverifiedUsers } from "@/hooks/users";
-import styles from "@/styles/components/PendingUsersList.module.css"
 import Spinner from "@/components/Spinner";
+
+import styles from "./PendingUsersList.module.css"
 
 // eslint-disable-next-line react/prop-types
 const PendingUsersList = ({ onSelect }) => {

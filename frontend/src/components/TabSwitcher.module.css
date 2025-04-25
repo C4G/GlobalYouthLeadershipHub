@@ -1,0 +1,34 @@
+.tabWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.tabHeader {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabButton {
+  background: none;
+  border: none;
+  padding: 0.75rem 0;
+  font-size: 1rem;
+  color: black;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.activeTab {
+  color: #000;
+  font-weight: bold;
+  border-bottom: 3px solid rgba(241, 205, 12, 1);
+}
+
+.tabContent {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}

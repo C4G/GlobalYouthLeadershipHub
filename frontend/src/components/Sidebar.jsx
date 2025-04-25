@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import styles from "@/styles/components/Sidebar.module.css";
 import Logo from "@/components/Logo";
 import NavIcon from "@/components/icons/NavIcon";
 import CloseIcon from "@/components/icons/CloseIcon";
@@ -11,6 +10,8 @@ import MyPageIcon from "@/components/icons/MyPageIcon";
 import LogoutIcon from "@/components/icons/LogoutIcon";
 import { useJWTToken, useRemoveJWTToken } from "@/hooks/auth";
 import AdminIcon from "@/components/icons/AdminIcon";
+
+import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ setModalOpen, isLandingPage = false }) => {
   const navigate = useNavigate();

@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import customFetcher from "@/services/api";
-import styles from "@/styles/components/LoginForm.module.css"
 import { useSetJWTToken } from "@/hooks/auth";
+
+import styles from "./LoginForm.module.css"
 
 const LoginForm = () => {
     const location = useLocation();

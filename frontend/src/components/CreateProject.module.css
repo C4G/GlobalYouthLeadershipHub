@@ -1,0 +1,119 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: white;
+  padding: 30px 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 800px;
+  min-height: 400px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputField {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.textInput {
+  width: 100%;
+  height: 80px;
+  max-width: 100%;
+  max-height: 50vh;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  resize: vertical;
+  overflow: auto;
+}
+
+.fileInputLabel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20%;
+  margin-bottom: 10px;
+}
+
+.fileSizeLabel {
+  p {
+    font-size: 12px;
+    color: grey;
+    margin: 0;
+  }
+}
+
+.previewImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.errorMessage {
+  color: #f00;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.cancelButton,
+.confirmButton {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background: gray;
+  color: white;
+  transition: background 1s;
+}
+
+.cancelButton:hover {
+  background: rgba(128, 128, 128, 0.7);
+}
+
+.confirmButton {
+  background: #12538e;
+  color: white;
+  transition: background 1s;
+}
+
+.confirmButton:hover {
+  background: rgba(18, 83, 142, 0.7);
+}
+
+@media (max-width: 767px) {
+  .modal {
+    width: 85%;
+    max-width: 85%;
+    padding: 20px;
+    min-height: unset;
+    min-height: 300px;
+  }
+}

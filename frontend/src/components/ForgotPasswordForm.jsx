@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import customFetcher from "@/services/api";
-import styles from "@/styles/components/ForgotPasswordForm.module.css"
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+
+import styles from "./ForgotPasswordForm.module.css"
 
 const Modal = ({ children }) => {
     return (

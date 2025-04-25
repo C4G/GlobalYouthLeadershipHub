@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import styles from "@/styles/components/ProjectList.module.css";
 import Spinner from "@/components/Spinner";
 import EmptyList from "@/components/EmptyList";
 import ProjectCard from "@/components/ProjectCard";
 import Pagination from "@/components/Pagination";
+
+import styles from "./ProjectList.module.css";
 
 const ProjectList = ({ projects, isLoading }) => {
     const ITEMS_PER_PAGE = 10

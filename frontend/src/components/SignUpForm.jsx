@@ -1,8 +1,9 @@
-import { useState, useMemo} from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import styles from "@/styles/components/SignUpForm.module.css";
 import customFetcher from "@/services/api";
+
+import styles from "./SignUpForm.module.css";
 
 const SignUpForm = () => {
   const navigate = useNavigate();

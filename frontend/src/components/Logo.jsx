@@ -1,7 +1,7 @@
 import { useJWTToken } from "@/hooks/auth";
-import styles from "@/styles/components/Logo.module.css";
-
 import { Link } from "react-router-dom";
+
+import styles from "./Logo.module.css";
 
 const Logo = () => {
   const { data: jwtToken } = useJWTToken()

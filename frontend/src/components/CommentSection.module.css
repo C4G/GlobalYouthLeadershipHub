@@ -1,0 +1,21 @@
+.commentSection {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.commentInput {
+  padding: 8px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.commentsList {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

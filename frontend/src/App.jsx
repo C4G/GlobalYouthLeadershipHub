@@ -12,7 +12,8 @@ import PostPage from "@/pages/PostPage";
 import UnauthorizedPage from "@/pages/UnauthorizedPage";
 import { ProtectedAdminRoute, ProtectedRoutes } from "@/components/ProtectedRoutes";
 import { useJWTToken, useSyncLocalStorage } from "@/hooks/auth";
-import "@/styles/App.css";
+
+import "./App.css";
 
 function App() {
   useSyncLocalStorage()

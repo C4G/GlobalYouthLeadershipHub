@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import styles from "@/styles/components/EmptyList.module.css"
+import styles from "./EmptyList.module.css"
 
 const EmptyList = ({ text }) => {
     return (

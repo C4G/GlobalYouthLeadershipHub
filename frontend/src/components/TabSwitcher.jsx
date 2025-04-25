@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import styles from "@/styles/components/TabSwitcher.module.css"
+
+import styles from "./TabSwitcher.module.css"
 
 const TabSwitcher = ({ tabs, renderContent }) => {
     const [activeTab, setActiveTab] = useState(tabs[0]);
