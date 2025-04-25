@@ -219,7 +219,7 @@ class UserServiceImplTest {
         String email = "test@example.com";
         LocalDateTime dob = LocalDateTime.of(1990, 5, 20, 0, 0);
         User user = User.builder().id(1L).email(email).firstName("John").lastName("Doe").dateOfBirth(dob).password("oldPassword").build();
-        String expectedPassword = "JohnDoe05201990";
+        String expectedPassword = "doe05201990";
         String encodedPassword = "encodedPassword";
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
