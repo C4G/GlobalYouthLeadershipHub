@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   backend:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -68,7 +68,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   frontend:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
