@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   backend:
-    runs-on: globalyouth
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v4
