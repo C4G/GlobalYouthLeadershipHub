@@ -12,10 +12,24 @@ concurrency:
 
 jobs:
   backend:
-    runs-on: self-hosted
+    runs-on: ubuntu
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
+        with:
+          daemon-config: |
+            {
+              "debug": true,
+              "features": {
+                "containerd-snapshotter": true
+              }
+            }
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Docker meta
         id: meta
@@ -45,17 +59,33 @@ jobs:
         with:
           context: .
           file: support/backend.Dockerfile
-          platforms: linux/arm64
+          platforms: linux/amd64,linux/arm64
+          load: true
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
   frontend:
-    runs-on: globalyouth
+    runs-on: ubuntu
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
+        with:
+          daemon-config: |
+            {
+              "debug": true,
+              "features": {
+                "containerd-snapshotter": true
+              }
+            }
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Docker meta
         id: meta
@@ -85,7 +115,8 @@ jobs:
         with:
             context: .
             file: support/frontend.Dockerfile
-            platforms: linux/arm64
+            platforms: linux/amd64,linux/arm64
+            load: true
             push: true
             cache-from: type=gha
             cache-to: type=gha,mode=max
