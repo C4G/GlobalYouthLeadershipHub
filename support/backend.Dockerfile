@@ -3,7 +3,7 @@ FROM gradle:latest AS build
 
 COPY ../backend/ /project
 
-RUN cd /project/globalyouthleadership && gradle --no-daemon build
+RUN cd /project/globalyouthleadership && gradle --no-daemon assemble
 
 # Run api 
 FROM openjdk:21-jdk-slim
