@@ -44,20 +44,20 @@ public class UserServiceImpl implements UserDetailsService, UserService {
      * Placed here for development -- will remove once database is in
      * TODO: REMOVE ME ONCE DB IS IN
      */
-    @PostConstruct
-    public void createAdminUser() {
-        if (userRepository.findByEmail("admin@gmail.com").isEmpty()) {
-            User admin = new User("admin@gmail.com"
-                    , passwordEncoder.encode("admin123")
-                    , "firstName"
-                    , "lastName"
-                    , LocalDateTime.parse("1990-05-20T00:00:00Z", ISO_FORMAT)
-                    , Role.ADMIN
-                    , false);
-            userRepository.save(admin);
-            System.out.println("Admin user created: admin / admin123");
-        }
-    }
+//    @PostConstruct
+//    public void createAdminUser() {
+//        if (userRepository.findByEmail("admin@gmail.com").isEmpty()) {
+//            User admin = new User("admin@gmail.com"
+//                    , passwordEncoder.encode("admin123")
+//                    , "firstName"
+//                    , "lastName"
+//                    , LocalDateTime.parse("1990-05-20T00:00:00Z", ISO_FORMAT)
+//                    , Role.ADMIN
+//                    , false);
+//            userRepository.save(admin);
+//            System.out.println("Admin user created: admin / admin123");
+//        }
+//    }
 
     @Override
     public User registerUser(RegisterRequest registerRequest) {
